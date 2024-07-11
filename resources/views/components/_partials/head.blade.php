@@ -24,3 +24,6 @@
 
 <!-- Template Stylesheet -->
 <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+{{-- Vite development --}}
+@vite(['resources/css/app.css', 'resources/js/app.js'])

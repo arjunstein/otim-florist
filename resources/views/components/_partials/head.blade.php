@@ -1,8 +1,8 @@
 <meta charset="utf-8">
 <title>{{ $title ?? 'Otim Florist' }}</title>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<meta content="" name="keywords">
-<meta content="" name="description">
+<meta content="bunga segar, toko bunga, buket bunga, bunga papan, bunga ulang tahun, bunga pernikahan, karangan bunga, bunga romantis, florist online, bunga valentine, bunga hias" name="keywords">
+<meta content="Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan." name="description">
 
 <!-- Google Web Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,12 +16,11 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
 <!-- Libraries Stylesheet -->
-<link href="/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-<link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
+<link href="{{ asset('lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+<link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
 
 <!-- Customized Bootstrap Stylesheet -->
-<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
 <!-- Template Stylesheet -->
-<link href="/css/style.css" rel="stylesheet">
+<link href="{{ asset('css/style.css') }}" rel="stylesheet">

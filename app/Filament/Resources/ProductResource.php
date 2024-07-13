@@ -3,18 +3,17 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Set;
 use Illuminate\Support\Str;
+use Filament\Tables\Columns\ImageColumn;
 
 class ProductResource extends Resource
 {
@@ -26,24 +25,44 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('productName')
+                Forms\Components\TextInput::make('product_name')
+                    ->label('Nama produk')
                     ->required()
-                    ->maxLength(255)
-                    ->live()
-                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                    ->live(debounce: 400)
+                    ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                        if (($get('slug') ?? '') !== Str::slug($old)) {
+                            return;
+                        }
+
+                        $set('slug', Str::slug($state));
+                    })
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->required()
+                    ->readOnly()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
+                    ->label('Gambar')
                     ->image()
+                    ->imageCropAspectRatio('1:1')
                     ->required(),
-                Forms\Components\Select::make('categoryId')
-                    ->label('Category')
-                    ->relationship('category', 'categoryName')
-                    ->options(Category::all()->pluck('categoryName', 'id'))
-                    ->required(),
-                Forms\Components\TextArea::make('productDescription')
+                Forms\Components\Select::make('category_id')
+                    ->label('Kategori')
+                    ->relationship('category', 'category_name')
+                    ->options(Category::all()->pluck('category_name', 'id')),
+                Forms\Components\TextInput::make('price')
+                    ->label('Harga')
                     ->required()
+                    ->numeric()
+                    ->prefix('Rp'),
+                Forms\Components\TextInput::make('sale_price')
+                    ->label('Harga promo')
+                    ->numeric()
+                    ->prefix('Rp'),
+                Forms\Components\Textarea::make('product_description')
+                    ->label('Deskripsi produk')
+                    ->required()
+                    ->autosize()
                     ->maxLength(255),
             ]);
     }
@@ -52,17 +71,28 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('category.categoryName')
-                    ->label('Category')
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Gambar')
+                    ->square(),
+                Tables\Columns\TextColumn::make('product_name')
+                    ->label('Produk')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('productName')
+                Tables\Columns\TextColumn::make('category.category_name')
+                    ->label('Kategori')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('product_description')
+                    ->label('Deskripsi')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('productDescription')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('price')
+                    ->label('Harga')
+                    ->money('Rp.')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('sale_price')
+                    ->label('Harga promo')
+                    ->money('Rp.')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -77,6 +107,7 @@ class ProductResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

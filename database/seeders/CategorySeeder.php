@@ -14,31 +14,31 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         DB::table('categories')->insert([
-            'categoryName' => 'Bunga papan congratulations',
+            'category_name' => 'Bunga papan congratulations',
             'created_at' => now(),
         ]);
         DB::table('categories')->insert([
-            'categoryName' => 'Bunga papan happy wedding',
+            'category_name' => 'Bunga papan happy wedding',
             'created_at' => now(),
         ]);
         DB::table('categories')->insert([
-            'categoryName' => 'Bunga papan duka cita',
+            'category_name' => 'Bunga papan duka cita',
             'created_at' => now(),
         ]);
         DB::table('categories')->insert([
-            'categoryName' => 'Bunga standing',
+            'category_name' => 'Bunga standing',
             'created_at' => now(),
         ]);
         DB::table('categories')->insert([
-            'categoryName' => 'Hand bouquet',
+            'category_name' => 'Hand bouquet',
             'created_at' => now(),
         ]);
         DB::table('categories')->insert([
-            'categoryName' => 'Bunga meja',
+            'category_name' => 'Bunga meja',
             'created_at' => now(),
         ]);
         DB::table('categories')->insert([
-            'categoryName' => 'Bunga salib',
+            'category_name' => 'Bunga salib',
             'created_at' => now(),
         ]);
     }

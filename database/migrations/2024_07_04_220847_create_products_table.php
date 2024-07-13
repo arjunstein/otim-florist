@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('slug');
             $table->string('image');
-            $table->foreignId('categoryId')->constrained('categories')->restrictOnDelete();
-            $table->string('productName');
-            $table->string('productDescription');
+            $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
+            $table->string('product_name');
+            $table->string('product_description');
+            $table->double('price');
+            $table->double('sale_price')->nullable();
             $table->timestamps();
         });
     }

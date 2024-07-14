@@ -56,12 +56,17 @@
                                                 class="img-fluid w-100 rounded-top" alt="">
                                         </div>
                                         <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                            style="top: 10px; left: 10px;">Promo</div>
+                                            style="top: 10px; left: 10px; display:{{ isset($product->sale_price) ? 'block' : 'none' }}">Promo</div>
                                         <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                             <h4>{{ ucwords($product->product_name) }} - {{ $product->id }}</h4>
-                                            <div class="d-flex justify-content-center flex-lg-wrap" style="flex-direction: column;">
-                                                <p class="text-dark fs-5 fw-bold mb-0">Rp.
-                                                    {{ number_format($product->price) }}</p>
+                                            <div class="d-flex justify-content-center flex-lg-wrap"
+                                                style="flex-direction: column;">
+                                                <p class="text-danger fs-5 fw-bold mb-0" style="text-decoration: line-through">
+                                                    {{ isset($product->sale_price) ? 'Rp.' . number_format($product->price) : '' }}
+                                                </p>
+                                                <p class="{{ isset($product->sale_price) ? 'text-success' : 'text-dark' }} fs-5 fw-bold mb-0">Rp.
+                                                    {{ isset($product->sale_price) ? number_format($product->sale_price) : number_format($product->price) }}
+                                                </p>
                                                 <a href="#"
                                                     class="btn border border-secondary rounded-pill px-3 text-primary"><i
                                                         class="fab fa-whatsapp me-2 text-primary"></i>Pesan sekarang</a>

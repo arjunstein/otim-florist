@@ -52,19 +52,24 @@
                                 <div class="col-md-6 col-lg-4 col-xl-3">
                                     <div class="rounded position-relative fruite-item">
                                         <div class="fruite-img">
-                                            <img src="{{ asset('storage/' . $product->image) }}"
-                                                class="img-fluid w-100 rounded-top" alt="">
+                                            <a href="{{ route('product.detail' , ['id' => $product->id]) }}" wire:navigate>
+                                                <img src="{{ asset('storage/' . $product->image) }}"
+                                                    class="img-fluid w-100 rounded-top" alt="">
+                                            </a>
                                         </div>
                                         <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                            style="top: 10px; left: 10px; display:{{ isset($product->sale_price) ? 'block' : 'none' }}">Promo</div>
+                                            style="top: 10px; left: 10px; display:{{ isset($product->sale_price) ? 'block' : 'none' }}">
+                                            Promo</div>
                                         <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                             <h4>{{ ucwords($product->product_name) }} - {{ $product->id }}</h4>
                                             <div class="d-flex justify-content-center flex-lg-wrap"
                                                 style="flex-direction: column;">
-                                                <p class="text-danger fs-5 fw-bold mb-0" style="text-decoration: line-through">
+                                                <p class="text-danger fs-5 fw-bold mb-0 text-decoration-line-through">
                                                     {{ isset($product->sale_price) ? 'Rp.' . number_format($product->price) : '' }}
                                                 </p>
-                                                <p class="{{ isset($product->sale_price) ? 'text-success' : 'text-dark' }} fs-5 fw-bold mb-0">Rp.
+                                                <p
+                                                    class="{{ isset($product->sale_price) ? 'text-success' : 'text-dark' }} fs-5 fw-bold mb-0">
+                                                    Rp.
                                                     {{ isset($product->sale_price) ? number_format($product->sale_price) : number_format($product->price) }}
                                                 </p>
                                                 <a href="#"

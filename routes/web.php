@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Landingpage;
+use App\Livewire\ProdukDetail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', Landingpage::class);
+Route::get('/produk/{id}', ProdukDetail::class)->name('product.detail');
 
 Route::get('/login', function () {
     return redirect(route('filament.admin.auth.login'));

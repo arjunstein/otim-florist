@@ -28,17 +28,18 @@
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
                     <a href="/" class="nav-item nav-link" wire:navigate>Home</a>
-                    <a href="#" class="nav-item nav-link">Shop</a>
+                    <a href="#" class="nav-item nav-link" wire:navigate>Etalase</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Kategori</a>
                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                            <a href="#" class="dropdown-item">Cart</a>
-                            <a href="#" class="dropdown-item">Chackout</a>
-                            <a href="#" class="dropdown-item">Testimonial</a>
-                            <a href="#" class="dropdown-item">404 Page</a>
+                            <a href="#" class="dropdown-item" wire:navigate>Bunga papan</a>
+                            <a href="#" class="dropdown-item" wire:navigate>Bunga standing</a>
+                            <a href="#" class="dropdown-item" wire:navigate>Bunga meja</a>
+                            <a href="#" class="dropdown-item" wire:navigate>Bunga salib</a>
+                            <a href="#" class="dropdown-item" wire:navigate>Hand bouquet</a>
                         </div>
                     </div>
-                    <a href="#" class="nav-item nav-link">Contact</a>
+                    <a href="#" class="nav-item nav-link" wire:navigate>Tentang kami</a>
                 </div>
                 <div class="d-flex m-3 me-0">
                     <button

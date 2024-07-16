@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', Landingpage::class);
-Route::get('/produk/{id}', ProdukDetail::class)->name('product.detail');
+Route::get('/produk/{id}/{slug}', ProdukDetail::class)->name('product.detail');
 
 Route::get('/login', function () {
     return redirect(route('filament.admin.auth.login'));

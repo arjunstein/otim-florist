@@ -43,7 +43,7 @@
                     <p>Email: otimfloristjakarta@gmail.com</p>
                     <p>Phone: 081808881477 | 085959596445</p>
                     <p>Menerima pembayaran</p>
-                    <img src="img/payment.png" class="img-fluid" alt="">
+                    <img src="{{ asset('img/payment.png') }}" class="img-fluid" alt="">
                 </div>
             </div>
         </div>

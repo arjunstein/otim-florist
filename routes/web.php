@@ -2,6 +2,7 @@
 
 use App\Livewire\Landingpage;
 use App\Livewire\ProdukDetail;
+use App\Livewire\Tentang;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +15,17 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+// Landing page
 Route::get('/', Landingpage::class);
+
+// Detail produk
 Route::get('/produk/{id}/{slug}', ProdukDetail::class)->name('product.detail');
 
+// Tentang kami
+Route::get('/tentang-kami', Tentang::class)->name('tentang');
+
+
+// Handle unexpect redirect
 Route::get('/login', function () {
     return redirect(route('filament.admin.auth.login'));
 })->name('login');

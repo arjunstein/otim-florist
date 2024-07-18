@@ -11,7 +11,6 @@ use Livewire\Attributes\Title;
 class Landingpage extends Component
 {
     #[Title('Otim Florist Jakarta')]
-    public $title = 'Landing page';
     public $products;
     public $category;
     public $testimoni;

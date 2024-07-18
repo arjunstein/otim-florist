@@ -39,7 +39,7 @@
                             <a href="#" class="dropdown-item" wire:navigate>Hand bouquet</a>
                         </div>
                     </div>
-                    <a href="#" class="nav-item nav-link" wire:navigate>Tentang kami</a>
+                    <a href="{{ route('tentang') }}" wire:navigate class="nav-item nav-link" wire:navigate>Tentang kami</a>
                 </div>
                 <div class="d-flex m-3 me-0">
                     <button

@@ -31,9 +31,10 @@
             <div class="col-lg-6 col-md-6">
                 <div class="footer-item">
                     <h4 class="text-light mb-3">Kenapa harus Otim Florist?</h4>
-                    <p class="mb-4">typesetting, remaining essentially unchanged. It was
-                        popularised in the 1960s with the like Aldus PageMaker including of Lorem Ipsum.</p>
-                    <a href="" class="btn border-secondary py-2 px-4 rounded-pill text-primary">Selengkapnya</a>
+                    <p class="mb-4">
+                    Otim Florist menyediakan berbagai karangan bunga untuk berbagai keperluan, termasuk acara pernikahan, ulang tahun, ucapan terima kasih, peringatan, dan momen-momen spesial lainnya.
+                    </p>
+                    <a href="{{ route('tentang') }}" wire:navigate class="btn border-secondary py-2 px-4 rounded-pill text-primary">Selengkapnya</a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -42,7 +43,7 @@
                     <p>Alamat: Duri Pulo, Gambir, Jakarta Pusat</p>
                     <p>Email: otimfloristjakarta@gmail.com</p>
                     <p>Phone: 081808881477 | 085959596445</p>
-                    <p>Menerima pembayaran</p>
+                    <p>Menerima pembayaran via</p>
                     <img src="{{ asset('img/payment.png') }}" class="img-fluid" alt="">
                 </div>
             </div>

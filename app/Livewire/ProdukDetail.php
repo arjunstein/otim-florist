@@ -14,10 +14,12 @@ class ProdukDetail extends Component
     public $produk;
     public $category;
     public $id;
+    public $slug;
 
-    public function mount($id)
+    public function mount($id, $slug)
     {
         $this->id = $id;
+        $this->slug = Product::where('slug', $slug)->first();
         $this->category = Category::all();
         $this->produks = Product::all();
         $this->produk = Product::findOrFail($this->id);
@@ -29,6 +31,7 @@ class ProdukDetail extends Component
             'category' => $this->category,
             'produks' => $this->produks,
             'produk' => $this->produk,
+            'slug' => $this->slug,
         ]);
     }
 }

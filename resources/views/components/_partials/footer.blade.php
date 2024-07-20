@@ -21,7 +21,7 @@
                     <div class="d-flex justify-content-end pt-3">
                         <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
                                 class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i
+                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" target="_blank" href="https://instagram.com/otimfloris7"><i
                                 class="fab fa-instagram"></i></a>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                     <p>Email: otimfloristjakarta@gmail.com</p>
                     <p>Phone: 081808881477 | 085959596445</p>
                     <p>Menerima pembayaran via</p>
-                    <img src="{{ asset('img/payment.png') }}" class="img-fluid" alt="">
+                    <p>Bank BRI, BCA, dan Mandiri</p>
                 </div>
             </div>
         </div>

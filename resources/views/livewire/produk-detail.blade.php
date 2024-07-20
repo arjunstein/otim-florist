@@ -18,8 +18,8 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <h4 class="fw-bold mb-3">{{ $produk->product_name }}</h4>
-                            <p class="mb-3">Kategori: {{ $produk->category->category_name }}</p>
+                            <h4 class="fw-bold mb-3">{{ ucfirst($produk->product_name) . ' ' . $produk->id }}</h4>
+                            <p class="mb-3">Kategori: {{ ucfirst($produk->category->category_name) }}</p>
                             <h5 class="fw-bold text-danger mb-3 text-decoration-line-through">
                                 {{ isset($produk->sale_price) ? 'Rp. ' . number_format($produk->price) : '' }}</h5>
                             <h5 class="fw-bold text-success mb-3">Rp.
@@ -82,12 +82,15 @@
                 <div class="owl-carousel vegetable-carousel justify-content-center">
                     @foreach ($produks as $prod)
                         <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="vesitable-img">
-                                <img src="{{ asset('storage/' . $prod->image) }}" class="img-fluid w-100 rounded-top"
-                                    alt="">
-                            </div>
+                            <a href="{{ route('product.detail', ['slug' => $prod->slug, 'id' => $prod->id]) }}" wire:navigate>
+                                <div class="vesitable-img">
+                                    <img src="{{ asset('storage/' . $prod->image) }}"
+                                        class="img-fluid w-100 rounded-top" alt="">
+                                </div>
+                            </a>
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                style="top: 10px; right: 10px; display:{{ isset($prod->sale_price) ? 'block' : 'none' }}">Promo</div>
+                                style="top: 10px; right: 10px; display:{{ isset($prod->sale_price) ? 'block' : 'none' }}">
+                                Promo</div>
                             <div class="p-4 pb-0 rounded-bottom">
                                 <h4>{{ $prod->product_name }}</h4>
                                 <p>{{ $prod->product_description }}

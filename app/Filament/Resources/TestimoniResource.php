@@ -42,6 +42,7 @@ class TestimoniResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('testimonial_sentence')
                     ->label('Kalimat testimoni')
+                    ->limit(60)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('client_name')
                     ->label('Nama klien')

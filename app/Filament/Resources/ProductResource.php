@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Tables\Columns\ImageColumn;
+use Illuminate\Support\Facades\Storage;
 
 class ProductResource extends Resource
 {
@@ -44,12 +45,16 @@ class ProductResource extends Resource
                 Forms\Components\FileUpload::make('image')
                     ->label('Gambar')
                     ->image()
-                    ->imageCropAspectRatio('1:1')
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '1:1',
+                    ])
                     ->required(),
                 Forms\Components\Select::make('category_id')
                     ->label('Kategori')
                     ->relationship('category', 'category_name')
-                    ->options(Category::all()->pluck('category_name', 'id')),
+                    ->options(Category::all()->pluck('category_name', 'id'))
+                    ->required(),
                 Forms\Components\TextInput::make('price')
                     ->label('Harga')
                     ->required()
@@ -107,11 +112,21 @@ class ProductResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->after(function (Product $record) {
+                        if ($record->image) {
+                            Storage::disk('public')->delete($record->image);
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->after(function (Product $record) {
+                            if ($record->image) {
+                                Storage::disk('public')->delete($record->image);
+                            }
+                        }),
                 ]),
             ]);
     }

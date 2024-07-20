@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', Landingpage::class);
 
 // Detail produk
-Route::get('/produk/{id}/{slug}', ProdukDetail::class)->name('product.detail');
+Route::get('/produk/{slug}/{id}', ProdukDetail::class)->name('product.detail');
 
 // Tentang kami
 Route::get('/tentang-kami', Tentang::class)->name('tentang');

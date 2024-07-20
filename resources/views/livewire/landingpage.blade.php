@@ -52,7 +52,7 @@
                                 <div class="col-md-6 col-lg-4 col-xl-3">
                                     <div class="rounded position-relative fruite-item">
                                         <div class="fruite-img">
-                                            <a href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}"
+                                            <a href="{{ route('product.detail', ['slug' => $product->slug, 'id' => $product->id]) }}"
                                                 wire:navigate>
                                                 <img src="{{ asset('storage/' . $product->image) }}"
                                                     class="img-fluid w-100 rounded-top" alt="">
@@ -62,7 +62,7 @@
                                             style="top: 10px; left: 10px; display:{{ isset($product->sale_price) ? 'block' : 'none' }}">
                                             Promo</div>
                                         <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                            <h4>{{ ucwords($product->product_name) }}</h4>
+                                            <h4>{{ ucfirst($product->product_name) .' '. $product->id  }}</h4>
                                             <div class="d-flex justify-content-center flex-lg-wrap"
                                                 style="flex-direction: column;">
                                                 <p class="text-danger fs-5 fw-bold mb-0 text-decoration-line-through">

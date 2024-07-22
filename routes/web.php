@@ -1,9 +1,11 @@
 <?php
 
+use App\Livewire\Etalase;
 use App\Livewire\Landingpage;
 use App\Livewire\ProdukDetail;
 use App\Livewire\Tentang;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,9 @@ Route::get('/produk/{slug}/{id}', ProdukDetail::class)->name('product.detail');
 
 // Tentang kami
 Route::get('/tentang-kami', Tentang::class)->name('tentang');
+
+// Etaslase
+Route::get('/etalase', Etalase::class)->name('etalase');
 
 
 // Handle unexpect redirect

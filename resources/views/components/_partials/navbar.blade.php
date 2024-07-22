@@ -28,7 +28,7 @@
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
                     <a href="/" class="nav-item nav-link" wire:navigate>Home</a>
-                    <a href="#" class="nav-item nav-link" wire:navigate>Etalase</a>
+                    <a href="{{ route('etalase') }}" class="nav-item nav-link" wire:navigate>Etalase</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Kategori</a>
                         <div class="dropdown-menu m-0 bg-secondary rounded-0">

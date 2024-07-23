@@ -25,5 +25,9 @@
 <!-- Template Stylesheet -->
 <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
+{{-- Favicon --}}
+<link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">
+
+
 {{-- Vite development --}}
 @vite(['resources/css/app.css', 'resources/js/app.js'])

@@ -47,7 +47,7 @@ class ProductResource extends Resource
                     ->image()
                     ->imageEditor()
                     ->imageEditorAspectRatios([
-                        '1:1',
+                        '4:3',
                     ])
                     ->required(),
                 Forms\Components\Select::make('category_id')

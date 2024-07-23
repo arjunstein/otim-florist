@@ -48,7 +48,7 @@
                 <div class="row g-4 py-5">
                     <div class="col-lg-12">
                         <div class="row g-4">
-                            @foreach ($products as $product)
+                            @forelse ($products as $product)
                                 <div class="col-md-6 col-lg-4 col-xl-3">
                                     <div class="rounded position-relative fruite-item">
                                         <div class="fruite-img">
@@ -61,17 +61,20 @@
                                         <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
                                             style="top: 10px; left: 10px; display:{{ isset($product->sale_price) ? 'block' : 'none' }}">
                                             Promo</div>
-                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                            <h4>{{ ucfirst($product->product_name) .' '. $product->id  }}</h4>
+                                        <div
+                                            class="p-4 border border-secondary border-top-0 rounded-bottom fruits-item">
+                                            <h5>{{ ucfirst($product->product_name) . ' ' . $product->id }}</h5>
                                             <div class="d-flex justify-content-center flex-lg-wrap"
                                                 style="flex-direction: column;">
-                                                <p class="text-danger fs-5 fw-bold mb-0 text-decoration-line-through">
-                                                    {{ isset($product->sale_price) ? 'Rp.' . number_format($product->price) : '' }}
-                                                </p>
-                                                <p
-                                                    class="{{ isset($product->sale_price) ? 'text-success' : 'text-dark' }} fs-5 fw-bold mb-0">
-                                                    Rp.
-                                                    {{ isset($product->sale_price) ? number_format($product->sale_price) : number_format($product->price) }}
+                                                <p class="fs-5 fw-bold mb-0">
+                                                    <span class="text-decoration-line-through text-danger">
+                                                        {{ isset($product->sale_price) ? 'Rp.' . number_format($product->price) : '' }}
+                                                    </span>
+                                                    <span
+                                                        class="{{ isset($product->sale_price) ? 'text-success' : 'text-dark' }}">
+                                                        Rp.
+                                                        {{ isset($product->sale_price) ? number_format($product->sale_price) : number_format($product->price) }}
+                                                    </span>
                                                 </p>
                                                 <a href="#"
                                                     class="btn border border-secondary rounded-pill px-3 text-primary"><i
@@ -80,7 +83,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <p>Produk kosong</p>
+                            @endforelse
                         </div>
                     </div>
                 </div>
@@ -146,12 +151,12 @@
         <div class="container py-5">
             <div class="testimonial-header text-center">
                 <h4 class="text-primary">Testimoni</h4>
-                <h1 class="display-5 mb-5 text-dark">Penilaian klien kami</h1>
+                <h1 class="display-5 mb-5 text-dark">Kata pelanggan</h1>
             </div>
             <div class="owl-carousel testimonial-carousel">
                 @foreach ($testimoni as $testi)
                     <div class="testimonial-item img-border-radius bg-light rounded p-4">
-                        <div class="position-relative">
+                        <div class="position-relative" style="height: 300px">
                             <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
                                 style="bottom: 30px; right: 0;"></i>
                             <div class="mb-4 pb-4 border-bottom border-secondary">
@@ -170,7 +175,10 @@
                                     <p class="m-0 pb-3">{{ $testi->client_profession }}</p>
                                 </div>
                             </div>
-                            <a href="https://g.page/r/CUwQGqLxue8DEAE/review"><i class="fab fa-google"></i> Lihat review google</a>
+                            <p class="pt-3">
+                                <a href="https://g.page/r/CUwQGqLxue8DEAE/review"><i class="fab fa-google"></i> Lihat
+                                    review google</a>
+                            </p>
                         </div>
                     </div>
                 @endforeach

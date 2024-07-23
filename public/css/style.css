@@ -313,6 +313,11 @@
     transition: 0.5s;
 }
 
+.fruite .fruits-item {
+    height: 175px;
+    transition: 0.5s;
+}
+
 .fruite .fruite-item:hover {
     box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
 }
@@ -430,7 +435,7 @@
 /*** testimonial Start ***/
 .testimonial .owl-nav .owl-prev {
     position: absolute;
-    top: -58px;
+    top: -42px;
     right: 0;
     color: var(--bs-primary);
     padding: 5px 25px;
@@ -446,7 +451,7 @@
 
 .testimonial .owl-nav .owl-next {
     position: absolute;
-    top: -58px;
+    top: -42px;
     right: 88px;
     color: var(--bs-primary);
     padding: 5px 25px;

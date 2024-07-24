@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Ad;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Testimoni;
@@ -14,12 +15,14 @@ class Landingpage extends Component
     public $products;
     public $category;
     public $testimoni;
+    public $ad;
 
     public function mount()
     {
         $this->products = Product::orderBy('id', 'desc')->get();
         $this->category = Category::all();
         $this->testimoni = Testimoni::all();
+        $this->ad = Ad::all();
     }
 
     public function render()
@@ -29,6 +32,7 @@ class Landingpage extends Component
             'products' => $this->products,
             'category' => $this->category,
             'testimoni' => $this->testimoni,
+            'ad' => $this->ad,
         ]);
     }
 }

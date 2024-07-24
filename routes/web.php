@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // Landing page
-Route::get('/', Landingpage::class);
+Route::get('/', Landingpage::class)->name('homepage');
 
 // Detail produk
 Route::get('/produk/{slug}/{id}', ProdukDetail::class)->name('product.detail');

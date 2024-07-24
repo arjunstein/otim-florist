@@ -470,7 +470,8 @@
 
 /*** Single Page Start ***/
 .pagination {
-    display: inline-block;
+    display: flex;
+    padding-left: 10px;
 }
 
 .pagination a {

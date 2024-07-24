@@ -13,7 +13,8 @@
                                 <div class="carousel-item active rounded">
                                     <img src="{{ asset('storage/' . $ads->image) }}"
                                         class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                                    <a href="#" class="btn px-4 py-2 text-white rounded">{{ ucwords($ads->title) }}</a>
+                                    <a href="#"
+                                        class="btn px-4 py-2 text-white rounded">{{ ucwords($ads->title) }}</a>
                                 </div>
                             </div>
                         @empty
@@ -47,7 +48,7 @@
                 </div>
                 <div class="row g-4 py-5">
                     <div class="col-lg-12">
-                        <div class="row g-4">
+                        <div class="row g-4 justify-content-center">
                             @forelse ($products as $product)
                                 <div class="col-md-6 col-lg-4 col-xl-3">
                                     <div class="rounded position-relative fruite-item">
@@ -87,6 +88,9 @@
                             @empty
                                 <p>Produk kosong</p>
                             @endforelse
+                            <div class="pagination justify-content-center mt-5">
+                                {{ $products->links(data: ['scrollTo' => false]) }}
+                            </div>
                         </div>
                     </div>
                 </div>

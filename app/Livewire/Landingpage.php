@@ -8,18 +8,21 @@ use App\Models\Product;
 use App\Models\Testimoni;
 use Livewire\Component;
 use Livewire\Attributes\Title;
+use Livewire\WithPagination;
 
 class Landingpage extends Component
 {
+    use WithPagination;
+
     #[Title('Otim Florist Jakarta')]
-    public $products;
     public $category;
     public $testimoni;
     public $ad;
 
+    protected $paginationTheme = 'bootstrap';
+
     public function mount()
     {
-        $this->products = Product::orderBy('id', 'desc')->get();
         $this->category = Category::all();
         $this->testimoni = Testimoni::all();
         $this->ad = Ad::all();
@@ -27,9 +30,10 @@ class Landingpage extends Component
 
     public function render()
     {
+        $products = Product::orderBy('id', 'desc')->paginate(8);
         return view('livewire.landingpage', [
             'title' => 'Landing Page',
-            'products' => $this->products,
+            'products' => $products,
             'category' => $this->category,
             'testimoni' => $this->testimoni,
             'ad' => $this->ad,

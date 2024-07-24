@@ -7,9 +7,9 @@ use App\Models\Product;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-class Etalase extends Component
+class Bungapapan extends Component
 {
-    #[Title('Etalase - Otim Florist Jakarta')]
+    #[Title('Bunga papan - Otim Florist Jakarta')]
     public $products;
     public $category;
 
@@ -21,8 +21,8 @@ class Etalase extends Component
 
     public function render()
     {
-        return view('livewire.etalase', [
-            'title' => 'Etalase',
+        return view('livewire.bungapapan', [
+            'title' => 'Bunga papan',
             'products' => $this->products,
             'category' => $this->category,
         ]);

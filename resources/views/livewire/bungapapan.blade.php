@@ -23,42 +23,21 @@
                         <div class="col-6"></div>
                         <div class="col-xl-3">
                             <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                <label for="fruits">Default Sorting:</label>
+                                <label for="fruits">Urutkan:</label>
                                 <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
                                     form="fruitform">
-                                    <option value="volvo">Nothing</option>
-                                    <option value="saab">Popularity</option>
-                                    <option value="opel">Organic</option>
-                                    <option value="audi">Fantastic</option>
+                                    <option value="murah">Termurah</option>
+                                    <option value="mahal">Termahal</option>
+                                    <option value="laris">Terlaris</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="row g-4">
-                        <div class="col-lg-3">
-                            <div class="row g-4">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <h4>Kategori</h4>
-                                        <ul class="list-unstyled fruite-categorie">
-                                            @foreach ($category as $ctg)
-                                                <li>
-                                                    <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="#"><i
-                                                                class="fas fa-apple-alt me-2"></i>{{ $ctg->category_name }}</a>
-                                                        <span>{{ $ctg->product->count() }}</span>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-9">
+                        <div class="col-lg-12">
                             <div class="row g-4 justify-content-center">
                                 @foreach ($products as $prod)
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                    <div class="col-md-6 col-lg-4 col-xl-3">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
                                                 <img src="{{ asset('storage/' . $prod->image) }}"

@@ -7,13 +7,13 @@
     <!-- Contact Start -->
     <div class="container-fluid contact">
         <div class="container py-5">
-            <div class="p-5 bg-light rounded">
+            <div class="p-3 bg-light rounded">
                 <div class="row g-4">
-                    <div class="col-12">
+                    <div class="col-md-12">
                         <div class="text-center mx-auto" style="max-width: 100%;">
                             <h1 class="text-primary">Otim Florist</h1>
                             <p class="mb-4" style="text-align: justify">
-                                Otim Florist menyediakan berbagai karangan bunga untuk berbagai keperluan, termasuk
+                                Otim Florist menyediakan berbagai karangan bunga untuk segala keperluan, termasuk
                                 acara pernikahan, ulang tahun, ucapan terima kasih, peringatan, dan momen-momen spesial
                                 lainnya.
                             <ul>

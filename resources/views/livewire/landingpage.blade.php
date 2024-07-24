@@ -165,12 +165,7 @@
                                 </p>
                             </div>
                             <div class="d-flex align-items-center flex-nowrap">
-                                <div class="bg-secondary rounded">
-                                    <img src="https://images.unsplash.com/photo-1516117172878-fd2c41f4a759"
-                                        class="img-fluid rounded" style="width: 100px; height: 100px;"
-                                        alt="">
-                                </div>
-                                <div class="ms-4 d-block">
+                                <div class="d-block">
                                     <h4 class="text-dark">{{ $testi->client_name }}</h4>
                                     <p class="m-0 pb-3">{{ $testi->client_profession }}</p>
                                 </div>

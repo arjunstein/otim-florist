@@ -315,6 +315,7 @@
 
 .fruite .fruits-item {
     height: 175px;
+    text-align: center;
     transition: 0.5s;
 }
 

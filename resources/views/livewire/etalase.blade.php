@@ -68,16 +68,24 @@
                                                 style="top: 10px; left: 10px; display:{{ $prod->sale_price ? 'block' : 'none' }}">
                                                 {{ $prod->sale_price ? 'Promo' : '' }}
                                             </div>
-                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                <h5>{{ $prod->product_name }} {{ $prod->id }}</h5>
-                                                <p>{{ $prod->product_description }}</p>
-                                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                                    <p class="text-dark fs-5 fw-bold mb-0">Rp.
-                                                        {{ number_format($prod->price) }}</p>
+                                            <div
+                                                class="p-4 border border-secondary border-top-0 rounded-bottom fruits-item">
+                                                <h6>{{ ucwords($prod->product_name) }} {{ $prod->id }}</h6>
+                                                <div class="d-flex justify-content-between flex-lg-wrap"
+                                                    style="flex-direction: column;">
+                                                    <p class="fs-5 fw-bold mb-2">
+                                                        <span class="text-decoration-line-through text-danger">
+                                                            {{ isset($prod->sale_price) ? 'Rp.' . number_format($prod->price) : '' }}
+                                                        </span>
+                                                        <span
+                                                            class="{{ isset($prod->sale_price) ? 'text-success' : 'text-dark' }}"> &nbsp;
+                                                            Rp.
+                                                            {{ isset($prod->sale_price) ? number_format($prod->sale_price) : number_format($prod->price) }}
+                                                        </span>
+                                                    </p>
                                                     <a href="#"
-                                                        class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                            class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                        cart</a>
+                                                        class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                        <i class="fab fa-whatsapp me-2 text-primary"></i>Pesan sekarang</a>
                                                 </div>
                                             </div>
                                         </div>

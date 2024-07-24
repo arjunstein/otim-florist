@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class Etalase extends Component
 {
-    #[Title('Otim Florist Jakarta')]
+    #[Title('Etalase - Otim Florist Jakarta')]
     public $products;
     public $category;
 

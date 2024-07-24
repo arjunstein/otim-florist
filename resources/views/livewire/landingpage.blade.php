@@ -63,22 +63,22 @@
                                             Promo</div>
                                         <div
                                             class="p-4 border border-secondary border-top-0 rounded-bottom fruits-item">
-                                            <h5>{{ ucfirst($product->product_name) . ' ' . $product->id }}</h5>
+                                            <h6>{{ ucwords($product->product_name) . ' ' . $product->id }}</h6>
                                             <div class="d-flex justify-content-center flex-lg-wrap"
                                                 style="flex-direction: column;">
-                                                <p class="fs-5 fw-bold mb-0">
+                                                <p class="fs-5 fw-bold mb-2">
                                                     <span class="text-decoration-line-through text-danger">
-                                                        {{ isset($product->sale_price) ? 'Rp.' . number_format($product->price) : '' }}
+                                                        {{ isset($product->sale_price) ? 'Rp. ' . number_format($product->price) : '' }}
                                                     </span>
                                                     <span
-                                                        class="{{ isset($product->sale_price) ? 'text-success' : 'text-dark' }}">
+                                                        class="{{ isset($product->sale_price) ? 'text-success' : 'text-dark' }}"> &nbsp;
                                                         Rp.
                                                         {{ isset($product->sale_price) ? number_format($product->sale_price) : number_format($product->price) }}
                                                     </span>
                                                 </p>
                                                 <a href="#"
-                                                    class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                        class="fab fa-whatsapp me-2 text-primary"></i>Pesan sekarang</a>
+                                                    class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                    <i class="fab fa-whatsapp me-2 text-primary"></i>Pesan sekarang</a>
                                             </div>
                                         </div>
                                     </div>
@@ -95,7 +95,7 @@
 
     <!-- Featurs Section Start -->
     <div class="container-fluid featurs">
-        <div class="container py-5">
+        <div class="container">
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3">
                     <div class="featurs-item text-center rounded bg-light p-4">

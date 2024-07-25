@@ -180,11 +180,9 @@
 
 /*** Hero Header ***/
 .hero-header {
-    background: linear-gradient(
-            rgba(248, 223, 173, 0.1),
-            rgba(248, 223, 173, 0.1)
-        ),
-        url(../img/hero-img.jpg);
+    background: linear-gradient(rgba(255, 255, 255, 0.705),
+            rgba(255, 255, 255, 0.705)),
+        url(../img/banner.png);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -200,10 +198,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 25px;
-    background: linear-gradient(
-        rgba(255, 181, 36, 0.7),
-        rgba(255, 181, 36, 0.7)
-    );
+    background: linear-gradient(rgba(255, 181, 36, 0.7),
+            rgba(255, 181, 36, 0.7));
 }
 
 .carousel-control-next,
@@ -228,17 +224,16 @@
 
 .page-header {
     position: relative;
-    background: linear-gradient(
-        to bottom,
-        rgba(129, 196, 8, 0.8),
-        rgba(129, 196, 8, 0.8)
-    );
+    background: linear-gradient(to bottom,
+            rgba(129, 196, 8, 0.8),
+            rgba(129, 196, 8, 0.8));
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 @media (min-width: 992px) {
+
     .hero-header,
     .page-header {
         margin-top: 152px !important;
@@ -246,6 +241,7 @@
 }
 
 @media (max-width: 992px) {
+
     .hero-header,
     .page-header {
         margin-top: 97px !important;

@@ -38,8 +38,10 @@
                     <p>Alamat: Duri Pulo, Gambir, Jakarta Pusat</p>
                     <p>Email: otimfloristjakarta@gmail.com</p>
                     <p>Phone: 081808881477 | 085959596445</p>
-                    <p>Menerima pembayaran via</p>
-                    <p>Bank BRI, BCA, dan Mandiri</p>
+                    <p>Menerima pembayaran transfer via</p>
+                    <img src="{{ asset('img/bca.png') }}" class="img-fluid" alt="bca">
+                    <img src="{{ asset('img/bri.png') }}" class="img-fluid" alt="bri">
+                    <img src="{{ asset('img/mandiri.png') }}" class="img-fluid" alt="mandiri">
                 </div>
             </div>
         </div>

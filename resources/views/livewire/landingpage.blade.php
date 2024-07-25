@@ -8,28 +8,30 @@
                 </div>
                 <div class="col-md-12 col-lg-5">
                     <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-                        @forelse ($ad as $ads)
-                            <div class="carousel-inner" role="listbox">
-                                <div class="carousel-item active rounded">
+                        <div class="carousel-inner" role="listbox">
+                            @forelse ($ad as $i => $ads)
+                                <div class="carousel-item {{ $i == 0 ? 'active' : '' }} rounded">
                                     <img src="{{ asset('storage/' . $ads->image) }}"
                                         class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
                                     <a href="#"
                                         class="btn px-4 py-2 text-white rounded">{{ ucwords($ads->title) }}</a>
                                 </div>
-                            </div>
-                        @empty
+                            @empty
+                            @endforelse
+                        </div>
 
-                        @endforelse
-                        <button class="carousel-control-prev" type="button" style="display: {{ empty($ad) ? 'none' : 'block' }}" data-bs-target="#carouselId"
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" style="display: {{ empty($ad) ? 'none' : 'block' }}" data-bs-target="#carouselId"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+                        @if ($ad->isNotEmpty() && $ad->count() > 1)
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselId"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>

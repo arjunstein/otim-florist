@@ -78,7 +78,7 @@
 .fixed-top {
     transition: 0.5s;
     background: var(--bs-white);
-    border: 0;
+    border-bottom: 1px solid rgba(129, 196, 8, 0.8);
 }
 
 .topbar {
@@ -241,6 +241,29 @@
 }
 
 @media (max-width: 992px) {
+    .col-6 {
+        padding: 2px;
+    }
+
+    .pad {
+        padding: 10px 2px !important;
+    }
+
+    .btn.border-secondary {
+        margin: 0 auto;
+        width: 110px;
+    }
+
+    .fs-c {
+        font-size: 1rem !important;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .promo {
+        font-size: 8px;
+        width: 50px;
+    }
 
     .hero-header,
     .page-header {

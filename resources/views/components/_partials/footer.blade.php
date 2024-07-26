@@ -24,12 +24,12 @@
             <div class="col-lg-6 col-md-6">
                 <div class="footer-item">
                     <h4 class="text-light mb-3">Kenapa harus Otim Florist?</h4>
-                    <p class="mb-4">
+                    <p class="mb-4" style="text-align: justify">
                         Otim Florist menyediakan berbagai karangan bunga untuk berbagai keperluan, termasuk acara
                         pernikahan, ulang tahun, ucapan terima kasih, peringatan, dan momen-momen spesial lainnya.
                     </p>
                     <a href="{{ route('tentang') }}" wire:navigate
-                        class="btn border-secondary py-2 px-4 rounded-pill text-primary">Selengkapnya</a>
+                        class="pad-footer btn border-secondary py-2 px-4 rounded-pill text-primary">Selengkapnya</a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">

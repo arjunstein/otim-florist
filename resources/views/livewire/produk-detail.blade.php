@@ -56,7 +56,7 @@
                                         <li>
                                             <div class="d-flex justify-content-between fruite-name">
                                                 <a href="#"><i
-                                                        class="fas fa-apple-alt me-2"></i>{{ $ctg->category_name }}</a>
+                                                        class="fas fa-store me-2"></i>{{ $ctg->category_name }}</a>
                                                 <span>{{ $ctg->product->count() }}</span>
                                             </div>
                                         </li>
@@ -82,7 +82,8 @@
                 <div class="owl-carousel vegetable-carousel justify-content-center">
                     @foreach ($produks as $prod)
                         <div class="border border-primary rounded position-relative vesitable-item">
-                            <a href="{{ route('product.detail', ['slug' => $prod->slug, 'id' => $prod->id]) }}" wire:navigate>
+                            <a href="{{ route('product.detail', ['slug' => $prod->slug, 'id' => $prod->id]) }}"
+                                wire:navigate>
                                 <div class="vesitable-img">
                                     <img src="{{ asset('storage/' . $prod->image) }}"
                                         class="img-fluid w-100 rounded-top" alt="">
@@ -91,19 +92,22 @@
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
                                 style="top: 10px; right: 10px; display:{{ isset($prod->sale_price) ? 'block' : 'none' }}">
                                 Promo</div>
-                            <div class="p-4 pb-0 rounded-bottom">
-                                <h4>{{ $prod->product_name }}</h4>
-                                <p>{{ $prod->product_description }}
-                                </p>
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-danger fs-5 fw-bold text-decoration-line-through">
-                                        {{ isset($prod->sale_price) ? 'Rp. ' . number_format($prod->price) : '' }}</p>
-                                    <p class="text-dark fs-5 fw-bold">Rp.
-                                        {{ isset($prod->sale_price) ? number_format($prod->sale_price) : number_format($prod->price) }}
+                            <div class="pad p-4 border border-secondary border-top-0 rounded-bottom fruits-items">
+                                <h6>{{ ucfirst($prod->product_name) . ' ' . $prod->id }}</h6>
+                                <div class="d-flex justify-content-center flex-lg-wrap" style="flex-direction: column;">
+                                    <p class="fs-c fs-5 fw-bold mb-2">
+                                        <span class="text-decoration-line-through text-danger">
+                                            {{ isset($prod->sale_price) ? 'Rp. ' . number_format($prod->price) : '' }}
+                                        </span>
+                                        <span class="{{ isset($prod->sale_price) ? 'text-success' : 'text-dark' }}">
+
+                                            Rp.
+                                            {{ isset($prod->sale_price) ? number_format($prod->sale_price) : number_format($prod->price) }}
+                                        </span>
                                     </p>
                                     <a href="#"
-                                        class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                            class="fa fa-shopping-bag me-2 text-primary"></i> Pesan</a>
+                                        class="btn border border-secondary rounded-pill px-3 text-primary">
+                                        <i class="fab fa-whatsapp me-2 text-primary"></i>Pesan</a>
                                 </div>
                             </div>
                         </div>

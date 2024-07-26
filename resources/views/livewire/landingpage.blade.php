@@ -61,12 +61,11 @@
                                                     class="img-fluid w-100 rounded-top" alt="">
                                             </a>
                                         </div>
-                                        <div class="promo text-white bg-primary px-3 py-1 rounded position-absolute"
-                                            style="top: 10px; left: 10px; display:{{ isset($product->sale_price) ? 'block' : 'none' }}">
-                                            Promo</div>
+                                        <div class="pad-1 promo text-white bg-primary px-3 py-1 rounded position-absolute"
+                                            style="top: 5px; left: 5px; display:{{ isset($product->sale_price) ? 'block' : 'none' }}">Promo</div>
                                         <div
                                             class="pad p-4 border border-secondary border-top-0 rounded-bottom fruits-item">
-                                            <h6>{{ ucwords($product->product_name) . ' ' . $product->id }}</h6>
+                                            <h6>{{ ucfirst($product->product_name) . ' ' . $product->id }}</h6>
                                             <div class="d-flex justify-content-center flex-lg-wrap"
                                                 style="flex-direction: column;">
                                                 <p class="fs-c fs-5 fw-bold mb-2">

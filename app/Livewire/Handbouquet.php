@@ -4,15 +4,15 @@ namespace App\Livewire;
 
 use App\Models\Category;
 use App\Models\Product;
-use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\Attributes\Title;
 use Livewire\WithPagination;
 
-class Bungapapan extends Component
+class Handbouquet extends Component
 {
     use WithPagination;
 
-    #[Title('Bunga papan - Otim Florist Jakarta')]
+    #[Title('Hand bouquet - Otim Florist Jakarta')]
     public $category;
     protected $paginationTheme = 'bootstrap';
 
@@ -24,12 +24,11 @@ class Bungapapan extends Component
     public function render()
     {
         $products =
-            Product::where('product_name', 'LIKE', '%bunga papan%')
+            Product::where('product_name', 'LIKE', '%hand bouquet%')
             ->orderBy('id', 'desc')
             ->paginate(8);
-
-        return view('livewire.bungapapan', [
-            'title' => 'Bunga papan',
+        return view('livewire.handbouquet', [
+            'title' => ucwords('hand bouquet'),
             'products' => $products,
             'category' => $this->category,
         ]);

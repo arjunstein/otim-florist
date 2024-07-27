@@ -8,7 +8,7 @@
     <!-- Fruits Shop Start-->
     <div class="container-fluid fruite py-5">
         <div class="container py-5">
-            <h1 class="mb-4">Produk kita</h1>
+            <h1 class="mb-4">Produk populer</h1>
             <div class="row g-4">
                 <div class="col-lg-12">
                     <div class="row g-4">
@@ -28,7 +28,6 @@
                                     form="fruitform">
                                     <option value="murah">Termurah</option>
                                     <option value="mahal">Termahal</option>
-                                    <option value="laris">Terlaris</option>
                                 </select>
                             </div>
                         </div>
@@ -36,7 +35,7 @@
                     <div class="row g-4">
                         <div class="col-lg-12">
                             <div class="row g-4 justify-content-center">
-                                @foreach ($products as $prod)
+                                @forelse ($products as $prod)
                                     <div class="col-md-6 col-lg-4 col-xl-3">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
@@ -61,7 +60,6 @@
                                                         </span>
                                                         <span
                                                             class="{{ isset($prod->sale_price) ? 'text-success' : 'text-dark' }}">
-                                                            &nbsp;
                                                             Rp.
                                                             {{ isset($prod->sale_price) ? number_format($prod->sale_price) : number_format($prod->price) }}
                                                         </span>
@@ -74,14 +72,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <p>Produk kosong</p>
+                                @endforelse
                                 <div class="col-12">
                                     <div class="pagination d-flex justify-content-center mt-5">
-                                        <a href="#" class="rounded">&laquo;</a>
-                                        <a href="#" class="active rounded">1</a>
-                                        <a href="#" class="rounded">2</a>
-                                        <a href="#" class="rounded">3</a>
-                                        <a href="#" class="rounded">&raquo;</a>
+                                        {{ $products->links(data: ['scrollTo' => false]) }}
                                     </div>
                                 </div>
                             </div>

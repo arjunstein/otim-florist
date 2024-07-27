@@ -4,7 +4,7 @@
             <div class="row g-5 align-items-center">
                 <div class="col-md-12 col-lg-7">
                     <h4 class="mb-3 text-secondary">100% Berkualitas</h4>
-                    <h1 class="mb-5 display-3 text-primary">Terbuat dari bunga segar dan pilihan</h1>
+                    <h1 class="mb-5 display-3 text-primary">Terbuat dari bunga pilihan dan fresh</h1>
                 </div>
                 <div class="col-md-12 col-lg-5">
                     <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
@@ -45,7 +45,7 @@
             <div class="tab-class text-center">
                 <div class="row g-4">
                     <div class="col-lg-4 text-start">
-                        <h1>Produk terlaris</h1>
+                        <h1>Produk populer</h1>
                     </div>
                 </div>
                 <div class="row g-4 py-5">

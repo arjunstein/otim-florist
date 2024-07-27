@@ -254,6 +254,18 @@
         width: 110px;
     }
 
+    .btn.border-secondary-nav {
+        transition: 0.5s;
+        margin: 0 auto;
+        width: 45px;
+        border-color: #ffb524 !important;
+    }
+
+    .btn.border-secondary-nav:hover {
+        background: var(--bs-secondary) !important;
+        color: var(--bs-white) !important;
+    }
+
     .fs-c {
         font-size: 1rem !important;
         display: flex;
@@ -367,6 +379,7 @@
 
 .fruite .fruite-item .fruite-img img {
     transition: 0.5s;
+    border: 1px solid #ffb524;
 }
 
 .fruite .fruite-item .fruite-img img:hover {

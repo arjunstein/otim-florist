@@ -27,13 +27,25 @@
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
-                    <a href="/" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}" wire:navigate>Home</a>
-                    <a href="{{ route('bungapapan') }}" class="nav-item nav-link {{ Request::routeIs('bungapapan') ? 'active' : '' }}" wire:navigate>Bunga papan</a>
-                    <a href="{{ route('bungastanding') }}" class="nav-item nav-link {{ Request::routeIs('bungastanding') ? 'active' : '' }}" wire:navigate>Bunga standing</a>
-                    <a href="#" class="nav-item nav-link" wire:navigate>Hand bouquet</a>
-                    <a href="#" class="nav-item nav-link" wire:navigate>Bunga meja</a>
-                    <a href="#" class="nav-item nav-link" wire:navigate>Bunga salib</a>
-                    <a href="{{ route('tentang') }}" wire:navigate class="nav-item nav-link" wire:navigate>Tentang kami</a>
+                    <a href="/" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}"
+                        wire:navigate>Home</a>
+                    <a href="{{ route('bungapapan') }}"
+                        class="nav-item nav-link {{ Request::routeIs('bungapapan') ? 'active' : '' }}"
+                        wire:navigate>Bunga papan</a>
+                    <a href="{{ route('bungastanding') }}"
+                        class="nav-item nav-link {{ Request::routeIs('bungastanding') ? 'active' : '' }}"
+                        wire:navigate>Bunga standing</a>
+                    <a href="{{ route('buket') }}"
+                        class="nav-item nav-link {{ Request::routeIs('buket') ? 'active' : '' }}" wire:navigate>Hand
+                        bouquet</a>
+                    <a href="{{ route('bungameja') }}"
+                        class="nav-item nav-link {{ Request::routeIs('bungameja') ? 'active' : '' }}" wire:navigate>Bunga
+                        meja</a>
+                    <a href="{{ route('bungasalib') }}"
+                        class="nav-item nav-link {{ Request::routeIs('bungasalib') ? 'active' : '' }}"
+                        wire:navigate>Bunga salib</a>
+                    <a href="{{ route('tentang') }}" class="nav-item nav-link {{ Request::routeIs('tentang') ? 'active' : '' }}" wire:navigate>Tentang
+                        kami</a>
                 </div>
                 <div class="d-flex m-3 me-0">
                     <button

@@ -1,7 +1,10 @@
 <?php
 
+use App\Livewire\Bungameja;
 use App\Livewire\Bungapapan;
+use App\Livewire\Bungasalib;
 use App\Livewire\Bungastanding;
+use App\Livewire\Handbouquet;
 use App\Livewire\Landingpage;
 use App\Livewire\ProdukDetail;
 use App\Livewire\Tentang;
@@ -30,6 +33,9 @@ Route::get('/tentang-kami', Tentang::class)->name('tentang');
 // category navbar
 Route::get('/bunga-papan', Bungapapan::class)->name('bungapapan');
 Route::get('/bunga-standing', Bungastanding::class)->name('bungastanding');
+Route::get('/bunga-buket', Handbouquet::class)->name('buket');
+Route::get('/bunga-meja', Bungameja::class)->name('bungameja');
+Route::get('/bunga-salib', Bungasalib::class)->name('bungasalib');
 
 
 // Handle unexpect redirect

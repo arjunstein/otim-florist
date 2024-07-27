@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Bungapapan;
+use App\Livewire\Bungastanding;
 use App\Livewire\Landingpage;
 use App\Livewire\ProdukDetail;
 use App\Livewire\Tentang;
@@ -26,8 +27,9 @@ Route::get('/produk/{slug}/{id}', ProdukDetail::class)->name('product.detail');
 // Tentang kami
 Route::get('/tentang-kami', Tentang::class)->name('tentang');
 
-// Etaslase
+// category navbar
 Route::get('/bunga-papan', Bungapapan::class)->name('bungapapan');
+Route::get('/bunga-standing', Bungastanding::class)->name('bungastanding');
 
 
 // Handle unexpect redirect

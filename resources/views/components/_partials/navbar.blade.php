@@ -27,9 +27,9 @@
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
-                    <a href="/" class="nav-item nav-link" wire:navigate>Home</a>
-                    <a href="{{ route('bungapapan') }}" class="nav-item nav-link" wire:navigate>Bunga papan</a>
-                    <a href="#" class="nav-item nav-link" wire:navigate>Bunga standing</a>
+                    <a href="/" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}" wire:navigate>Home</a>
+                    <a href="{{ route('bungapapan') }}" class="nav-item nav-link {{ Request::routeIs('bungapapan') ? 'active' : '' }}" wire:navigate>Bunga papan</a>
+                    <a href="{{ route('bungastanding') }}" class="nav-item nav-link {{ Request::routeIs('bungastanding') ? 'active' : '' }}" wire:navigate>Bunga standing</a>
                     <a href="#" class="nav-item nav-link" wire:navigate>Hand bouquet</a>
                     <a href="#" class="nav-item nav-link" wire:navigate>Bunga meja</a>
                     <a href="#" class="nav-item nav-link" wire:navigate>Bunga salib</a>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="d-flex m-3 me-0">
                     <button
-                        class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
+                        class="btn-search btn border border-secondary-nav btn-md-square rounded-circle bg-white me-4"
                         data-bs-toggle="modal" data-bs-target="#searchModal"><i
                             class="fas fa-search text-primary"></i></button>
                 </div>

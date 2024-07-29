@@ -52,7 +52,7 @@
                     <div class="col-lg-12">
                         <div class="row g-4 justify-content-center">
                             @forelse ($products as $product)
-                                <div class="col-6 col-md-6 col-lg-4 col-xl-3">
+                                <div class="col-6 col-md-6 col-lg-4 col-xl-3" wire:key="{{ $product->id }}">
                                     <div class="rounded position-relative fruite-item">
                                         <div class="fruite-img">
                                             <a href="{{ route('product.detail', ['slug' => $product->slug, 'id' => $product->id]) }}"
@@ -90,7 +90,8 @@
                                 <p>Produk kosong</p>
                             @endforelse
                             <div class="pagination justify-content-center mt-5">
-                                {{ $products->links(data: ['scrollTo' => false]) }}
+                                {{-- {!! $products->links(data: ['scrollTo' => false]) !!} --}}
+                                <a wire:click="load" class="btn btn-primary text-white">Produk lainnya</a>
                             </div>
                         </div>
                     </div>

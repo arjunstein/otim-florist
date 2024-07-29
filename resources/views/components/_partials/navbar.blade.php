@@ -10,7 +10,7 @@
         <div class="d-flex justify-content-between">
             <div class="top-info ps-2">
                 <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#"
-                        class="text-white">Duri Pulo, Gambir, Jakarta Pusat</a></small>
+                        class="text-white">Jakarta Pusat</a></small>
                 <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#"
                         class="text-white">otimfloristjakarta@gmail.com</a></small>
             </div>
@@ -22,7 +22,8 @@
                 <h1 class="text-primary display-6">Otim Florist</h1>
             </a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarCollapse">
+                data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="fa fa-bars text-primary"></span>
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
@@ -39,12 +40,15 @@
                         class="nav-item nav-link {{ Request::routeIs('buket') ? 'active' : '' }}" wire:navigate>Hand
                         bouquet</a>
                     <a href="{{ route('bungameja') }}"
-                        class="nav-item nav-link {{ Request::routeIs('bungameja') ? 'active' : '' }}" wire:navigate>Bunga
+                        class="nav-item nav-link {{ Request::routeIs('bungameja') ? 'active' : '' }}"
+                        wire:navigate>Bunga
                         meja</a>
                     <a href="{{ route('bungasalib') }}"
                         class="nav-item nav-link {{ Request::routeIs('bungasalib') ? 'active' : '' }}"
                         wire:navigate>Bunga salib</a>
-                    <a href="{{ route('tentang') }}" class="nav-item nav-link {{ Request::routeIs('tentang') ? 'active' : '' }}" wire:navigate>Tentang
+                    <a href="{{ route('tentang') }}"
+                        class="nav-item nav-link {{ Request::routeIs('tentang') ? 'active' : '' }}"
+                        wire:navigate>Tentang
                         kami</a>
                 </div>
                 <div class="d-flex m-3 me-0">

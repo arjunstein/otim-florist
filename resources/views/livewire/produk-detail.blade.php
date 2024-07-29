@@ -52,12 +52,12 @@
                             <div class="mb-4">
                                 <h4>Kategori produk</h4>
                                 <ul class="list-unstyled fruite-categorie">
-                                    @foreach ($category as $ctg)
+                                    @foreach ($categories as $category)
                                         <li>
                                             <div class="d-flex justify-content-between fruite-name">
                                                 <a href="#"><i
-                                                        class="fas fa-store me-2"></i>{{ $ctg->category_name }}</a>
-                                                <span>{{ $ctg->product->count() }}</span>
+                                                        class="fas fa-store me-2"></i>{{ $category->category_name }}</a>
+                                                <span>{{ $category->product_count }}</span>
                                             </div>
                                         </li>
                                     @endforeach
@@ -70,7 +70,7 @@
             <h1 class="fw-bold mb-0">Produk lainnya</h1>
             <div class="vesitable">
                 <div class="owl-carousel vegetable-carousel justify-content-center">
-                    @foreach ($produks as $prod)
+                    @foreach ($products as $prod)
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <a href="{{ route('product.detail', ['slug' => $prod->slug, 'id' => $prod->id]) }}"
                                 wire:navigate>

@@ -17,6 +17,7 @@
                                         class="btn px-4 py-2 text-white rounded">{{ ucwords($ads->title) }}</a>
                                 </div>
                             @empty
+                            <p>Produk kosong</p>
                             @endforelse
                         </div>
 

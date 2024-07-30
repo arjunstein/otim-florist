@@ -73,11 +73,16 @@
                                         </div>
                                     </div>
                                 @empty
-                                    <p>Produk kosong</p>
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-center mt-5">
+                                            <p>Produk kosong</p>
+                                        </div>
+                                    </div>
                                 @endforelse
                                 <div class="col-12">
                                     <div class="pagination d-flex justify-content-center mt-5">
-                                        {{ $products->links(data: ['scrollTo' => false]) }}
+                                        {{-- {{ $products->links(data: ['scrollTo' => false]) }} --}}
+                                        <a wire:click="load" class="btn btn-primary text-white">Produk lainnya</a>
                                     </div>
                                 </div>
                             </div>

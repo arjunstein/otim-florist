@@ -13,15 +13,6 @@
                 <div class="col-lg-12">
                     <div class="row g-4">
                         <div class="col-xl-3">
-                            <div class="input-group w-100 mx-auto d-flex">
-                                <input type="search" class="form-control p-3" placeholder="keywords"
-                                    aria-describedby="search-icon-1">
-                                <span id="search-icon-1" class="input-group-text p-3"><i
-                                        class="fa fa-search"></i></span>
-                            </div>
-                        </div>
-                        <div class="col-6"></div>
-                        <div class="col-xl-3">
                             <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
                                 <label for="fruits">Urutkan:</label>
                                 <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
@@ -35,39 +26,38 @@
                     <div class="row g-4">
                         <div class="col-lg-12">
                             <div class="row g-4 justify-content-center">
-                                @forelse ($products as $prod)
-                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                @forelse ($products as $product)
+                                    <div class="col-6 col-md-6 col-lg-4 col-xl-3" wire:key="{{ $product->id }}">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
-                                                <a href="{{ route('product.detail', ['slug' => $prod->slug, 'id' => $prod->id]) }}"
+                                                <a href="{{ route('product.detail', ['slug' => $product->slug, 'id' => $product->id]) }}"
                                                     wire:navigate>
-                                                    <img src="{{ asset('storage/' . $prod->image) }}"
+                                                    <img src="{{ asset('storage/' . $product->image) }}"
                                                         class="img-fluid w-100 rounded-top" alt="">
                                                 </a>
                                             </div>
-                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                                style="top: 10px; left: 10px; display:{{ $prod->sale_price ? 'block' : 'none' }}">
-                                                {{ $prod->sale_price ? 'Promo' : '' }}
-                                            </div>
+                                            <div class="pad-1 promo text-white bg-primary px-3 py-1 rounded position-absolute"
+                                                style="top: 5px; left: 5px; text-align: center; display:{{ isset($product->sale_price) ? 'block' : 'none' }}">
+                                                Promo</div>
                                             <div
-                                                class="p-4 border border-secondary border-top-0 rounded-bottom fruits-item">
-                                                <h6>{{ ucwords($prod->product_name) }} {{ $prod->id }}</h6>
-                                                <div class="d-flex justify-content-between flex-lg-wrap"
+                                                class="pad p-4 border border-secondary border-top-0 rounded-bottom fruits-item">
+                                                <h6>{{ ucfirst($product->product_name) . ' ' . $product->id }}</h6>
+                                                <div class="d-flex justify-content-center flex-lg-wrap"
                                                     style="flex-direction: column;">
-                                                    <p class="fs-5 fw-bold mb-2">
+                                                    <p class="fs-c fs-5 fw-bold mb-2">
                                                         <span class="text-decoration-line-through text-danger">
-                                                            {{ isset($prod->sale_price) ? 'Rp.' . number_format($prod->price) : '' }}
+                                                            {{ isset($product->sale_price) ? 'Rp. ' . number_format($product->price) : '' }}
                                                         </span>
                                                         <span
-                                                            class="{{ isset($prod->sale_price) ? 'text-success' : 'text-dark' }}">
+                                                            class="{{ isset($product->sale_price) ? 'text-success' : 'text-dark' }}">
+
                                                             Rp.
-                                                            {{ isset($prod->sale_price) ? number_format($prod->sale_price) : number_format($prod->price) }}
+                                                            {{ isset($product->sale_price) ? number_format($product->sale_price) : number_format($product->price) }}
                                                         </span>
                                                     </p>
                                                     <a href="#"
                                                         class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                        <i class="fab fa-whatsapp me-2 text-primary"></i>Pesan
-                                                        sekarang</a>
+                                                        <i class="fab fa-whatsapp me-2 text-primary"></i>Pesan</a>
                                                 </div>
                                             </div>
                                         </div>

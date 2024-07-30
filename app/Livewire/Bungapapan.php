@@ -7,31 +7,54 @@ use App\Models\Product;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Computed;
 
 class Bungapapan extends Component
 {
     use WithPagination;
 
+    #[Computed(cache: true)]
     #[Title('Bunga papan - Otim Florist Jakarta')]
     public $category;
+    public $amount = 10;
     protected $paginationTheme = 'bootstrap';
 
     public function mount()
     {
-        $this->category = Category::all();
+        $this->category = $this->getCategories();
     }
 
     public function render()
     {
-        $products =
-            Product::where('product_name', 'LIKE', '%bunga papan%')
-            ->orderBy('id', 'desc')
-            ->paginate(8);
+        $products = $this->getProducts($this->amount);
 
         return view('livewire.bungapapan', [
             'title' => 'Bunga papan',
             'products' => $products,
             'category' => $this->category,
         ]);
+    }
+
+    public function load()
+    {
+        $this->amount += 10;
+        Cache::forget("products-bunga-papan-{$this->amount}");
+    }
+
+    private function getCategories()
+    {
+        return Cache::remember('categories', 60 * 60, function () {
+            return Category::all();
+        });
+    }
+
+    private function getProducts($amount)
+    {
+        return Cache::remember("products-bunga-papan-{$amount}", 60 * 60, function () use ($amount) {
+            return Product::where('product_name', 'LIKE', '%bunga papan%')
+                ->latest()
+                ->paginate($amount);
+        });
     }
 }

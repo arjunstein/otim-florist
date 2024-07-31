@@ -2,6 +2,9 @@
 
 use App\Livewire\Bungameja;
 use App\Livewire\Bungapapan;
+use App\Livewire\Bungapapancongratulation;
+use App\Livewire\Bungapapandukacita;
+use App\Livewire\Bungapapanhappywedding;
 use App\Livewire\Bungasalib;
 use App\Livewire\Bungastanding;
 use App\Livewire\Handbouquet;
@@ -31,12 +34,14 @@ Route::get('/produk/{slug}/{id}', ProdukDetail::class)->name('product.detail');
 Route::get('/tentang-kami', Tentang::class)->name('tentang');
 
 // category navbar
-Route::get('/bunga-papan', Bungapapan::class)->name('bungapapan');
-Route::get('/bunga-standing', Bungastanding::class)->name('bungastanding');
-Route::get('/bunga-buket', Handbouquet::class)->name('buket');
-Route::get('/bunga-meja', Bungameja::class)->name('bungameja');
-Route::get('/bunga-salib', Bungasalib::class)->name('bungasalib');
-
+Route::get('/kategori/bunga-papan', Bungapapan::class)->name('bungapapan');
+Route::get('/kategori/bunga-papan-congratulations', Bungapapancongratulation::class)->name('bungapapan-congratulation');
+Route::get('/kategori/bunga-papan-happy-wedding', Bungapapanhappywedding::class)->name('bungapapan-wedding');
+Route::get('/kategori/bunga-papan-dukacita', Bungapapandukacita::class)->name('bungapapan-dukacita');
+Route::get('/kategori/bunga-standing', Bungastanding::class)->name('bungastanding');
+Route::get('/kategori/hand-bouquet', Handbouquet::class)->name('buket');
+Route::get('/kategori/bunga-meja', Bungameja::class)->name('bungameja');
+Route::get('/kategori/bunga-salib', Bungasalib::class)->name('bungasalib');
 
 // Handle unexpect redirect
 Route::get('/login', function () {

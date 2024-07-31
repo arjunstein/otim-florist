@@ -30,7 +30,10 @@ class ProdukDetail extends Component
 
         // Cache kategori dengan jumlah produk
         $this->categories = Cache::remember('categories_with_count', 60 * 60, function () {
-            return Category::withCount('product')->get();
+            return Category::withCount('product')->get()->map(function ($category) {
+                $category->slug = $category->slug; // generate slug
+                return $category;
+            });
         });
 
         // Cache semua produk

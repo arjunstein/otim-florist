@@ -26,11 +26,9 @@
                                 {{ isset($produk->sale_price) ? number_format($produk->sale_price) : number_format($produk->price) }}
                             </h5>
                             <p class="mb-4">{{ $produk->product_description }}</p>
-                            <a href="#"
-                                class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary whatsapp-btn"
-                                data-product-name="{{ $produk->product_name }}" data-product-id="{{ $produk->id }}"
-                                data-product-link="{{ route('product.detail', ['slug' => $produk->slug, 'id' => $produk->id]) }}"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Beli</a>
+                            <a href="{{ route('order', ['id' => $produk->id]) }}" target="_blank"
+                                class="btn border btn-primary rounded-pill px-3 text-white">
+                                <i class="fab fa-whatsapp me-2 text-white"></i> Beli</a>
                         </div>
                     </div>
                 </div>
@@ -83,9 +81,9 @@
                                             {{ isset($prod->sale_price) ? number_format($prod->sale_price) : number_format($prod->price) }}
                                         </span>
                                     </p>
-                                    <a href="#"
-                                        class="btn border border-secondary rounded-pill px-3 text-primary">
-                                        <i class="fab fa-whatsapp me-2 text-primary"></i>Pesan</a>
+                                    <a href="{{ route('order', ['id' => $prod->id]) }}" target="_blank"
+                                        class="btn border btn-primary rounded-pill px-3 text-white">
+                                        <i class="fab fa-whatsapp me-2 text-white"></i>Pesan</a>
                                 </div>
                             </div>
                         </div>

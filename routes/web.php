@@ -33,7 +33,9 @@ Route::get('/order/{id}', function ($id) {
     $productLink = route('product.detail', ['slug' => $product->slug, 'id' => $product->id]);
 
     $phoneNumber = '6281808881477'; // Ganti dengan nomor WhatsApp Anda
-    $message = "Halo, saya ingin memesan produk \"{$productName} {$product->id}\". Berikut link produknya: {$productLink}, mohon dibantu prosesnya";
+    $message = "Halo, saya ingin memesan produk \"{$productName} {$product->id}\". Berikut link produknya: {$productLink}, mohon dibantu prosesnya
+    Nama pengirim:
+    Kalimat ucapan: ";
     $whatsappUrl = "https://wa.me/{$phoneNumber}?text=" . urlencode($message);
 
     return redirect($whatsappUrl);

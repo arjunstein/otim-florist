@@ -82,8 +82,8 @@
                                                     </span>
                                                 </p>
                                                 <a href="{{ route('order', ['id' => $product->id]) }}" target="_blank"
-                                                    class="btn border border-secondary rounded-pill px-3 text-primary">
-                                                    <i class="fab fa-whatsapp me-2 text-primary"></i>Pesan</a>
+                                                    class="btn border btn-primary rounded-pill px-3 text-white">
+                                                    <i class="fab fa-whatsapp me-2 text-white"></i>Pesan</a>
                                             </div>
                                         </div>
                                     </div>

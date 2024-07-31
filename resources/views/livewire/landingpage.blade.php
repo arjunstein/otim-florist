@@ -17,7 +17,7 @@
                                         class="btn px-4 py-2 text-white rounded">{{ ucwords($ads->title) }}</a>
                                 </div>
                             @empty
-                            <p>Produk kosong</p>
+                                <p>Produk kosong</p>
                             @endforelse
                         </div>
 
@@ -63,7 +63,8 @@
                                             </a>
                                         </div>
                                         <div class="pad-1 promo text-white bg-primary px-3 py-1 rounded position-absolute"
-                                            style="top: 5px; left: 5px; display:{{ isset($product->sale_price) ? 'block' : 'none' }}">Promo</div>
+                                            style="top: 5px; left: 5px; display:{{ isset($product->sale_price) ? 'block' : 'none' }}">
+                                            Promo</div>
                                         <div
                                             class="pad p-4 border border-secondary border-top-0 rounded-bottom fruits-item">
                                             <h6>{{ ucfirst($product->product_name) . ' ' . $product->id }}</h6>
@@ -80,8 +81,8 @@
                                                         {{ isset($product->sale_price) ? number_format($product->sale_price) : number_format($product->price) }}
                                                     </span>
                                                 </p>
-                                                <a href="#"
-                                                    class="btn border border-secondary rounded-pill px-3 text-primary whatsapp-btn" data-product-name="{{ $product->product_name }}" data-product-id="{{ $product->id }}" data-product-link="{{ route('product.detail', ['slug' => $product->slug, 'id' => $product->id]) }}">
+                                                <a href="{{ route('order', ['id' => $product->id]) }}" target="_blank"
+                                                    class="btn border border-secondary rounded-pill px-3 text-primary">
                                                     <i class="fab fa-whatsapp me-2 text-primary"></i>Pesan</a>
                                             </div>
                                         </div>

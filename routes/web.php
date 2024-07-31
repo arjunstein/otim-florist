@@ -11,6 +11,7 @@ use App\Livewire\Handbouquet;
 use App\Livewire\Landingpage;
 use App\Livewire\ProdukDetail;
 use App\Livewire\Tentang;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 
@@ -26,6 +27,17 @@ use Illuminate\Support\Facades\Route;
 */
 // Landing page
 Route::get('/', Landingpage::class)->name('homepage');
+Route::get('/order/{id}', function ($id) {
+    $product = Product::findOrFail($id);
+    $productName = $product->product_name;
+    $productLink = route('product.detail', ['slug' => $product->slug, 'id' => $product->id]);
+
+    $phoneNumber = '6281808881477'; // Ganti dengan nomor WhatsApp Anda
+    $message = "Halo, saya ingin memesan produk \"{$productName} {$product->id}\". Berikut link produknya: {$productLink}, mohon dibantu prosesnya";
+    $whatsappUrl = "https://wa.me/{$phoneNumber}?text=" . urlencode($message);
+
+    return redirect($whatsappUrl);
+})->name('order');
 
 // Detail produk
 Route::get('/produk/{slug}/{id}', ProdukDetail::class)->name('product.detail');

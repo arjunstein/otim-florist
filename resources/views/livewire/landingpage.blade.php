@@ -81,7 +81,7 @@
                                                     </span>
                                                 </p>
                                                 <a href="#"
-                                                    class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                    class="btn border border-secondary rounded-pill px-3 text-primary whatsapp-btn" data-product-name="{{ $product->product_name }}" data-product-id="{{ $product->id }}" data-product-link="{{ route('product.detail', ['slug' => $product->slug, 'id' => $product->id]) }}">
                                                     <i class="fab fa-whatsapp me-2 text-primary"></i>Pesan</a>
                                             </div>
                                         </div>

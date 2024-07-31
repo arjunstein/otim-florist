@@ -26,22 +26,10 @@
                                 {{ isset($produk->sale_price) ? number_format($produk->sale_price) : number_format($produk->price) }}
                             </h5>
                             <p class="mb-4">{{ $produk->product_description }}</p>
-                            <div class="input-group quantity mb-5" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0"
-                                    value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
                             <a href="#"
-                                class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
+                                class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary whatsapp-btn"
+                                data-product-name="{{ $produk->product_name }}" data-product-id="{{ $produk->id }}"
+                                data-product-link="{{ route('product.detail', ['slug' => $produk->slug, 'id' => $produk->id]) }}"><i
                                     class="fa fa-shopping-bag me-2 text-primary"></i> Beli</a>
                         </div>
                     </div>
@@ -55,7 +43,7 @@
                                     @foreach ($categories as $category)
                                         <li>
                                             <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i
+                                                <a href="{{ url('/kategori/' . $category->slug) }}" wire:navigate><i
                                                         class="fas fa-store me-2"></i>{{ $category->category_name }}</a>
                                                 <span>{{ $category->product_count }}</span>
                                             </div>

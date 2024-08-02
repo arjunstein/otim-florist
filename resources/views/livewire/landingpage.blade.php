@@ -163,29 +163,132 @@
                 <h1 class="display-5 mb-5 text-dark">Kata pelanggan</h1>
             </div>
             <div class="owl-carousel testimonial-carousel">
-                @foreach ($testimoni as $testi)
-                    <div class="testimonial-item img-border-radius bg-light rounded p-4">
-                        <div class="position-relative" style="height: 300px">
-                            <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
-                                style="bottom: 30px; right: 0;"></i>
-                            <div class="mb-4 pb-4 border-bottom border-secondary">
-                                <p class="mb-0">
-                                    {{ $testi->testimonial_sentence }}
-                                </p>
-                            </div>
-                            <div class="d-flex align-items-center flex-nowrap">
-                                <div class="d-block">
-                                    <h4 class="text-dark">{{ $testi->client_name }}</h4>
-                                    <p class="m-0 pb-3">{{ $testi->client_profession }}</p>
-                                </div>
-                            </div>
-                            <p class="pt-3">
-                                <a href="https://g.page/r/CUwQGqLxue8DEAE/review"><i class="fab fa-google"></i> Lihat
-                                    review google</a>
+                <div class="testimonial-item img-border-radius bg-light rounded p-4">
+                    <div class="position-relative" style="height: 300px">
+                        <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
+                            style="bottom: 30px; right: 0;"></i>
+                        <div class="mb-4 pb-4 border-bottom border-secondary">
+                            <p class="mb-0">
+                                terimakash atas bantuannyaa otim florist pelayanan cepat proses cepat kwalitas oke...
                             </p>
                         </div>
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <div class="bg-secondary rounded">
+                                <img src="{{ asset('img/supra.png') }}" class="img-fluid rounded"
+                                    style="width: 100px; height: 100px;" alt="">
+                            </div>
+                            <div class="ms-4 d-block">
+                                <h4 class="text-dark">Sisca Setya Evi</h4>
+                                <p class="m-0 pb-3">PT. Suprajaya Duaribu Satu</p>
+                            </div>
+                        </div>
+                        <p class="pt-3">
+                            <a href="https://g.page/r/CUwQGqLxue8DEAE/review"><i class="fab fa-google"></i> Lihat
+                                review google</a>
+                        </p>
                     </div>
-                @endforeach
+                </div>
+                <div class="testimonial-item img-border-radius bg-light rounded p-4">
+                    <div class="position-relative" style="height: 300px">
+                        <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
+                            style="bottom: 30px; right: 0;"></i>
+                        <div class="mb-4 pb-4 border-bottom border-secondary">
+                            <p class="mb-0">
+                                terimakash atas bantuannyaa otim florist pelayanan cepat proses cepat kwalitas oke...
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <div class="bg-secondary rounded">
+                                <img src="{{ asset('img/bpr-logo.png') }}" class="img-fluid rounded"
+                                    style="width: 100px; height: 100px;" alt="">
+                            </div>
+                            <div class="ms-4 d-block">
+                                <h4 class="text-dark">andes jampang channel</h4>
+                                <p class="m-0 pb-3">PT. BPR Mitra Daya Mandiri</p>
+                            </div>
+                        </div>
+                        <p class="pt-3">
+                            <a href="https://g.page/r/CUwQGqLxue8DEAE/review"><i class="fab fa-google"></i> Lihat
+                                review google</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="testimonial-item img-border-radius bg-light rounded p-4">
+                    <div class="position-relative" style="height: 300px">
+                        <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
+                            style="bottom: 30px; right: 0;"></i>
+                        <div class="mb-4 pb-4 border-bottom border-secondary">
+                            <p class="mb-0">
+                                Bagus dan Pelayanan cepat Owner ramah dan baik Selalu berlangganan disini Terimakasih
+                                💕🙏🏻
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <div class="bg-secondary rounded">
+                                <img src="{{ asset('img/bbksda-sumut.png') }}" class="img-fluid rounded"
+                                    style="width: 100px; height: 100px;" alt="">
+                            </div>
+                            <div class="ms-4 d-block">
+                                <h4 class="text-dark">Putri Sagala</h4>
+                                <p class="m-0 pb-3">BBKSDA Sumatera Utara</p>
+                            </div>
+                        </div>
+                        <p class="pt-3">
+                            <a href="https://g.page/r/CUwQGqLxue8DEAE/review"><i class="fab fa-google"></i> Lihat
+                                review google</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="testimonial-item img-border-radius bg-light rounded p-4">
+                    <div class="position-relative" style="height: 300px">
+                        <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
+                            style="bottom: 30px; right: 0;"></i>
+                        <div class="mb-4 pb-4 border-bottom border-secondary">
+                            <p class="mb-0">
+                                Fast response dan memberikan layanan yg terbaik untuk setiap customer 🙏🙏
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <div class="bg-secondary rounded">
+                                <img src="{{ asset('img/datascript.png') }}" class="img-fluid rounded"
+                                    style="width: 100px; height: 100px;" alt="">
+                            </div>
+                            <div class="ms-4 d-block">
+                                <h4 class="text-dark">Maria Adriana</h4>
+                                <p class="m-0 pb-3">Datascript Business Solution</p>
+                            </div>
+                        </div>
+                        <p class="pt-3">
+                            <a href="https://g.page/r/CUwQGqLxue8DEAE/review"><i class="fab fa-google"></i> Lihat
+                                review google</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="testimonial-item img-border-radius bg-light rounded p-4">
+                    <div class="position-relative" style="height: 300px">
+                        <i class="fa fa-quote-right fa-2x text-secondary position-absolute"
+                            style="bottom: 30px; right: 0;"></i>
+                        <div class="mb-4 pb-4 border-bottom border-secondary">
+                            <p class="mb-0">
+                                Udah langganan di toko ini, Karna penjual sangat ramah, bunga masih seger, hiasannya sangat rapih, amanah
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <div class="bg-secondary rounded">
+                                <img src="{{ asset('img/jalaprima.png') }}" class="img-fluid rounded"
+                                    style="width: 100px; height: 100px;" alt="">
+                            </div>
+                            <div class="ms-4 d-block">
+                                <h4 class="text-dark">Alex Waskito</h4>
+                                <p class="m-0 pb-3">PT. Jalaprima Perkasa</p>
+                            </div>
+                        </div>
+                        <p class="pt-3">
+                            <a href="https://g.page/r/CUwQGqLxue8DEAE/review"><i class="fab fa-google"></i> Lihat
+                                review google</a>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

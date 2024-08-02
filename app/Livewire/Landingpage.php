@@ -103,7 +103,7 @@ class Landingpage extends Component
     public function render()
     {
         $products = Cache::remember("products-{$this->amount}", 60 * 60 * 168, function () {
-            return Product::take($this->amount)->get();
+            return Product::latest()->take($this->amount)->get();
         });
 
         // Add product images to OpenGraph

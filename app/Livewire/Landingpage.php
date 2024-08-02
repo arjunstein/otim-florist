@@ -91,18 +91,18 @@ class Landingpage extends Component
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         JsonLd::addImage('https://otimflorist.com/img/favicon.png/');
 
-        $this->category = Cache::remember('categories', 60 * 60, function () {
+        $this->category = Cache::remember('categories', 60 * 60 * 168, function () {
             return Category::all();
         });
 
-        $this->ad = Cache::remember('ads', 60 * 60, function () {
+        $this->ad = Cache::remember('ads', 60 * 60 * 168, function () {
             return Ad::all();
         });
     }
 
     public function render()
     {
-        $products = Cache::remember("products-{$this->amount}", 60 * 60, function () {
+        $products = Cache::remember("products-{$this->amount}", 60 * 60 * 168, function () {
             return Product::take($this->amount)->get();
         });
 

@@ -64,14 +64,14 @@ class Bungapapancongratulation extends Component
 
     private function getCategories()
     {
-        return Cache::remember('categories', 60 * 60, function () {
+        return Cache::remember('categories', 60 * 60 * 168, function () {
             return Category::all();
         });
     }
 
     private function getProducts($amount)
     {
-        return Cache::remember("products-bunga-papan-congratulation-{$amount}", 60 * 60, function () use ($amount) {
+        return Cache::remember("products-bunga-papan-congratulation-{$amount}", 60 * 60 * 168, function () use ($amount) {
             return Product::where('product_name', 'LIKE', '%bunga papan congratulations%')
                 ->orWhere('product_name', 'LIKE', '%bunga papan selamat%')
                 ->latest()

@@ -64,14 +64,14 @@ class Bungameja extends Component
 
     private function getCategories()
     {
-        return Cache::remember('categories', 60 * 60, function () {
+        return Cache::remember('categories', 60 * 60 * 168, function () {
             return Category::all();
         });
     }
 
     private function getProducts($amount)
     {
-        return Cache::remember("products-bunga-meja-{$amount}", 60 * 60, function () use ($amount) {
+        return Cache::remember("products-bunga-meja-{$amount}", 60 * 60 * 168, function () use ($amount) {
             return Product::where('product_name', 'LIKE', '%bunga meja%')
                 ->latest()
                 ->paginate($amount);

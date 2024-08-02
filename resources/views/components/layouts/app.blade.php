@@ -21,9 +21,14 @@
     @include('components._partials.copyright')
     <!-- Copyright End -->
 
+    {{-- whatsapp button --}}
+    <a href="https://wa.me/6281808881477?text=Hi%20saya%20ingin%20pesan%20bunga%20mohon%20dibantu" class="whatsapp" target="_blank">
+        <i class="fab fa-whatsapp fab-icon"></i>
+    </a>
+
     <!-- Back to Top -->
-    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
-            class="fa fa-arrow-up"></i></a>
+    {{-- <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i --}}
+            {{-- class="fa fa-arrow-up"></i></a> --}}
 
     @include('components._partials.scripts')
 

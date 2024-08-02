@@ -5,11 +5,9 @@ namespace App\Livewire;
 use App\Models\Ad;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Testimoni;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
-use Artesaos\SEOTools\Facades\SEOTools;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
@@ -23,7 +21,6 @@ class Landingpage extends Component
     #[Computed(cache: true)]
 
     public $category;
-    public $testimoni;
     public $ad;
     public $amount = 15;
 
@@ -85,6 +82,7 @@ class Landingpage extends Component
         OpenGraph::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         OpenGraph::setUrl('https://otimflorist.com');
         OpenGraph::addProperty('type', 'articles');
+        OpenGraph::addImage('img/favicon.png');
 
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
@@ -95,10 +93,6 @@ class Landingpage extends Component
 
         $this->category = Cache::remember('categories', 60 * 60, function () {
             return Category::all();
-        });
-
-        $this->testimoni = Cache::remember('testimonis', 60 * 60, function () {
-            return Testimoni::all();
         });
 
         $this->ad = Cache::remember('ads', 60 * 60, function () {
@@ -123,7 +117,6 @@ class Landingpage extends Component
             'title' => 'Landing Page',
             'products' => $products,
             'category' => $this->category,
-            'testimoni' => $this->testimoni,
             'ad' => $this->ad,
         ]);
     }

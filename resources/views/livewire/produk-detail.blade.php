@@ -26,8 +26,8 @@
                                 {{ isset($produk->sale_price) ? number_format($produk->sale_price) : number_format($produk->price) }}
                             </h5>
                             <p class="mb-4">{{ $produk->product_description }}</p>
-                            <a href="{{ route('order', ['id' => $produk->id]) }}" target="_blank"
-                                class="btn border btn-primary rounded-pill px-3 text-white">
+                            <a href="{{ route('order', ['id' => Str::slug($produk->id)]) }}" target="_blank"
+                                class="order btn border btn-primary rounded-pill px-3 text-white">
                                 <i class="fab fa-whatsapp me-2 text-white"></i> Beli</a>
                         </div>
                     </div>
@@ -81,8 +81,8 @@
                                             {{ isset($prod->sale_price) ? number_format($prod->sale_price) : number_format($prod->price) }}
                                         </span>
                                     </p>
-                                    <a href="{{ route('order', ['id' => $prod->id]) }}" target="_blank"
-                                        class="btn border btn-primary rounded-pill px-3 text-white">
+                                    <a href="{{ route('order', ['id' => Str::slug($prod->id)]) }}" target="_blank"
+                                        class="order btn border btn-primary rounded-pill px-3 text-white">
                                         <i class="fab fa-whatsapp me-2 text-white"></i>Pesan</a>
                                 </div>
                             </div>

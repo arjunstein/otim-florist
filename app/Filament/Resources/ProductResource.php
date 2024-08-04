@@ -29,15 +29,7 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('product_name')
                     ->label('Nama produk')
                     ->required()
-                    ->live(debounce: 400)
-                    ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                        if (($get('slug') ?? '') !== Str::slug($old)) {
-                            return;
-                        }
-
-                        $set('slug', Str::slug($state));
-                    })
-                    ->maxLength(255),
+                    ->maxLength(50),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->readOnly()
@@ -54,7 +46,12 @@ class ProductResource extends Resource
                     ->label('Kategori')
                     ->relationship('category', 'category_name')
                     ->options(Category::all()->pluck('category_name', 'id'))
-                    ->required(),
+                    ->required()
+                    ->live()
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        $categoryName = Category::find($get('category_id'))->category_name ?? '';
+                        $set('slug', Str::slug($categoryName));
+                    }),
                 Forms\Components\TextInput::make('price')
                     ->label('Harga')
                     ->required()

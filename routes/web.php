@@ -5,6 +5,7 @@ use App\Livewire\Bungapapan;
 use App\Livewire\Bungapapancongratulation;
 use App\Livewire\Bungapapandukacita;
 use App\Livewire\Bungapapanhappywedding;
+use App\Livewire\Bungapapanselamat;
 use App\Livewire\Bungasalib;
 use App\Livewire\Bungastanding;
 use App\Livewire\Handbouquet;
@@ -13,6 +14,8 @@ use App\Livewire\ProdukDetail;
 use App\Livewire\Tentang;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+
 
 
 /*
@@ -50,6 +53,7 @@ Route::get('/tentang-kami', Tentang::class)->name('tentang');
 // category navbar
 Route::get('/kategori/bunga-papan', Bungapapan::class)->name('bungapapan');
 Route::get('/kategori/bunga-papan-congratulations', Bungapapancongratulation::class)->name('bungapapan-congratulation');
+Route::get('/kategori/bunga-papan-selamat-dan-sukses', Bungapapanselamat::class)->name('bungapapan-selamat');
 Route::get('/kategori/bunga-papan-happy-wedding', Bungapapanhappywedding::class)->name('bungapapan-wedding');
 Route::get('/kategori/bunga-papan-dukacita', Bungapapandukacita::class)->name('bungapapan-dukacita');
 Route::get('/kategori/bunga-standing', Bungastanding::class)->name('bungastanding');

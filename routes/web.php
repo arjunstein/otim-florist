@@ -30,7 +30,7 @@ Route::get('/', Landingpage::class)->name('homepage');
 Route::get('/order/{id}', function ($id) {
     $product = Product::findOrFail($id);
     $productName = $product->product_name;
-    $productLink = route('product.detail', ['slug' => $product->slug, 'id' => $product->id]);
+    $productLink = route('product.detail', ['slug' => $product->slug, 'product_name' => Str::slug($product->product_name)]);
 
     $phoneNumber = '6281808881477'; // Ganti dengan nomor WhatsApp Anda
     $message = "Halo, saya ingin memesan produk \"{$productName} {$product->id}\". Berikut link produknya: {$productLink}, mohon dibantu prosesnya
@@ -42,7 +42,7 @@ Route::get('/order/{id}', function ($id) {
 })->name('order');
 
 // Detail produk
-Route::get('/produk/{slug}/{id}', ProdukDetail::class)->name('product.detail');
+Route::get('/produk/{slug}/{product_name}', ProdukDetail::class)->name('product.detail');
 
 // Tentang kami
 Route::get('/tentang-kami', Tentang::class)->name('tentang');

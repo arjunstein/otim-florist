@@ -10,21 +10,22 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class ProdukDetail extends Component
 {
-    #[Computed(cache: true)]
-
     public $title = 'Detail produk';
     public $produk;
     public $categories;
-    public $id;
     public $slug;
+    public $product_name;
+    public $products;
 
-    public function mount($id, $slug)
+    public function mount($slug, $product_name)
     {
+        $this->slug = $slug;
+        $this->product_name = $product_name;
+
         SEOMeta::setTitle('Otim Florist Jakarta');
         SEOMeta::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         SEOMeta::setCanonical('https://otimflorist.com');
@@ -41,29 +42,19 @@ class ProdukDetail extends Component
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         JsonLd::setImages(Storage::url('img/favicon.png'));
 
-        $this->id = $id;
-
-        // Cache data berdasarkan slug produk
-        $this->slug = Cache::remember("product-slug-{$slug}", 60 * 60 * 168, function () use ($slug) {
-            return Product::where('slug', $slug)->first();
+        // Cache product data based on slug
+        $this->produk = Cache::remember("product-{$slug}", 60 * 60 * 168, function () use ($slug) {
+            return Product::where('slug', $slug)->with('category')->firstOrFail();
         });
 
-        // Cache kategori dengan jumlah produk
+        // Cache categories with product counts
         $this->categories = Cache::remember('categories_with_count', 60 * 60 * 168, function () {
-            return Category::withCount('product')->get()->map(function ($category) {
-                $category->slug = $category->slug; // generate slug
-                return $category;
-            });
+            return Category::withCount('product')->get();
         });
 
-        // Cache semua produk
-        $this->products = Cache::remember('products', 60 * 60 * 168, function () {
+        // Cache all products
+        $this->products = Cache::remember('all_products', 60 * 60 * 168, function () {
             return Product::latest()->get();
-        });
-
-        // Cache detail produk berdasarkan ID
-        $this->produk = Cache::remember("product-{$this->id}", 60 * 60 * 168, function () {
-            return Product::with('category')->findOrFail($this->id);
         });
     }
 
@@ -73,7 +64,6 @@ class ProdukDetail extends Component
             'categories' => $this->categories,
             'products' => $this->products,
             'produk' => $this->produk,
-            'slug' => $this->slug,
         ]);
     }
 }

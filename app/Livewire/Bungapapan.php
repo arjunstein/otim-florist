@@ -72,7 +72,7 @@ class Bungapapan extends Component
     private function getProducts($amount)
     {
         return Cache::remember("products-bunga-papan-{$amount}", 60 * 60 * 168, function () use ($amount) {
-            return Product::where('product_name', 'LIKE', '%bunga papan%')
+            return Product::where('product_name', 'LIKE', '%bp%')
                 ->latest()
                 ->paginate($amount);
         });

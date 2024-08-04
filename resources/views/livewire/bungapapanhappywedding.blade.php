@@ -30,7 +30,7 @@
                                     <div class="col-6 col-md-6 col-lg-4 col-xl-3" wire:key="{{ $product->id }}">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
-                                                <a href="{{ route('product.detail', ['slug' => $product->slug, 'id' => $product->id]) }}"
+                                                <a href="{{ route('product.detail', ['slug' => $product->slug, 'product_name' => Str::slug($product->product_name)]) }}"
                                                     wire:navigate>
                                                     <img src="{{ asset('storage/' . $product->image) }}"
                                                         class="img-fluid w-100 rounded-top" alt="">
@@ -41,7 +41,7 @@
                                                 Promo</div>
                                             <div
                                                 class="pad p-4 border border-secondary border-top-0 rounded-bottom fruits-item">
-                                                <h6>{{ ucfirst($product->product_name) . ' ' . $product->id }}</h6>
+                                                <h6>{{ strtoupper($product->product_name) }}</h6>
                                                 <div class="d-flex justify-content-center flex-lg-wrap"
                                                     style="flex-direction: column;">
                                                     <p class="fs-c fs-5 fw-bold mb-2">
@@ -55,7 +55,7 @@
                                                             {{ isset($product->sale_price) ? number_format($product->sale_price) : number_format($product->price) }}
                                                         </span>
                                                     </p>
-                                                    <a href="{{ route('order', ['id' => $product->id]) }}"
+                                                    <a href="{{ route('order', ['product_name' => Str::slug($product->product_name)]) }}"
                                                         target="_blank"
                                                         class="btn border btn-primary rounded-pill px-3 text-white">
                                                         <i class="fab fa-whatsapp me-2 text-white"></i>Pesan</a>

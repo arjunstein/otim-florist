@@ -72,7 +72,7 @@ class Handbouquet extends Component
     private function getProducts($amount)
     {
         return Cache::remember("products-hand-bouquet-{$amount}", 60 * 60 * 168, function () use ($amount) {
-            return Product::where('product_name', 'LIKE', '%hand bouquet%')
+            return Product::where('product_name', 'LIKE', '%hb%')
                 ->latest()
                 ->paginate($amount);
         });

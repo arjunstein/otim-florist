@@ -49,8 +49,8 @@ class Bungapapanselamat extends Component
     {
         $products = $this->getProducts($this->amount);
 
-        return view('livewire.bungapapan', [
-            'title' => 'Bunga papan',
+        return view('livewire.bungapapanselamat', [
+            'title' => 'Bunga papan selamat',
             'products' => $products,
             'category' => $this->category,
         ]);
@@ -59,7 +59,7 @@ class Bungapapanselamat extends Component
     public function load()
     {
         $this->amount += 10;
-        Cache::forget("products-bunga-papan-{$this->amount}");
+        Cache::forget("products-bunga-papan-selamat{$this->amount}");
     }
 
     private function getCategories()
@@ -71,7 +71,7 @@ class Bungapapanselamat extends Component
 
     private function getProducts($amount)
     {
-        return Cache::remember("products-bunga-papan-{$amount}", 60 * 60 * 168, function () use ($amount) {
+        return Cache::remember("products-bunga-papan-selamat{$amount}", 60 * 60 * 168, function () use ($amount) {
             return Product::where('product_name', 'LIKE', '%bps%')
                 ->latest()
                 ->paginate($amount);

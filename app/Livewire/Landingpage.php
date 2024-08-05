@@ -89,7 +89,7 @@ class Landingpage extends Component
 
         JsonLd::setTitle('Otim Florist Jakarta');
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg/');
+        // JsonLd::addImage('https://otimflorist.com/img/landing.jpeg/');
 
         $this->category = Cache::remember('categories', 60 * 60 * 168, function () {
             return Category::all();
@@ -107,9 +107,9 @@ class Landingpage extends Component
         });
 
         // Add product images to OpenGraph
-        if ($products->isNotEmpty()) {
-            OpenGraph::addImage('https://otimflorist.com/img/favicon.png/');
-        }
+        // if ($products->isNotEmpty()) {
+        // OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg/');
+        // }
 
         return view('livewire.landingpage', [
             'title' => 'Landing Page',

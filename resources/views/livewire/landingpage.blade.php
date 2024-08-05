@@ -17,7 +17,6 @@
                                         class="btn px-4 py-2 text-white rounded">{{ ucwords($ads->title) }}</a>
                                 </div>
                             @empty
-
                             @endforelse
                         </div>
 
@@ -56,7 +55,7 @@
                                 <div class="col-6 col-md-6 col-lg-4 col-xl-3" wire:key="{{ $product->id }}">
                                     <div class="rounded position-relative fruite-item">
                                         <div class="fruite-img">
-                                            <a href="{{ route('product.detail', ['slug' => $product->slug, 'product_name' => Str::slug($product->product_name)]) }}"
+                                            <a href="{{ route('product.detail', ['slug' => $product->slug, 'product_name' => Str::slug($product->product_name), 'id' => $product->id]) }}"
                                                 wire:navigate>
                                                 <img src="{{ asset('storage/' . $product->image) }}"
                                                     class="img-fluid w-100 rounded-top" alt="">
@@ -81,7 +80,8 @@
                                                         {{ isset($product->sale_price) ? number_format($product->sale_price) : number_format($product->price) }}
                                                     </span>
                                                 </p>
-                                                <a href="{{ route('order', ['id' => Str::slug($product->id)]) }}" target="_blank"
+                                                <a href="{{ route('order', ['id' => Str::slug($product->id)]) }}"
+                                                    target="_blank"
                                                     class="order btn border btn-primary rounded-pill px-3 text-white">
                                                     <i class="fab fa-whatsapp me-2 text-white"></i>Pesan</a>
                                             </div>
@@ -270,7 +270,8 @@
                             style="bottom: 30px; right: 0;"></i>
                         <div class="mb-4 pb-4 border-bottom border-secondary">
                             <p class="mb-0">
-                                Udah langganan di toko ini, Karna penjual sangat ramah, bunga masih seger, hiasannya sangat rapih, amanah
+                                Udah langganan di toko ini, Karna penjual sangat ramah, bunga masih seger, hiasannya
+                                sangat rapih, amanah
                             </p>
                         </div>
                         <div class="d-flex align-items-center flex-nowrap">

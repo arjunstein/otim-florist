@@ -30,7 +30,7 @@
                                     <div class="col-6 col-md-6 col-lg-4 col-xl-3" wire:key="{{ $product->id }}">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
-                                                <a href="{{ route('product.detail', ['slug' => $product->slug, 'product_name' => Str::slug($product->product_name)]) }}"
+                                                <a href="{{ route('product.detail', ['slug' => $product->slug, 'product_name' => Str::slug($product->product_name), 'id' => $product->id]) }}"
                                                     wire:navigate>
                                                     <img src="{{ asset('storage/' . $product->image) }}"
                                                         class="img-fluid w-100 rounded-top" alt="">

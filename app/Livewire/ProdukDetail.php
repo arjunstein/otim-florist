@@ -20,9 +20,11 @@ class ProdukDetail extends Component
     public $slug;
     public $product_name;
     public $products;
+    public $id;
 
-    public function mount($slug, $product_name)
+    public function mount($id, $slug, $product_name)
     {
+        $this->id = $id;
         $this->slug = $slug;
         $this->product_name = $product_name;
 
@@ -42,9 +44,13 @@ class ProdukDetail extends Component
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         JsonLd::setImages(Storage::url('img/favicon.png'));
 
-        // Cache product data based on slug
-        $this->produk = Cache::remember("product-{$slug}", 60 * 60 * 168, function () use ($slug) {
-            return Product::where('slug', $slug)->with('category')->firstOrFail();
+
+        $this->slug = Cache::remember("product-slug-{$slug}", 60 * 60 * 168, function () use ($slug) {
+            return Product::where('slug', $slug)->first();
+        });
+
+        $this->produk = Cache::remember("product-{$this->id}", 60 * 60 * 168, function () {
+            return Product::with('category')->findOrFail($this->id);
         });
 
         // Cache categories with product counts

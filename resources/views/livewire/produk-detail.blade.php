@@ -58,7 +58,7 @@
                 <div class="owl-carousel vegetable-carousel justify-content-center">
                     @foreach ($products as $prod)
                         <div class="border border-primary rounded position-relative vesitable-item">
-                            <a href="{{ route('product.detail', ['slug' => $prod->slug, 'product_name' => Str::slug($prod->product_name)]) }}"
+                            <a href="{{ route('product.detail', ['slug' => $prod->slug, 'product_name' => Str::slug($prod->product_name), 'id' => $prod->id]) }}"
                                 wire:navigate>
                                 <div class="vesitable-img">
                                     <img src="{{ asset('storage/' . $prod->image) }}"

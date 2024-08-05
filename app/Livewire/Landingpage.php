@@ -108,9 +108,7 @@ class Landingpage extends Component
 
         // Add product images to OpenGraph
         if ($products->isNotEmpty()) {
-            foreach ($products as $product) {
-                OpenGraph::addImage($product->image);
-            }
+            OpenGraph::addImage('https://otimflorist.com/img/favicon.png/');
         }
 
         return view('livewire.landingpage', [

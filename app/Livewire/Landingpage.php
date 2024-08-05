@@ -82,14 +82,14 @@ class Landingpage extends Component
         OpenGraph::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         OpenGraph::setUrl('https://otimflorist.com');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('img/favicon.png');
+        OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg/');
 
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle('Otim Florist Jakarta');
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        JsonLd::addImage('https://otimflorist.com/img/favicon.png/');
+        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg/');
 
         $this->category = Cache::remember('categories', 60 * 60 * 168, function () {
             return Category::all();

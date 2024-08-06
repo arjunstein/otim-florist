@@ -69,3 +69,7 @@ Route::get('/login', function () {
 Route::get('/admin/logout', function () {
     return redirect(route('filament.admin.auth.login'));
 });
+
+Route::fallback(function () {
+    return redirect('/');
+});

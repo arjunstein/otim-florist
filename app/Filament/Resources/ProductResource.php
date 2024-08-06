@@ -37,10 +37,13 @@ class ProductResource extends Resource
                 Forms\Components\FileUpload::make('image')
                     ->label('Gambar')
                     ->image()
+                    ->optimize('webp')
+                    ->resize(50)
                     ->imageEditor()
                     ->imageEditorAspectRatios([
                         '4:3',
                     ])
+                    ->preserveFilenames()
                     ->required(),
                 Forms\Components\Select::make('category_id')
                     ->label('Kategori')

@@ -27,7 +27,7 @@ class Landingpage extends Component
     public function mount()
     {
         SEOMeta::setTitle('Otim Florist Jakarta');
-        SEOMeta::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
+        SEOMeta::setDescription('Toko karangan bunga yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         SEOMeta::setCanonical('https://otimflorist.com');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
@@ -77,7 +77,7 @@ class Landingpage extends Component
         ]);
 
         OpenGraph::setTitle('Otim Florist Jakarta');
-        OpenGraph::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
+        OpenGraph::setDescription('Toko karangan bunga yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         OpenGraph::setUrl('https://otimflorist.com');
         OpenGraph::addProperty('type', 'articles');
         OpenGraph::addImage('https://otimflorist.com/img/front.webp');

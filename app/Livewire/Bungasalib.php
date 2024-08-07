@@ -24,21 +24,66 @@ class Bungasalib extends Component
 
     public function mount()
     {
-        SEOMeta::setTitle('Otim Florist Jakarta');
-        SEOMeta::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        SEOMeta::setCanonical('https://otimflorist.com');
+        SEOMeta::setTitle('Bunga salib');
+        SEOMeta::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
+        SEOMeta::setCanonical('https://otimflorist.com/kategori/bunga-meja');
+        SEOMeta::addKeyword([
+            "karangan bunga jakarta",
+            "toko bunga jakarta",
+            "bunga papan jakarta",
+            "florist jakarta",
+            "pesan bunga jakarta",
+            "pengiriman bunga jakarta",
+            "karangan bunga murah jakarta",
+            "toko karangan bunga di jakarta",
+            "bunga ucapan jakarta",
+            "karangan bunga pernikahan jakarta",
+            "karangan bunga duka jakarta",
+            "buket bunga jakarta",
+            "toko bunga terbaik di jakarta",
+            "karangan bunga custom jakarta",
+            "florist terpercaya jakarta",
+            "bunga online jakarta",
+            "pesan karangan bunga online jakarta",
+            "toko bunga 24 jam jakarta",
+            "toko bunga dekat saya jakarta",
+            "bunga segar jakarta",
+            "bunga papan jakarta barat",
+            "bunga papan jakarta utara",
+            "bunga papan jakarta timur",
+            "bunga papan jakarta barat",
+            "bunga standing dukacita",
+            "bunga standing congratulation",
+            "bunga papan dukacita",
+            "toko bunga terdekat",
+            "karangan bunga murah jakarta",
+            "bunga salib jakarta pusat",
+            "bunga salib jakarta barat",
+            "bunga salib jakarta utara",
+            "bunga salib jakarta timur",
+            "bunga salib jakarta selatan",
+            "bunga happy wedding",
+            "hand buket jakarta",
+            "hand bouquet jakarta",
+            "bunga valentine jakarta",
+            "toko bunga dekat rumah duka grand heaven",
+            "toko bunga dekat rumah duka ukrida",
+            "toko bunga dekat rumah duka jelambar",
+            "toko bunga dekat rumah duka carolus",
+            "toko bunga dekat rumah duka darmais",
+            "toko bunga dekat rumah duka gatot subroto",
+        ]);
 
-        OpenGraph::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        OpenGraph::setTitle('Otim Florist Jakarta');
-        OpenGraph::setUrl('https://otimflorist.com');
-        OpenGraph::addProperty('type', 'website');
+        OpenGraph::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
+        OpenGraph::setTitle('Bunga salib');
+        OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-meja');
+        OpenGraph::addProperty('type', 'articles');
 
-        TwitterCard::setTitle('Otim Florist Jakarta');
+        TwitterCard::setTitle('Bunga salib');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Otim Florist Jakarta');
-        JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        JsonLd::setImages(Storage::url('img/favicon.png'));
+        JsonLd::setTitle('Bunga salib');
+        JsonLd::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
     }
 
     public function render()

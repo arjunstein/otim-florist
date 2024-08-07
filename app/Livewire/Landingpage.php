@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Ad;
-use App\Models\Category;
 use App\Models\Product;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
@@ -20,9 +19,8 @@ class Landingpage extends Component
 
     #[Computed(cache: true)]
 
-    public $category;
     public $ad;
-    public $amount = 15;
+    public $amount = 20;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -82,7 +80,7 @@ class Landingpage extends Component
         OpenGraph::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         OpenGraph::setUrl('https://otimflorist.com');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg/');
+        OpenGraph::addImage('https://otimflorist.com/');
 
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
@@ -91,10 +89,6 @@ class Landingpage extends Component
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         // JsonLd::addImage('https://otimflorist.com/img/landing.jpeg/');
 
-        $this->category = Cache::remember('categories', 60 * 60 * 168, function () {
-            return Category::all();
-        });
-
         $this->ad = Cache::remember('ads', 60 * 60 * 168, function () {
             return Ad::all();
         });
@@ -102,26 +96,25 @@ class Landingpage extends Component
 
     public function render()
     {
-        $products = Cache::remember("products-{$this->amount}", 60 * 60 * 168, function () {
-            return Product::latest()->take($this->amount)->get();
+        $cachedView = Cache::remember("landingpage-html-{$this->amount}", 60 * 60 * 168, function () {
+            $products = Cache::remember("products-{$this->amount}", 60 * 60 * 168, function () {
+                return Product::where('product_name', 'LIKE', '%bp%')->latest()->take($this->amount)->get();
+            });
+
+            return view('livewire.landingpage', [
+                'title' => 'Landing Page',
+                'products' => $products,
+                'ad' => $this->ad,
+            ])->render();
         });
 
-        // Add product images to OpenGraph
-        // if ($products->isNotEmpty()) {
-        // OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg/');
-        // }
-
-        return view('livewire.landingpage', [
-            'title' => 'Landing Page',
-            'products' => $products,
-            'category' => $this->category,
-            'ad' => $this->ad,
-        ]);
+        return $cachedView;
     }
 
     public function load()
     {
-        $this->amount += 15;
+        $this->amount += 20;
         Cache::forget("products-{$this->amount}");
+        Cache::forget("landingpage-html-{$this->amount}");
     }
 }

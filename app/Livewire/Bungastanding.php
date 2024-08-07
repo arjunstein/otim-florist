@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Category;
 use App\Models\Product;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
@@ -20,7 +19,6 @@ class Bungastanding extends Component
 
     #[Computed(cache: true)]
 
-    public $category;
     public $amount = 10;
     protected $paginationTheme = 'bootstrap';
 
@@ -41,8 +39,6 @@ class Bungastanding extends Component
         JsonLd::setTitle('Otim Florist Jakarta');
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         JsonLd::setImages(Storage::url('img/favicon.png'));
-
-        $this->category = $this->getCategories();
     }
 
     public function render()
@@ -52,7 +48,6 @@ class Bungastanding extends Component
         return view('livewire.bungastanding', [
             'title' => 'Bunga standing',
             'products' => $products,
-            'category' => $this->category,
         ]);
     }
 
@@ -60,13 +55,6 @@ class Bungastanding extends Component
     {
         $this->amount += 10;
         Cache::forget("products-bunga-standing-{$this->amount}");
-    }
-
-    private function getCategories()
-    {
-        return Cache::remember('categories', 60 * 60 * 168, function () {
-            return Category::all();
-        });
     }
 
     private function getProducts($amount)

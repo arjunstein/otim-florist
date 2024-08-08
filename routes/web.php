@@ -11,6 +11,7 @@ use App\Livewire\Bungastanding;
 use App\Livewire\Handbouquet;
 use App\Livewire\Landingpage;
 use App\Livewire\ProdukDetail;
+use App\Livewire\Promopage;
 use App\Livewire\Tentang;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -60,6 +61,7 @@ Route::get('/kategori/bunga-standing', Bungastanding::class)->name('bungastandin
 Route::get('/kategori/hand-bouquet', Handbouquet::class)->name('buket');
 Route::get('/kategori/bunga-meja', Bungameja::class)->name('bungameja');
 Route::get('/kategori/bunga-salib', Bungasalib::class)->name('bungasalib');
+Route::get('/promo', Promopage::class)->name('promo');
 
 // Handle unexpect redirect
 Route::get('/login', function () {

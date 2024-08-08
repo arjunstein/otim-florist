@@ -11,10 +11,10 @@
                         <div class="carousel-inner" role="listbox">
                             @forelse ($ad as $i => $ads)
                                 <div class="carousel-item {{ $i == 0 ? 'active' : '' }} rounded">
-                                    <img src="{{ asset('storage/' . $ads->image) }}"
-                                        class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                                    <a href="#"
-                                        class="btn px-4 py-2 text-white rounded">{{ ucwords($ads->title) }}</a>
+                                        <img src="{{ asset('storage/' . $ads->image) }}"
+                                            class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
+                                       <a href="{{ route('promo') }}" wire:navigate
+                                            class="btn px-4 py-2 text-white rounded">{{ ucwords($ads->title) }}</a>
                                 </div>
                             @empty
                             @endforelse

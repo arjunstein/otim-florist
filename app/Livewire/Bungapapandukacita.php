@@ -75,16 +75,17 @@ class Bungapapandukacita extends Component
         ]);
 
         OpenGraph::setDescription('Menjual bunga papan dukacita berbagai ukuran dan bisa request desain warna');
-        OpenGraph::setTitle('Bunga papan dukacita');
+        OpenGraph::setTitle('Jual bunga papan dukacita');
         OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-papan-dukacita');
         OpenGraph::addProperty('type', 'articles');
         OpenGraph::addImage('https://otimflorist.com/img/front.webp');
 
-        TwitterCard::setTitle('Bunga papan dukacita');
+        TwitterCard::setTitle('Jual bunga papan dukacita');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Bunga papan dukacita');
+        JsonLd::setTitle('Jual bunga papan dukacita');
         JsonLd::setDescription('Menjual bunga papan dukacita berbagai ukuran dan bisa request desain warna');
+        JsonLd::addImage('https://otimflorist.com/img/front.webp');
     }
 
     public function render()

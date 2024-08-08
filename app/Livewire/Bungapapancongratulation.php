@@ -77,16 +77,17 @@ class Bungapapancongratulation extends Component
         ]);
 
         OpenGraph::setDescription('Menyediakan bunga papan congratulations untuk berbagai acara');
-        OpenGraph::setTitle('Bunga papan congratulations');
+        OpenGraph::setTitle('Jual bunga papan congratulations');
         OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-papan-conratulations');
         OpenGraph::addProperty('type', 'articles');
+        OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
 
-        TwitterCard::setTitle('Bunga papan congratulations');
+        TwitterCard::setTitle('Jual bunga papan congratulations');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Bunga papan congratulations');
+        JsonLd::setTitle('Jual bunga papan congratulations');
         JsonLd::setDescription('Menyediakan bunga papan congratulations untuk berbagai acara');
-        JsonLd::setImages(Storage::url('img/favicon.png'));
+        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
 
         $this->category = $this->getCategories();
     }

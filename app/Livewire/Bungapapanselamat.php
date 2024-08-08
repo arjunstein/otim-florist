@@ -75,7 +75,7 @@ class Bungapapanselamat extends Component
         ]);
 
         OpenGraph::setDescription('Menyediakan bunga papan ucapan selamat, pelantikan, promosi, dan serah terima jabatan');
-        OpenGraph::setTitle('Bunga papan selamat');
+        OpenGraph::setTitle('Jual bunga papan selamat');
         OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-papan-selamat-dan-sukses');
         OpenGraph::addProperty('type', 'articles');
         OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
@@ -83,8 +83,9 @@ class Bungapapanselamat extends Component
         TwitterCard::setTitle('Bunga papan selamat');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Bunga papan selamat');
+        JsonLd::setTitle('Jual bunga papan selamat');
         JsonLd::setDescription('Menyediakan bunga papan ucapan selamat, pelantikan, promosi, dan serah terima jabatan');
+        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
     }
 
     public function render()

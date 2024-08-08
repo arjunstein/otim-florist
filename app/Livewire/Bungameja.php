@@ -75,7 +75,7 @@ class Bungameja extends Component
         ]);
 
         OpenGraph::setDescription('Menyediakan bunga meja untuk acara kantor dan sebagainya');
-        OpenGraph::setTitle('Bunga meja');
+        OpenGraph::setTitle('Jual bunga meja');
         OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-meja');
         OpenGraph::addProperty('type', 'articles');
         OpenGraph::addImage('https://otimflorist.com/img/front.webp');
@@ -83,8 +83,9 @@ class Bungameja extends Component
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Bunga meja');
+        JsonLd::setTitle('Jual bunga meja');
         JsonLd::setDescription('Menyediakan bunga meja untuk acara kantor dan sebagainya');
+        OpenGraph::addImage('https://otimflorist.com/img/front.webp');
     }
 
     public function render()

@@ -27,7 +27,7 @@ class Landingpage extends Component
     public function mount()
     {
         SEOMeta::setTitle('Otim Florist Jakarta');
-        SEOMeta::setDescription('Toko karangan bunga yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
+        SEOMeta::setDescription('Jual bunga papan, bunga standing, bunga meja, bunga pengantin, bunga salib');
         SEOMeta::setCanonical('https://otimflorist.com');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
@@ -76,8 +76,8 @@ class Landingpage extends Component
             "toko bunga dekat rumah duka gatot subroto",
         ]);
 
-        OpenGraph::setTitle('Otim Florist Jakarta');
-        OpenGraph::setDescription('Toko karangan bunga yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
+        OpenGraph::setTitle('Jual bunga papan');
+        OpenGraph::setDescription('Jual bunga papan, bunga standing, bunga meja, bunga pengantin, bunga salib');
         OpenGraph::setUrl('https://otimflorist.com');
         OpenGraph::addProperty('type', 'articles');
         OpenGraph::addImage('https://otimflorist.com/img/front.webp');
@@ -85,9 +85,9 @@ class Landingpage extends Component
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Otim Florist Jakarta');
-        JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        // JsonLd::addImage('https://otimflorist.com/img/landing.jpeg/');
+        JsonLd::setTitle('Jual bunga papan');
+        JsonLd::setDescription('Jual bunga papan, bunga standing, bunga meja, bunga pengantin, bunga salib');
+        JsonLd::addImage('https://otimflorist.com/img/front.webp/');
 
         $this->ad = Cache::remember('ads', 60 * 60 * 168, function () {
             return Ad::all();

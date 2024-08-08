@@ -75,15 +75,17 @@ class Bungasalib extends Component
         ]);
 
         OpenGraph::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
-        OpenGraph::setTitle('Bunga salib');
+        OpenGraph::setTitle('Jual bunga salib');
         OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-meja');
         OpenGraph::addProperty('type', 'articles');
+        OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
 
-        TwitterCard::setTitle('Bunga salib');
+        TwitterCard::setTitle('Jual bunga salib');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Bunga salib');
+        JsonLd::setTitle('Jual bunga salib');
         JsonLd::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
+        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
     }
 
     public function render()

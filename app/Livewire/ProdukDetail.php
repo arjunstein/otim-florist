@@ -100,14 +100,14 @@ class ProdukDetail extends Component
         OpenGraph::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
         OpenGraph::setUrl('https://otimflorist.com/produk/' . $slug . '/' . $product_name . '/' . $id);
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com' . $this->produk->image);
+        OpenGraph::addImage('https://otimflorist.com/storage' . $this->produk->image);
 
         TwitterCard::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
         JsonLd::setDescription($this->produk->product_description);
-        JsonLd::addImage('https://otimflorist.com' . $this->produk->image);
+        JsonLd::addImage('https://otimflorist.com/storage' . $this->produk->image);
     }
 
     public function render()

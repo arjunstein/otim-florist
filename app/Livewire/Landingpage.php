@@ -100,7 +100,7 @@ class Landingpage extends Component
             $products = Cache::remember("products-{$this->amount}", 60 * 60 * 168, function () {
                 return Product::where('product_name', 'LIKE', '%bp%')
                     ->where('sale_price', null)
-                    ->latest()->take($this->amount)->get();
+                    ->orderBy('price', 'asc')->take($this->amount)->get();
             });
 
             return view('livewire.landingpage', [

@@ -111,7 +111,7 @@ class Promopage extends Component
     {
         return Cache::remember("products-promo-{$amount}", 60 * 60 * 168, function () use ($amount) {
             return Product::where('sale_price', '!=', null)
-                ->latest()
+                ->orderBy('sale_price', 'asc')
                 ->paginate($amount);
         });
     }

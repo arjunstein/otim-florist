@@ -89,15 +89,15 @@ class Landingpage extends Component
         JsonLd::setDescription('Jual bunga papan, bunga standing, bunga meja, bunga pengantin, bunga salib');
         JsonLd::addImage('https://otimflorist.com/img/front.webp/');
 
-        $this->ad = Cache::remember('ads', 60 * 60 * 168, function () {
+        $this->ad = Cache::remember('ads', 60 * 60 * 24, function () {
             return Ad::all();
         });
     }
 
     public function render()
     {
-        $cachedView = Cache::remember("landingpage-html-{$this->amount}", 60 * 60 * 168, function () {
-            $products = Cache::remember("products-{$this->amount}", 60 * 60 * 168, function () {
+        $cachedView = Cache::remember("landingpage-html-{$this->amount}", 60 * 60 * 24, function () {
+            $products = Cache::remember("products-{$this->amount}", 60 * 60 * 24, function () {
                 return Product::where('product_name', 'LIKE', '%bp%')
                     ->where('sale_price', null)
                     ->orderBy('price', 'asc')->take($this->amount)->get();

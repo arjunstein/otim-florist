@@ -8,7 +8,6 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -19,7 +18,7 @@ class Bungapapandukacita extends Component
 
     #[Computed(cache: true)]
 
-    public $amount = 10;
+    public $amount = 15;
     protected $paginationTheme = 'bootstrap';
 
     public function mount()
@@ -100,14 +99,15 @@ class Bungapapandukacita extends Component
 
     public function load()
     {
-        $this->amount += 10;
+        $this->amount += 15;
         Cache::forget("products-bunga-papan-dukacita-{$this->amount}");
     }
 
     private function getProducts($amount)
     {
-        return Cache::remember("products-bunga-papan-dukacita-{$amount}", 60 * 60 * 168, function () use ($amount) {
+        return Cache::remember("products-bunga-papan-dukacita-{$amount}", 60 * 60 * 24, function () use ($amount) {
             return Product::where('product_name', 'LIKE', '%bpd%')
+                ->where('sale_price', null)
                 ->orderBy('price', 'asc')
                 ->paginate($amount);
         });

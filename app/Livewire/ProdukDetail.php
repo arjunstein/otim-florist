@@ -9,7 +9,6 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class ProdukDetail extends Component
@@ -28,21 +27,21 @@ class ProdukDetail extends Component
         $this->slug = $slug;
         $this->product_name = $product_name;
 
-        $this->slug = Cache::remember("product-slug-{$slug}", 60 * 60 * 168, function () use ($slug) {
+        $this->slug = Cache::remember("product-slug-{$slug}", 60 * 60 * 24, function () use ($slug) {
             return Product::where('slug', $slug)->first();
         });
 
-        $this->produk = Cache::remember("product-{$this->id}", 60 * 60 * 168, function () {
+        $this->produk = Cache::remember("product-{$this->id}", 60 * 60 * 24, function () {
             return Product::with('category')->findOrFail($this->id);
         });
 
         // Cache categories with product counts
-        $this->categories = Cache::remember('categories_with_count', 60 * 60 * 168, function () {
+        $this->categories = Cache::remember('categories_with_count', 60 * 60 * 24, function () {
             return Category::withCount('product')->get();
         });
 
         // Cache all products
-        $this->products = Cache::remember('all_products', 60 * 60 * 168, function () {
+        $this->products = Cache::remember('all_products', 60 * 60 * 24, function () {
             return Product::latest()->get();
         });
 

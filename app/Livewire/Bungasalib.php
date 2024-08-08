@@ -8,7 +8,6 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -26,7 +25,7 @@ class Bungasalib extends Component
     {
         SEOMeta::setTitle('Bunga salib');
         SEOMeta::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
-        SEOMeta::setCanonical('https://otimflorist.com/kategori/bunga-meja');
+        SEOMeta::setCanonical('https://otimflorist.com/kategori/bunga-salib');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "toko bunga jakarta",
@@ -76,7 +75,7 @@ class Bungasalib extends Component
 
         OpenGraph::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
         OpenGraph::setTitle('Jual bunga salib');
-        OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-meja');
+        OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-salib');
         OpenGraph::addProperty('type', 'articles');
         OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
 
@@ -107,7 +106,7 @@ class Bungasalib extends Component
     private function getProducts($amount)
     {
         return Cache::remember("products-bunga-salib-{$amount}", 60 * 60 * 168, function () use ($amount) {
-            return Product::where('product_name', 'LIKE', '%bs%')
+            return Product::where('product_name', 'LIKE', '%bsl%')
                 ->orderBy('price', 'asc')
                 ->paginate($amount);
         });

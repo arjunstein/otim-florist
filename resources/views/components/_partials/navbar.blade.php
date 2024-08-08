@@ -46,6 +46,9 @@
                     <a href="{{ route('bungasalib') }}"
                         class="nav-item nav-link {{ Request::routeIs('bungasalib') ? 'active' : '' }}"
                         wire:navigate>Bunga salib</a>
+                    <a href="{{ route('promo') }}"
+                        class="nav-item nav-link {{ Request::routeIs('promo') ? 'active' : '' }}"
+                        wire:navigate>Promo</a>
                     <a href="{{ route('tentang') }}"
                         class="nav-item nav-link {{ Request::routeIs('tentang') ? 'active' : '' }}"
                         wire:navigate>Tentang

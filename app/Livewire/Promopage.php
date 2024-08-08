@@ -12,7 +12,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class Handbouquet extends Component
+class Promopage extends Component
 {
     use WithPagination;
 
@@ -23,11 +23,15 @@ class Handbouquet extends Component
 
     public function mount()
     {
-        SEOMeta::setTitle('Hand bouquet jakarta');
+        SEOMeta::setTitle('Promo produk pilihan');
         SEOMeta::setDescription('Menjual hand buket bisa request desain dan bunga');
         SEOMeta::setCanonical('https://otimflorist.com/kategori/hand-bouquet');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
+            "promo karangan bunga murah",
+            "hand bouquet murah jakarta",
+            "big sale bunga murah",
+            "gebyar bunga murah",
             "toko bunga jakarta",
             "bunga papan jakarta",
             "florist jakarta",
@@ -73,26 +77,26 @@ class Handbouquet extends Component
             "toko bunga dekat rumah duka gatot subroto",
         ]);
 
-        OpenGraph::setDescription('Menjual hand buket bisa request desain dan bunga');
-        OpenGraph::setTitle('Jual hand bouquet jakarta');
+        OpenGraph::setDescription('Promo produk pilihan hanya hari ini saja');
+        OpenGraph::setTitle('Promo bunga papan jakarta');
         OpenGraph::setUrl('https://otimflorist.com/kategori/hand-bouquet');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/hand-bouquet-bridal.webp');
+        OpenGraph::addImage('https://otimflorist.com/img/promo-bridal.jpeg');
 
-        TwitterCard::setTitle('Jual hand bouquet jakarta');
+        TwitterCard::setTitle('Promo bunga papan jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Jual hand bouquet jakarta');
-        JsonLd::setDescription('Menjual hand buket bisa request desain dan bunga');
-        JsonLd::addImage('https://otimflorist.com/img/hand-bouquet-bridal.webp');
+        JsonLd::setTitle('Promo bunga papan jakarta');
+        JsonLd::setDescription('Promo produk pilihan hanya hari ini saja');
+        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
     }
 
     public function render()
     {
         $products = $this->getProducts($this->amount);
 
-        return view('livewire.handbouquet', [
-            'title' => 'Hand bouquet',
+        return view('livewire.promopage', [
+            'title' => 'Produk promo',
             'products' => $products,
         ]);
     }
@@ -100,13 +104,13 @@ class Handbouquet extends Component
     public function load()
     {
         $this->amount += 10;
-        Cache::forget("products-hand-bouquet-{$this->amount}");
+        Cache::forget("products-promo-{$this->amount}");
     }
 
     private function getProducts($amount)
     {
-        return Cache::remember("products-hand-bouquet-{$amount}", 60 * 60 * 168, function () use ($amount) {
-            return Product::where('product_name', 'LIKE', '%hb%')
+        return Cache::remember("products-promo-{$amount}", 60 * 60 * 168, function () use ($amount) {
+            return Product::where('sale_price', '!=', null)
                 ->latest()
                 ->paginate($amount);
         });

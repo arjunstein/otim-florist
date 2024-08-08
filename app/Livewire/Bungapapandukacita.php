@@ -108,7 +108,7 @@ class Bungapapandukacita extends Component
     {
         return Cache::remember("products-bunga-papan-dukacita-{$amount}", 60 * 60 * 168, function () use ($amount) {
             return Product::where('product_name', 'LIKE', '%bpd%')
-                ->latest()
+                ->orderBy('price', 'asc')
                 ->paginate($amount);
         });
     }

@@ -108,7 +108,7 @@ class Bungasalib extends Component
     {
         return Cache::remember("products-bunga-salib-{$amount}", 60 * 60 * 168, function () use ($amount) {
             return Product::where('product_name', 'LIKE', '%bs%')
-                ->latest()
+                ->orderBy('price', 'asc')
                 ->paginate($amount);
         });
     }

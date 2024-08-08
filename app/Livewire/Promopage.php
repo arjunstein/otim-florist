@@ -84,17 +84,18 @@ class Promopage extends Component
         ]);
 
         OpenGraph::setDescription('Promo produk pilihan hanya hari ini saja');
-        OpenGraph::setTitle($this->ad->first()->title);
+        OpenGraph::setTitle(!empty($this->ad->first()->title) ? $this->ad->first()->title : 'Promo Bunga Murah | Otim Florist');
         OpenGraph::setUrl('https://otimflorist.com/promo');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/storage/' . $this->ad->first()->image);
+        OpenGraph::addImage(!empty($this->ad->first()->image) ? 'https://otimflorist.com/storage/' . $this->ad->first()->image : '');
+
 
         TwitterCard::setTitle('Promo bunga papan jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle($this->ad->first()->title);
+        JsonLd::setTitle(!empty($this->ad->first()->title) ? $this->ad->first()->title : 'Promo Bunga Murah | Otim Florist');
         JsonLd::setDescription('Promo produk pilihan hanya hari ini saja');
-        JsonLd::addImage('https://otimflorist.com/storage' . $this->ad->first()->image);
+        JsonLd::addImage(!empty($this->ad->first()->image) ? 'https://otimflorist.com/storage/' . $this->ad->first()->image : '');
     }
 
     public function render()

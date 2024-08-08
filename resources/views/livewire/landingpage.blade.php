@@ -68,7 +68,7 @@
                                             Promo</div>
                                         <div
                                             class="pad p-4 border border-secondary border-top-0 rounded-bottom fruits-item">
-                                            <h6>{{ strtoupper($product->product_name) }}</h6>
+                                            <h6>{{ $product->product_name }}</h6>
                                             <div class="d-flex justify-content-center flex-lg-wrap"
                                                 style="flex-direction: column;">
                                                 <p class="fs-c fs-5 fw-bold mb-2">

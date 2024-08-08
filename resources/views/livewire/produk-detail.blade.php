@@ -18,7 +18,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <h4 class="fw-bold mb-3">{{ strtoupper($produk->product_name) }}</h4>
+                            <h4 class="fw-bold mb-3">{{ $produk->product_name }}</h4>
                             <p class="mb-3">Kategori: {{ ucfirst($produk->category->category_name) }}</p>
                             <h5 class="fw-bold text-danger mb-3 text-decoration-line-through">
                                 {{ isset($produk->sale_price) ? 'Rp. ' . number_format($produk->price) : '' }}</h5>
@@ -69,7 +69,7 @@
                                 style="top: 10px; right: 10px; display:{{ isset($prod->sale_price) ? 'block' : 'none' }}">
                                 Promo</div>
                             <div class="pad p-4 border border-secondary border-top-0 rounded-bottom fruits-items">
-                                <h6>{{ strtoupper($prod->product_name) }}</h6>
+                                <h6>{{ $prod->product_name }}</h6>
                                 <div class="d-flex justify-content-center flex-lg-wrap" style="flex-direction: column;">
                                     <p class="fs-c fs-5 fw-bold mb-2">
                                         <span class="text-decoration-line-through text-danger">

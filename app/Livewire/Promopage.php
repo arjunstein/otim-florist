@@ -25,7 +25,7 @@ class Promopage extends Component
 
     public function mount()
     {
-        $this->ad = Cache::remember('ads', 60 * 60 * 168, function () {
+        $this->ad = Cache::remember('ads-promo', 60 * 60 * 168, function () {
             return Ad::all()->first();
         });
 

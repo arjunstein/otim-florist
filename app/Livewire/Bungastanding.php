@@ -76,16 +76,17 @@ class Bungastanding extends Component
         ]);
 
         OpenGraph::setDescription('Menyediakan bunga standing untuk berbagai keperluan');
-        OpenGraph::setTitle('Bunga standing');
+        OpenGraph::setTitle('Jual bunga standing');
         OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-standing');
         OpenGraph::addProperty('type', 'articles');
+        OpenGraph::addImage('https://otimflorist.com/img/bunga-standing.webp');
 
         TwitterCard::setTitle('Bunga standing');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Bunga standing');
-        JsonLd::setDescription('Menyediakan bunga standing untuk berbagai keperluan');
-        JsonLd::setImages(Storage::url('img/favicon.png'));
+        JsonLd::setTitle('Jual bunga standing');
+        JsonLd::setDescription('Menyediakan bunga standing untuk berbagai keperluan murah berkualitas');
+        JsonLd::addImage('https://otimflorist.com/img/bunga-standing.webp');
     }
 
     public function render()

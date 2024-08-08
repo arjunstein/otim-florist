@@ -25,7 +25,7 @@ class Handbouquet extends Component
     public function mount()
     {
         SEOMeta::setTitle('Hand bouquet jakarta');
-        SEOMeta::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
+        SEOMeta::setDescription('Menjual hand buket bisa request desain dan bunga');
         SEOMeta::setCanonical('https://otimflorist.com/kategori/hand-bouquet');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
@@ -74,17 +74,18 @@ class Handbouquet extends Component
             "toko bunga dekat rumah duka gatot subroto",
         ]);
 
-        OpenGraph::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        OpenGraph::setTitle('Hand bouquet jakarta');
+        OpenGraph::setDescription('Menjual hand buket bisa request desain dan bunga');
+        OpenGraph::setTitle('Jual hand bouquet jakarta');
         OpenGraph::setUrl('https://otimflorist.com/kategori/hand-bouquet');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
+        OpenGraph::addImage('https://otimflorist.com/img/hand-bouquet-bridal.webp');
 
-        TwitterCard::setTitle('Hand bouquet jakarta');
+        TwitterCard::setTitle('Jual hand bouquet jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Hand bouquet jakarta');
-        JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
+        JsonLd::setTitle('Jual hand bouquet jakarta');
+        JsonLd::setDescription('Menjual hand buket bisa request desain dan bunga');
+        JsonLd::addImage('https://otimflorist.com/img/hand-bouquet-bridal.webp');
     }
 
     public function render()

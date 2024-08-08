@@ -75,7 +75,7 @@ class Bungapapan extends Component
         ]);
 
         OpenGraph::setDescription('bunga papan jakarta dan sekitarnya murah berkualitas');
-        OpenGraph::setTitle('Bunga papan');
+        OpenGraph::setTitle('Jual bunga papan');
         OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-papan');
         OpenGraph::addProperty('type', 'articles');
         OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
@@ -83,9 +83,9 @@ class Bungapapan extends Component
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Bunga papan');
+        JsonLd::setTitle('Jual bunga papan');
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        // JsonLd::setImages(Storage::url('img/favicon.png'));
+        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
     }
 
     public function render()

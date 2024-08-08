@@ -13,21 +13,22 @@ class Tentang extends Component
 {
     public function mount()
     {
-        SEOMeta::setTitle('Otim Florist Jakarta');
+        SEOMeta::setTitle('Tentang kami');
         SEOMeta::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        SEOMeta::setCanonical('https://otimflorist.com');
+        SEOMeta::setCanonical('https://otimflorist.com/tentang-kami');
 
         OpenGraph::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        OpenGraph::setTitle('Otim Florist Jakarta');
-        OpenGraph::setUrl('https://otimflorist.com');
-        OpenGraph::addProperty('type', 'website');
+        OpenGraph::setTitle('Tentang Otim Florist');
+        OpenGraph::setUrl('https://otimflorist.com/tentang-kami');
+        OpenGraph::addProperty('type', 'articles');
+        OpenGraph::addImage('https://otimflorist.com/img/favicon.png');
 
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Otim Florist Jakarta');
+        JsonLd::setTitle('Tentang Otim Florist');
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        JsonLd::setImages(Storage::url('img/favicon.png'));
+        JsonLd::addImage('https://otimflorist.com/img/favicon.png');
     }
     public function render()
     {

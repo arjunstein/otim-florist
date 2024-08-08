@@ -113,7 +113,7 @@
                         </div>
                         <div class="featurs-content text-center">
                             <h5>Free Ongkir</h5>
-                            <p class="mb-0">Untuk area Jakarta dan sekitarnya</p>
+                            <p class="mb-0">Untuk area Jakarta Pusat dan Jakarta Barat</p>
                         </div>
                     </div>
                 </div>

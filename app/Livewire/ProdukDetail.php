@@ -96,19 +96,18 @@ class ProdukDetail extends Component
             "toko bunga dekat rumah duka gatot subroto",
         ]);
 
-        OpenGraph::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
+        OpenGraph::setDescription($this->produk->product_description);
         OpenGraph::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
         OpenGraph::setUrl('https://otimflorist.com/produk/' . $slug . '/' . $product_name . '/' . $id);
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
+        OpenGraph::addImage('https://otimflorist.com' . $this->produk->image);
 
         TwitterCard::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
-        JsonLd::setDescription('Aneka karangan bunga jakarta, berkualitas dan terpercaya');
-        // JsonLd::addImage();
-
+        JsonLd::setDescription($this->produk->product_description);
+        JsonLd::addImage('https://otimflorist.com' . $this->produk->image);
     }
 
     public function render()

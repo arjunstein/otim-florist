@@ -18,3 +18,5 @@ yarn-error.log
 /.vscode
 .DS_store
 /public/.DS_store
+/public/error_log
+error_log

@@ -10,12 +10,13 @@
                     <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                         <div class="carousel-inner" role="listbox">
                             @forelse ($ad as $i => $ads)
-                                <div class="carousel-item {{ $i == 0 ? 'active' : '' }} rounded">
+                                <a href="{{ route('promo') }}" wire:navigate>
+                                    <div class="carousel-item {{ $i == 0 ? 'active' : '' }} rounded">
                                         <img src="{{ asset('storage/' . $ads->image) }}"
-                                            class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                                       <a href="{{ route('promo') }}" wire:navigate
-                                            class="btn px-4 py-2 text-white rounded">{{ ucwords($ads->title) }}</a>
-                                </div>
+                                            class="img-fluid w-100 h-100 bg-secondary rounded"
+                                            alt="{{ $ads->title }}">
+                                    </div>
+                                </a>
                             @empty
                             @endforelse
                         </div>
@@ -58,7 +59,8 @@
                                             <a href="{{ route('product.detail', ['slug' => $product->slug, 'product_name' => Str::slug($product->product_name), 'id' => $product->id]) }}"
                                                 wire:navigate>
                                                 <img src="{{ asset('storage/' . $product->image) }}"
-                                                    class="img-fluid w-100 rounded-top" alt="">
+                                                    class="img-fluid w-100 rounded-top"
+                                                    alt="{{ $product->category->category_name . $product->id }}">
                                             </a>
                                         </div>
                                         <div class="pad-1 promo text-white bg-primary px-3 py-1 rounded position-absolute"

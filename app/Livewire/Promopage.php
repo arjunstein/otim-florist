@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Ad;
 use App\Models\Product;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
@@ -18,14 +19,20 @@ class Promopage extends Component
 
     #[Computed(cache: true)]
 
+    public $ad;
     public $amount = 10;
     protected $paginationTheme = 'bootstrap';
 
     public function mount()
     {
+        $this->ad = Cache::remember('ads', 60 * 60 * 168, function () {
+            return Ad::all()->first();
+        });
+
+        // dd($this->ad);
         SEOMeta::setTitle('Promo produk pilihan');
-        SEOMeta::setDescription('Menjual hand buket bisa request desain dan bunga');
-        SEOMeta::setCanonical('https://otimflorist.com/kategori/hand-bouquet');
+        SEOMeta::setDescription('promo bunga jakarta segera pesan sekarang sebelum promo berakhir');
+        SEOMeta::setCanonical('https://otimflorist.com/promo');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "promo karangan bunga murah",
@@ -78,17 +85,17 @@ class Promopage extends Component
         ]);
 
         OpenGraph::setDescription('Promo produk pilihan hanya hari ini saja');
-        OpenGraph::setTitle('Promo bunga papan jakarta');
-        OpenGraph::setUrl('https://otimflorist.com/kategori/hand-bouquet');
+        OpenGraph::setTitle($this->ad->title);
+        OpenGraph::setUrl('https://otimflorist.com/kategori/promo');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/promo-bridal.jpeg');
+        OpenGraph::addImage('https://otimflorist.com/storage/' . $this->ad->image);
 
         TwitterCard::setTitle('Promo bunga papan jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle('Promo bunga papan jakarta');
+        JsonLd::setTitle($this->ad->title);
         JsonLd::setDescription('Promo produk pilihan hanya hari ini saja');
-        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
+        JsonLd::addImage('https://otimflorist.com/storage' . $this->ad->image);
     }
 
     public function render()

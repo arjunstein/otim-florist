@@ -29,7 +29,6 @@ class Promopage extends Component
             return Ad::all()->first();
         });
 
-        // dd($this->ad);
         SEOMeta::setTitle('Promo produk pilihan');
         SEOMeta::setDescription('promo bunga jakarta segera pesan sekarang sebelum promo berakhir');
         SEOMeta::setCanonical('https://otimflorist.com/promo');
@@ -85,17 +84,17 @@ class Promopage extends Component
         ]);
 
         OpenGraph::setDescription('Promo produk pilihan hanya hari ini saja');
-        OpenGraph::setTitle($this->ad->title);
-        OpenGraph::setUrl('https://otimflorist.com/kategori/promo');
+        OpenGraph::setTitle($this->ad->first()->title);
+        OpenGraph::setUrl('https://otimflorist.com/promo');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/storage/' . $this->ad->image);
+        OpenGraph::addImage('https://otimflorist.com/storage/' . $this->ad->first()->image);
 
         TwitterCard::setTitle('Promo bunga papan jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle($this->ad->title);
+        JsonLd::setTitle($this->ad->first()->title);
         JsonLd::setDescription('Promo produk pilihan hanya hari ini saja');
-        JsonLd::addImage('https://otimflorist.com/storage' . $this->ad->image);
+        JsonLd::addImage('https://otimflorist.com/storage' . $this->ad->first()->image);
     }
 
     public function render()
@@ -105,6 +104,7 @@ class Promopage extends Component
         return view('livewire.promopage', [
             'title' => 'Produk promo',
             'products' => $products,
+            'ad' => $this->ad,
         ]);
     }
 

@@ -99,7 +99,7 @@ class Bungapapanselamat extends Component
 
     public function load()
     {
-        $this->amount += 15;
+        $this->amount += 20;
         Cache::forget("products-bunga-papan-selamat{$this->amount}");
     }
 

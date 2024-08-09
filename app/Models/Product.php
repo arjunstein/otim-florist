@@ -22,8 +22,18 @@ class Product extends Model
         parent::boot();
 
         static::creating(function () {
-            Cache::forget("products-20");
-            Cache::forget("landingpage-html-20");
+            Cache::forget("products-20"); // delete cache landing page product
+            Cache::forget("landingpage-html-20"); // delete cache landing page product
+            Cache::forget("products-promo-10"); // delete cache promopage
+            Cache::forget("products-bunga-papan-20"); // delete cache bunga papan
+            Cache::forget("products-bunga-meja-20"); // delete cache bunga meja
+            Cache::forget("products-bunga-papan-congratulation-20"); // delete cache bunga papan congrats
+            Cache::forget("products-bunga-papan-dukacita-20"); // delete cache bunga papan duka
+            Cache::forget("products-bunga-papan-happy-wedding-20"); // delete cache bunga papan wedding
+            Cache::forget("products-bunga-papan-selamat-20"); // delete cache bunga papan selamat
+            Cache::forget("products-bunga-salib-10"); // delete cache bunga salib
+            Cache::forget("products-bunga-standing-10"); // delete cache bunga standing
+            Cache::forget("products-hand-bouquet-20"); // delete cache hand bouquet
         });
 
         static::updating(function ($model) {
@@ -31,8 +41,18 @@ class Product extends Model
                 Storage::disk('public')->delete($model->getOriginal('image'));
             }
 
-            Cache::forget("products-20");
-            Cache::forget("landingpage-html-20");
+            Cache::forget("products-20"); // delete cache landing page product
+            Cache::forget("landingpage-html-20"); // delete cache landing page product
+            Cache::forget("products-promo-10"); // delete cache promopage
+            Cache::forget("products-bunga-papan-20"); // delete cache bunga papan
+            Cache::forget("products-bunga-meja-20"); // delete cache bunga meja
+            Cache::forget("products-bunga-papan-congratulation-20"); // delete cache bunga papan congrats
+            Cache::forget("products-bunga-papan-dukacita-20"); // delete cache bunga papan duka
+            Cache::forget("products-bunga-papan-happy-wedding-20"); // delete cache bunga papan wedding
+            Cache::forget("products-bunga-papan-selamat-20"); // delete cache bunga papan selamat
+            Cache::forget("products-bunga-salib-10"); // delete cache bunga salib
+            Cache::forget("products-bunga-standing-10"); // delete cache bunga standing
+            Cache::forget("products-hand-bouquet-20"); // delete cache hand bouquet
         });
     }
 }

@@ -19,7 +19,6 @@ class Bungapapancongratulation extends Component
 
     #[Computed(cache: true)]
 
-    public $category;
     public $amount = 10;
     protected $paginationTheme = 'bootstrap';
 
@@ -87,8 +86,6 @@ class Bungapapancongratulation extends Component
         JsonLd::setTitle('Jual bunga papan congratulations');
         JsonLd::setDescription('Menyediakan bunga papan congratulations untuk berbagai acara');
         JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
-
-        $this->category = $this->getCategories();
     }
 
     public function render()
@@ -98,7 +95,6 @@ class Bungapapancongratulation extends Component
         return view('livewire.bungapapancongratulation', [
             'title' => 'Bunga papan congratulation',
             'products' => $products,
-            'category' => $this->category,
         ]);
     }
 
@@ -106,13 +102,6 @@ class Bungapapancongratulation extends Component
     {
         $this->amount += 10;
         Cache::forget("products-bunga-papan-congratulation-{$this->amount}");
-    }
-
-    private function getCategories()
-    {
-        return Cache::remember('categories', 60 * 60 * 24, function () {
-            return Category::all();
-        });
     }
 
     private function getProducts($amount)

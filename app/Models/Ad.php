@@ -17,6 +17,7 @@ class Ad extends Model
 
         static::creating(function () {
             Cache::forget("ads");
+            Cache::forget("ads-promo");
             Cache::forget("landingpage-html-20");
         });
 
@@ -25,6 +26,7 @@ class Ad extends Model
                 Storage::disk('public')->delete($model->getOriginal('image'));
             }
             Cache::forget("ads");
+            Cache::forget("ads-promo");
             Cache::forget("landingpage-html-20");
         });
     }

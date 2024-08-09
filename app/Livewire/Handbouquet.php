@@ -99,7 +99,7 @@ class Handbouquet extends Component
 
     public function load()
     {
-        $this->amount += 15;
+        $this->amount += 20;
         Cache::forget("products-hand-bouquet-{$this->amount}");
     }
 

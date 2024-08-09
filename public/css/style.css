@@ -1,3 +1,18 @@
+@font-face {
+    font-family: "Poppins Light", sans-serif;
+    src: url(../fonts/Poppins-Light.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "Poppins Medium", sans-serif;
+    src: url(../fonts/Poppins-Medium.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: "Poppins Regular", sans-serif;
+    src: url(../fonts/Poppins-Regular.ttf) format('truetype');
+}
+
 /*** Spinner Start ***/
 #spinner {
     opacity: 0;

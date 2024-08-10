@@ -8,7 +8,7 @@
     <!-- Fruits Shop Start-->
     <div class="container-fluid fruite py-5">
         <div class="container py-5">
-            <h1 class="mb-4">Produk populer</h1>
+            <h1 class="mb-4">Produk promo</h1>
             <div class="row g-4">
                 <div class="col-lg-12">
                     <div class="row g-4">
@@ -66,7 +66,7 @@
                                 @empty
                                     <div class="col-12">
                                         <div class="d-flex justify-content-center mt-5">
-                                            <p>Produk belum tersedia</p>
+                                            <p>Promo belum tersedia</p>
                                         </div>
                                     </div>
                                 @endforelse

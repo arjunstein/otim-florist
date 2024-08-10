@@ -18,7 +18,7 @@ class Handbouquet extends Component
 
     #[Computed(cache: true)]
 
-    public $amount = 15;
+    public $amount = 20;
     protected $paginationTheme = 'bootstrap';
 
     public function mount()

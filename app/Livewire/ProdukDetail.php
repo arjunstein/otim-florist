@@ -40,9 +40,11 @@ class ProdukDetail extends Component
             return Category::withCount('product')->get();
         });
 
-        // Cache all products
-        $this->products = Cache::remember('all_products', 60 * 60 * 168, function () {
-            return Product::latest()->get();
+        // Cache product by category
+        $this->products = Cache::remember("category-products-{$this->produk->category_id}", 60 * 60 * 168, function () {
+            return Product::where('category_id', $this->produk->category_id)
+                ->where('id', '!=', $this->produk->id) // Exclude current product from the list
+                ->latest()->get();
         });
 
         SEOMeta::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));

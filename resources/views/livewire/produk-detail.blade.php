@@ -56,7 +56,7 @@
             <h1 class="fw-bold mb-0">Produk lainnya</h1>
             <div class="vesitable">
                 <div class="owl-carousel vegetable-carousel justify-content-center">
-                    @foreach ($products as $prod)
+                    @forelse ($products as $prod)
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <a href="{{ route('product.detail', ['slug' => $prod->slug, 'product_name' => Str::slug($prod->product_name), 'id' => $prod->id]) }}"
                                 wire:navigate>
@@ -87,7 +87,9 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                    <p>Produk belum tersedia</p>
+                    @endforelse
                 </div>
             </div>
         </div>

@@ -18,7 +18,7 @@ class Bungasalib extends Component
 
     #[Computed(cache: true)]
 
-    public $amount = 10;
+    public $amount = 20;
     protected $paginationTheme = 'bootstrap';
 
     public function mount()

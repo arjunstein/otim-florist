@@ -105,7 +105,7 @@ class Handbouquet extends Component
 
     private function getProducts($amount)
     {
-        return Cache::remember("products-hand-bouquet-{$amount}", 60 * 60 * 24, function () use ($amount) {
+        return Cache::remember("products-hand-bouquet-{$amount}", 60 * 60 * 168, function () use ($amount) {
             return Product::where('product_name', 'LIKE', '%hb%')
                 ->where('sale_price', null)
                 ->orderBy('price', 'asc')

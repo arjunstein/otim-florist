@@ -111,7 +111,7 @@ class Promopage extends Component
 
     public function load()
     {
-        $this->amount += 10;
+        $this->amount += 20;
         Cache::forget("products-promo-{$this->amount}");
     }
 

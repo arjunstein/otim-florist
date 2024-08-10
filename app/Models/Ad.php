@@ -16,18 +16,27 @@ class Ad extends Model
         parent::boot();
 
         static::creating(function () {
-            Cache::forget("ads");
-            Cache::forget("ads-promo");
-            Cache::forget("landingpage-html-20");
+            self::clearAdCache();
         });
 
         static::updating(function ($model) {
-            if ($model->isDirty('image') && ($model->getOriginal('image') !== null)) {
+            if ($model->isDirty('image') && $model->getOriginal('image') !== null) {
                 Storage::disk('public')->delete($model->getOriginal('image'));
             }
-            Cache::forget("ads");
-            Cache::forget("ads-promo");
-            Cache::forget("landingpage-html-20");
+            self::clearAdCache();
         });
+    }
+
+    private static function clearAdCache()
+    {
+        $keys = [
+            "ads",
+            "ads-promo",
+            "landingpage-html-20",
+        ];
+
+        foreach ($keys as $key) {
+            Cache::forget($key);
+        }
     }
 }

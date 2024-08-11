@@ -10,13 +10,11 @@
                     <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                         <div class="carousel-inner" role="listbox">
                             @forelse ($ad as $i => $ads)
-                                <a href="{{ route('promo') }}" wire:navigate>
-                                    <div class="carousel-item {{ $i == 0 ? 'active' : '' }} rounded">
-                                        <img src="{{ asset('storage/' . $ads->image) }}"
-                                            class="img-fluid w-100 h-100 bg-secondary rounded"
-                                            alt="{{ $ads->title }}">
-                                    </div>
-                                </a>
+                                <div class="carousel-item {{ $i == 0 ? 'active' : '' }} rounded">
+                                    <img src="{{ asset('storage/' . $ads->image) }}"
+                                        class="img-fluid w-100 h-100 bg-secondary rounded" alt="{{ $ads->title }}">
+                                    <a href="{{ route('promo') }}" class="w-100 h-100" wire:navigate></a>
+                                </div>
                             @empty
                             @endforelse
                         </div>

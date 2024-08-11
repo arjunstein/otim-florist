@@ -126,7 +126,7 @@
                         </div>
                         <div class="featurs-content text-center">
                             <h5>Pembayaran aman</h5>
-                            <p class="mb-0">100% security payment</p>
+                            <p class="mb-0">100% amanah pembayaran via transfer</p>
                         </div>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
                         </div>
                         <div class="featurs-content text-center">
                             <h5>Profesional</h5>
-                            <p class="mb-0">Kualitas terjamin</p>
+                            <p class="mb-0">Kualitas terjamin pengalaman lebih dari 10 tahun</p>
                         </div>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                         </div>
                         <div class="featurs-content text-center">
                             <h5>24/7 Fast Response</h5>
-                            <p class="mb-0">Siap melayani anda</p>
+                            <p class="mb-0">Siap melayani anda dengan komitmen yang kami punya</p>
                         </div>
                     </div>
                 </div>

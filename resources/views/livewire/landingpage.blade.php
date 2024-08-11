@@ -10,13 +10,11 @@
                     <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                         <div class="carousel-inner" role="listbox">
                             @forelse ($ad as $i => $ads)
-                                <a href="{{ route('promo') }}" wire:navigate>
-                                    <div class="carousel-item {{ $i == 0 ? 'active' : '' }} rounded">
-                                        <img src="{{ asset('storage/' . $ads->image) }}"
-                                            class="img-fluid w-100 h-100 bg-secondary rounded"
-                                            alt="{{ $ads->title }}">
-                                    </div>
-                                </a>
+                                <div class="carousel-item {{ $i == 0 ? 'active' : '' }} rounded">
+                                    <img src="{{ asset('storage/' . $ads->image) }}"
+                                        class="img-fluid w-100 h-100 bg-secondary rounded" alt="{{ $ads->title }}">
+                                    <a href="{{ route('promo') }}" class="w-100 h-100" wire:navigate></a>
+                                </div>
                             @empty
                             @endforelse
                         </div>
@@ -126,7 +124,7 @@
                         </div>
                         <div class="featurs-content text-center">
                             <h5>Pembayaran aman</h5>
-                            <p class="mb-0">100% security payment</p>
+                            <p class="mb-0">100% amanah pembayaran via transfer</p>
                         </div>
                     </div>
                 </div>
@@ -137,7 +135,7 @@
                         </div>
                         <div class="featurs-content text-center">
                             <h5>Profesional</h5>
-                            <p class="mb-0">Kualitas terjamin</p>
+                            <p class="mb-0">Kualitas terjamin pengalaman lebih dari 10 tahun</p>
                         </div>
                     </div>
                 </div>
@@ -148,7 +146,7 @@
                         </div>
                         <div class="featurs-content text-center">
                             <h5>24/7 Fast Response</h5>
-                            <p class="mb-0">Siap melayani anda</p>
+                            <p class="mb-0">Siap melayani anda dengan komitmen yang kami punya</p>
                         </div>
                     </div>
                 </div>

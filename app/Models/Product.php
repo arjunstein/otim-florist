@@ -34,6 +34,7 @@ class Product extends Model
             Cache::forget("products-bunga-salib-20"); // delete cache bunga salib
             Cache::forget("products-bunga-standing-20"); // delete cache bunga standing
             Cache::forget("products-hand-bouquet-20"); // delete cache hand bouquet
+            Cache::forget("categories_with_count"); // delete cache product detail
         });
 
         static::updating(function ($model) {
@@ -53,6 +54,7 @@ class Product extends Model
             Cache::forget("products-bunga-salib-20"); // delete cache bunga salib
             Cache::forget("products-bunga-standing-20"); // delete cache bunga standing
             Cache::forget("products-hand-bouquet-20"); // delete cache hand bouquet
+            Cache::forget("categories_with_count"); // delete cache product detail
         });
     }
 }

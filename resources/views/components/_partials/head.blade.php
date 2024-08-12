@@ -6,8 +6,7 @@
 <!-- Google Web Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
     rel="stylesheet">
 
 <!-- Icon Font Stylesheet -->
@@ -19,10 +18,10 @@
 <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css?v=2.0.0') }}" rel="stylesheet">
 
 <!-- Customized Bootstrap Stylesheet -->
-<link href="{{ asset('css/bootstrap.min.css?v=2.0.0') }}" rel="stylesheet">
+<link href="{{ asset('css/bootstrap.min.css?v=' . date('dmY')) }}" rel="stylesheet">
 
 <!-- Template Stylesheet -->
-<link href="{{ asset('css/style.css?v=2.0.0') }}" rel="stylesheet">
+<link href="{{ asset('css/style.css?v=' . date('dmY')) }}" rel="stylesheet">
 
 {{-- Favicon --}}
 <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">

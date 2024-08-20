@@ -26,6 +26,8 @@ class AdResource extends Resource
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
                     ->image()
+                    ->optimize('webp')
+                    ->preserveFilenames()
                     ->required(),
             ]);
     }

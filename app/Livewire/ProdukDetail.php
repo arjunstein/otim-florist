@@ -27,21 +27,21 @@ class ProdukDetail extends Component
         $this->slug = $slug;
         $this->product_name = $product_name;
 
-        $this->slug = Cache::remember("product-slug-{$slug}", 60 * 60 * 168, function () use ($slug) {
+        $this->slug = Cache::remember("product-slug-{$slug}", 60 * 60 * 48, function () use ($slug) {
             return Product::where('slug', $slug)->first();
         });
 
-        $this->produk = Cache::remember("product-{$this->id}", 60 * 60 * 168, function () {
+        $this->produk = Cache::remember("product-{$this->id}", 60 * 60 * 48, function () {
             return Product::with('category')->findOrFail($this->id);
         });
 
         // Cache categories with product counts
-        $this->categories = Cache::remember('categories_with_count', 60 * 60 * 168, function () {
+        $this->categories = Cache::remember('categories_with_count', 60 * 60 * 48, function () {
             return Category::withCount('product')->get();
         });
 
         // Cache product by category
-        $this->products = Cache::remember("category-products-{$this->produk->category_id}", 60 * 60 * 168, function () {
+        $this->products = Cache::remember("category-products-{$this->produk->category_id}", 60 * 60 * 48, function () {
             return Product::where('category_id', $this->produk->category_id)
                 ->where('id', '!=', $this->produk->id) // Exclude current product from the list
                 ->latest()->get();

@@ -25,7 +25,7 @@ class Promopage extends Component
 
     public function mount()
     {
-        $this->ad = Cache::remember('ads-promo', 60 * 60 * 168, function () {
+        $this->ad = Cache::remember('ads-promo', 60 * 60 * 48, function () {
             return Ad::all()->first();
         });
 
@@ -117,7 +117,7 @@ class Promopage extends Component
 
     private function getProducts($amount)
     {
-        return Cache::remember("products-promo-{$amount}", 60 * 60 * 168, function () use ($amount) {
+        return Cache::remember("products-promo-{$amount}", 60 * 60 * 48, function () use ($amount) {
             return Product::where('sale_price', '!=', null)
                 ->orderBy('sale_price', 'asc')
                 ->paginate($amount);

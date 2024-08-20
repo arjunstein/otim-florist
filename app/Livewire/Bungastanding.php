@@ -106,7 +106,7 @@ class Bungastanding extends Component
 
     private function getProducts($amount)
     {
-        return Cache::remember("products-bunga-standing-{$amount}", 60 * 60 * 168, function () use ($amount) {
+        return Cache::remember("products-bunga-standing-{$amount}", 60 * 60 * 48, function () use ($amount) {
             return Product::where('product_name', 'LIKE', '%bst%')
                 ->where('sale_price', null)
                 ->orderBy('price', 'asc')

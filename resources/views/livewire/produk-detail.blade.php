@@ -29,6 +29,10 @@
                             <a href="{{ route('order', ['id' => Str::slug($produk->id)]) }}" target="_blank"
                                 class="order btn border btn-primary rounded-pill px-3 text-white">
                                 <i class="fab fa-whatsapp me-2 text-white"></i> Beli</a>
+
+                            <a href="javascript:void(0)"
+                                class="share-socmed btn border btn-primary rounded-pill px-3 text-white">
+                                <i class="fas fa-share me-2 text-white"></i> Bagikan</a>
                         </div>
                     </div>
                 </div>
@@ -88,7 +92,7 @@
                             </div>
                         </div>
                     @empty
-                    <p>Produk belum tersedia</p>
+                        <p>Produk belum tersedia</p>
                     @endforelse
                 </div>
             </div>

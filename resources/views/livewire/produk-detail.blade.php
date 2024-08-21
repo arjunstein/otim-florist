@@ -34,7 +34,8 @@
                                 class="share-socmed btn border btn-primary rounded-pill px-3 text-white">
                                 <i class="fas fa-share me-2 text-white"></i> Bagikan</button>
 
-                            <div class="modal" tabindex="-1" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal" tabindex="-1" id="exampleModal" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -43,11 +44,30 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body mx-auto">
-                                            <a href="#" class="btn btn-facebook"><i class="fab fa-facebook"></i></a>
-                                            <a href="#" class="btn btn-instagram"><i class="fab fa-instagram"></i></a>
-                                            <a href="#" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i></a>
-                                            <a href="#" class="btn btn-linkedin"><i class="fab fa-linkedin"></i></a>
-                                            <a href="#" class="btn btn-twitter"><i class="fab fa-twitter"></i></a>
+                                            <!-- Facebook Share -->
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
+                                                target="_blank" class="btn btn-facebook"
+                                                rel="nofollow noopener noreferrer">
+                                                <i class="fab fa-facebook"></i>
+                                            </a>
+                                            <!-- Telegram sharing via URL) -->
+                                            <a href="https://t.me/share/url?url={{ urlencode(url()->current()) }}"
+                                                class="btn btn-telegram"><i class="fab fa-telegram"></i></a>
+                                            <!-- WhatsApp Share -->
+                                            <a href="https://wa.me/?text={{ urlencode(url()->current()) }}"
+                                                target="_blank" class="btn btn-whatsapp">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </a>
+                                            <!-- LinkedIn Share -->
+                                            <a href="https://www.linkedin.com/sharing/share-offsite?mini=true&url={{ urlencode(url()->current()) }}"
+                                                target="_blank" class="btn btn-linkedin" rel="follow">
+                                                <i class="fab fa-linkedin"></i>
+                                            </a>
+                                            <!-- Twitter Share -->
+                                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($produk->product_name) }}"
+                                                target="_blank" class="btn btn-twitter">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

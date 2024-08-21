@@ -18,10 +18,10 @@
 <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css?v=2.0.0') }}" rel="stylesheet">
 
 <!-- Customized Bootstrap Stylesheet -->
-<link href="{{ asset('css/bootstrap.min.css?v=' . date('dmY')) }}" rel="stylesheet">
+<link href="{{ asset('css/bootstrap.min.css?v=' . date('dmYHi')) }}" rel="stylesheet">
 
 <!-- Template Stylesheet -->
-<link href="{{ asset('css/style.css?v=' . date('dmY')) }}" rel="stylesheet">
+<link href="{{ asset('css/style.css?v=' . date('dmYHi')) }}" rel="stylesheet">
 
 {{-- Favicon --}}
 <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">

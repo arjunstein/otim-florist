@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Ad;
 use App\Models\Product;
+use App\Models\Visitor;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -92,6 +93,8 @@ class Landingpage extends Component
         $this->ad = Cache::remember('ads', 60 * 60 * 12, function () {
             return Ad::all();
         });
+
+        Visitor::saveVisitor();
     }
 
     public function render()

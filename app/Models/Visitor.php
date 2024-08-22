@@ -21,13 +21,9 @@ class Visitor extends Model
 
         $agent = new Agent();
         $os = $agent->platform();
+        $isRobot = $agent->isRobot();
 
-        if ($os === '0' && !empty($os)) {
-            self::create([
-                'ip' => $ip,
-                'os' => "Other",
-            ]);
-        } else {
+        if (!$isRobot) {
             self::create([
                 'ip' => $ip,
                 'os' => $os,

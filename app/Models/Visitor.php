@@ -22,10 +22,17 @@ class Visitor extends Model
         $agent = new Agent();
         $os = $agent->platform();
 
-        self::create([
-            'ip' => $ip,
-            'os' => $os,
-        ]);
+        if ($os === '0' && !empty($os)) {
+            self::create([
+                'ip' => $ip,
+                'os' => "Other",
+            ]);
+        } else {
+            self::create([
+                'ip' => $ip,
+                'os' => $os,
+            ]);
+        }
     }
 
     public static function getVisitorOs($start, $end): Collection

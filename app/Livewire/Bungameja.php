@@ -105,7 +105,7 @@ class Bungameja extends Component
 
     private function getProducts($amount)
     {
-        return Cache::remember("products-bunga-meja-{$amount}", 60 * 60 * 12, function () use ($amount) {
+        return Cache::remember("products-bunga-meja-{$amount}", 60 * 60 * 6, function () use ($amount) {
             return Product::where('product_name', 'LIKE', '%bm%')
                 ->where('sale_price', null)
                 ->orderBy('price', 'asc')

@@ -21,12 +21,16 @@ class Visitor extends Model
 
         $agent = new Agent();
         $os = $agent->platform();
+        $browser = $agent->browser();
+        $device = $agent->deviceType();
         $isRobot = $agent->isRobot();
 
         if (!$isRobot) {
             self::create([
                 'ip' => $ip,
                 'os' => $os,
+                'browser' => $browser,
+                'device_type' => $device,
             ]);
         }
     }

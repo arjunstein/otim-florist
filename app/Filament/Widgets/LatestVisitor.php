@@ -9,7 +9,8 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class LatestVisitor extends BaseWidget
 {
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 4;
+    protected int | string | array $columnSpan = 'full';
     protected static ?string $heading = 'Latest 5 visitors';
 
     public function table(Table $table): Table
@@ -21,6 +22,10 @@ class LatestVisitor extends BaseWidget
                     ->label('IP'),
                 TextColumn::make('os')
                     ->label('OS name'),
+                TextColumn::make('browser')
+                    ->label('Browser'),
+                TextColumn::make('device_type')
+                    ->label('Device type'),
                 TextColumn::make('created_at')
                     ->label('Last visited'),
             ])->paginated(false);

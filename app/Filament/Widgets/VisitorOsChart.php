@@ -2,22 +2,56 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Visitor;
 use Filament\Widgets\ChartWidget;
 
 class VisitorOsChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = "OS Visitor";
+    public ?string $filter = 'month';
+
+    public function updateFilter($newFilter)
+    {
+        $this->filter = $newFilter;
+    }
+
+    protected function getFilters(): ?array
+    {
+        return [
+            'month' => date('F Y'),
+            'year' => 'Total in ' . date('Y'),
+        ];
+    }
 
     protected function getData(): array
     {
+        $activeFilter = $this->filter;
+        $start = match ($activeFilter) {
+            'month' => now()->startOfMonth(),
+            'year' => now()->startOfYear(),
+            default => now()->startOfYear(),
+        };
+        $end = now()->endOfYear();
+
+        $data = Visitor::getVisitorOs($start, $end);
+
+        $labels = [];
+        $counts = [];
+        foreach ($data as $entry) {
+            $labels[] = $entry->os ?? 'Unknown';
+            $counts[] = $entry->count;
+        }
+
         return [
             'datasets' => [
                 [
-                    'label' => 'Blog posts created',
-                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                    'label' => 'Most OS Visitor',
+                    'data' => $counts,
+                    'backgroundColor' => '#36A2EB',
+                    'borderColor' => '#9BD0F5',
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'labels' => $labels,
         ];
     }
 

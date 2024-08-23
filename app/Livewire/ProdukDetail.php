@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Category;
+use App\Models\Popular;
 use App\Models\Product;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
@@ -109,6 +110,8 @@ class ProdukDetail extends Component
         JsonLd::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
         JsonLd::setDescription($this->produk->product_description);
         JsonLd::addImage('https://otimflorist.com/storage' . $this->produk->image);
+
+        Popular::saveVisitedProduct($this->produk->id, $this->produk->category_id);
     }
 
     public function render()

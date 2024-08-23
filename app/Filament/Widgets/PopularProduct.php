@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Product;
+use App\Models\Popular;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -16,13 +16,23 @@ class PopularProduct extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->query(Product::latest()->take(5))
+            ->query(
+                Popular::selectRaw('MAX(id) as id,product_id, count(*) as visit, MAX(created_at) as last_visited')
+                    ->with('product')
+                    ->groupBy('product_id')
+                    ->orderByDesc('visit')
+                    ->take(5)
+            )
             ->columns([
-                ImageColumn::make('image')
+                ImageColumn::make('product.image')
                     ->label('Gambar')
                     ->square(),
-                TextColumn::make('product_name')
+                TextColumn::make('product.product_name')
                     ->label('Product'),
+                TextColumn::make('visit')
+                    ->label('Total visited'),
+                TextColumn::make('last_visited')
+                    ->label('Last visited')
             ])->paginated(false);
     }
 }

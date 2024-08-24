@@ -29,6 +29,12 @@ class PopularProduct extends BaseWidget
                     ->square(),
                 TextColumn::make('product.product_name')
                     ->label('Product'),
+                TextColumn::make('product.price')
+                    ->label('Price')
+                    ->money('Rp.'),
+                TextColumn::make('product.sale_price')
+                    ->label('Promo price')
+                    ->money('Rp.'),
                 TextColumn::make('visit')
                     ->label('Total visited'),
                 TextColumn::make('last_visited')

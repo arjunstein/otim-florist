@@ -12,7 +12,7 @@ class PopularProduct extends BaseWidget
 {
     protected static ?int $sort = 3;
     protected int | string | array $columnSpan = 'full';
-    protected static ?string $heading = 'Top 5 most visited product';
+    protected static ?string $heading = 'Top 10 most visited product';
     public function table(Table $table): Table
     {
         return $table
@@ -21,7 +21,7 @@ class PopularProduct extends BaseWidget
                     ->with('product')
                     ->groupBy('product_id')
                     ->orderByDesc('visit')
-                    ->take(5)
+                    ->take(10)
             )
             ->columns([
                 ImageColumn::make('product.image')

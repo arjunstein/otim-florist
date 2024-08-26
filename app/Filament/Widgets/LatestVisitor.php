@@ -11,12 +11,12 @@ class LatestVisitor extends BaseWidget
 {
     protected static ?int $sort = 4;
     protected int | string | array $columnSpan = 'full';
-    protected static ?string $heading = 'Latest 5 visitors';
+    protected static ?string $heading = 'Latest 10 visitors';
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(Visitor::latest()->take(5))
+            ->query(Visitor::latest()->take(10))
             ->columns([
                 TextColumn::make('ip')
                     ->label('IP'),

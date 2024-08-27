@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use App\Models\Visitor;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -39,6 +40,8 @@ class Bungapapanhappywedding extends Component
         JsonLd::setTitle('Jual bunga papan wedding');
         JsonLd::setDescription('Bunga papan wedding jakarta');
         JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
+
+        Visitor::saveVisitor();
     }
 
     public function render()

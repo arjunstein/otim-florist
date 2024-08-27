@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use App\Models\Visitor;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -85,6 +86,8 @@ class Handbouquet extends Component
         JsonLd::setTitle('Jual hand bouquet jakarta');
         JsonLd::setDescription('Menjual hand buket bisa request desain dan bunga');
         JsonLd::addImage('https://otimflorist.com/img/hand-bouquet-bridal.webp');
+
+        Visitor::saveVisitor();
     }
 
     public function render()

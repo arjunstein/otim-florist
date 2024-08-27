@@ -15,6 +15,7 @@ class Visitor extends Model
 
     protected $guarded = [];
 
+    // landing page
     public static function saveVisitor()
     {
         $ip = Request::ip();

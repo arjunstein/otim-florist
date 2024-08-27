@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Visitor;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -29,6 +30,8 @@ class Tentang extends Component
         JsonLd::setTitle('Tentang Otim Florist');
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
         JsonLd::addImage('https://otimflorist.com/img/favicon.png');
+
+        Visitor::saveVisitor();
     }
     public function render()
     {

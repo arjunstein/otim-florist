@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Category;
 use App\Models\Popular;
 use App\Models\Product;
+use App\Models\Visitor;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -112,6 +113,7 @@ class ProdukDetail extends Component
         JsonLd::addImage('https://otimflorist.com/storage' . $this->produk->image);
 
         Popular::saveVisitedProduct($this->produk->id, $this->produk->category_id);
+        Visitor::saveVisitor();
     }
 
     public function render()

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use App\Models\Visitor;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -85,6 +86,8 @@ class Bungasalib extends Component
         JsonLd::setTitle('Jual bunga salib');
         JsonLd::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
         JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
+
+        Visitor::saveVisitor();
     }
 
     public function render()

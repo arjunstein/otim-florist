@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Ad;
 use App\Models\Product;
+use App\Models\Visitor;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -96,6 +97,8 @@ class Promopage extends Component
         JsonLd::setTitle(!empty($this->ad->first()->title) ? $this->ad->first()->title : 'Promo Bunga Murah | Otim Florist');
         JsonLd::setDescription('Promo produk pilihan hanya hari ini saja');
         JsonLd::addImage(!empty($this->ad->first()->image) ? 'https://otimflorist.com/storage/' . $this->ad->first()->image : '');
+
+        Visitor::saveVisitor();
     }
 
     public function render()

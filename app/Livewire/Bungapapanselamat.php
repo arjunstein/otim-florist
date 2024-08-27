@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use App\Models\Visitor;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -85,6 +86,8 @@ class Bungapapanselamat extends Component
         JsonLd::setTitle('Jual bunga papan selamat');
         JsonLd::setDescription('Menyediakan bunga papan ucapan selamat, pelantikan, promosi, dan serah terima jabatan');
         JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
+
+        Visitor::saveVisitor();
     }
 
     public function render()

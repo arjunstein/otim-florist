@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use App\Models\Visitor;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -85,6 +86,8 @@ class Bungameja extends Component
         JsonLd::setTitle('Jual bunga meja');
         JsonLd::setDescription('Menyediakan bunga meja untuk acara kantor dan sebagainya');
         OpenGraph::addImage('https://otimflorist.com/img/front.webp');
+
+        Visitor::saveVisitor();
     }
 
     public function render()

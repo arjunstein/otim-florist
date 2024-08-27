@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use App\Models\Visitor;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -86,6 +87,8 @@ class Bungastanding extends Component
         JsonLd::setTitle('Jual bunga standing');
         JsonLd::setDescription('Menyediakan bunga standing untuk berbagai keperluan murah berkualitas');
         JsonLd::addImage('https://otimflorist.com/img/bunga-standing.webp');
+
+        Visitor::saveVisitor();
     }
 
     public function render()

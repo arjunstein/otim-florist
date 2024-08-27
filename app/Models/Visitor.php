@@ -18,20 +18,25 @@ class Visitor extends Model
     public static function saveVisitor()
     {
         $ip = Request::ip();
+        $session = Request::session();
 
-        $agent = new Agent();
-        $os = $agent->platform();
-        $browser = $agent->browser();
-        $device = $agent->deviceType();
-        $isRobot = $agent->isRobot();
+        if (!$session->has('visitor_logged')) {
+            $agent = new Agent();
+            $os = $agent->platform();
+            $browser = $agent->browser();
+            $device = $agent->deviceType();
+            $isRobot = $agent->isRobot();
 
-        if (!$isRobot) {
-            self::create([
-                'ip' => $ip,
-                'os' => $os,
-                'browser' => $browser,
-                'device_type' => $device,
-            ]);
+            if (!$isRobot) {
+                self::create([
+                    'ip' => $ip,
+                    'os' => $os,
+                    'browser' => $browser,
+                    'device_type' => $device,
+                ]);
+
+                $session->put('visitor_logged', true);
+            }
         }
     }
 

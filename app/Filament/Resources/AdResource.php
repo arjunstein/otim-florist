@@ -15,7 +15,7 @@ class AdResource extends Resource
 {
     protected static ?string $model = Ad::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-c-percent-badge';
 
     public static function form(Form $form): Form
     {

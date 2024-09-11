@@ -15,31 +15,43 @@ class Visitor extends Model
 
     protected $guarded = [];
 
-    // landing page
     public static function saveVisitor()
     {
+        $sessionLength = 60 * 60; // 1 jam
         $ip = Request::ip();
         $session = Request::session();
 
-        if (!$session->has('visitor_logged')) {
-            $agent = new Agent();
-            $os = $agent->platform();
-            $browser = $agent->browser();
-            $device = $agent->deviceType();
-            $isRobot = $agent->isRobot();
+        $lastVisited = $session->get('last_visited');
+        $currentTime = time();
 
-            if ($isRobot === false) {
-                self::create([
-                    'ip' => $ip,
-                    'os' => $os,
-                    'browser' => $browser,
-                    'device_type' => $device,
-                ]);
+        if ($lastVisited && ($currentTime - $lastVisited < $sessionLength)) {
+            $exists = self::where('ip', $ip)
+                ->where('created_at', '>=', date('Y-m-d H:i:s', $lastVisited))
+                ->exists();
 
-                $session->put('visitor_logged', true);
+            if ($exists) {
+                return;
             }
         }
+
+        $agent = new Agent();
+        $os = $agent->platform();
+        $browser = $agent->browser();
+        $device = $agent->deviceType();
+        $isRobot = $agent->isRobot();
+
+        if ($isRobot === false) {
+            self::create([
+                'ip' => $ip,
+                'os' => $os,
+                'browser' => $browser,
+                'device_type' => $device,
+            ]);
+
+            $session->put('last_visited', $currentTime);
+        }
     }
+
 
     public static function getVisitorOs($start, $end): Collection
     {

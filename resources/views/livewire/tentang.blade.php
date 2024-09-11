@@ -8,7 +8,7 @@
     <div class="container-fluid contact">
         <div class="container py-5">
             <div class="p-3 bg-light rounded">
-                <div class="row g-4">
+                <div class="row g-4 justify-content-center">
                     <div class="col-md-12">
                         <div class="text-center mx-auto" style="max-width: 100%;">
                             <h1 class="text-primary">Otim Florist</h1>
@@ -40,38 +40,36 @@
                                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <h3 class="text-primary text-center mt-4">Silahkan subscribe untuk mendapatkan info promo</h3>
-                        <div class="col-lg-7">
-                            @if (session('status'))
-                                <div class="alert alert-success">
-                                    {{ session('status') }}
-                                </div>
-                            @elseif (session('oops'))
-                                <div class="alert alert-danger">
-                                    {{ session('oops') }}
-                                </div>
-                            @endif
-                            <form wire:submit="subscriber">
-                                @error('fullname')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <input type="text" class="w-100 form-control border-0 py-3 mb-4"
-                                    placeholder="Nama lengkap" wire:model="fullname">
-                                @error('email')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <input type="email" class="w-100 form-control border-0 py-3 mb-4"
-                                    placeholder="Email aktif" wire:model="email">
-                                @error('messages')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10" placeholder="Tinggalkan pesan"
-                                    wire:model="messages"></textarea>
-                                <button class="w-100 btn form-control border-secondary py-3 bg-primary text-white "
-                                    type="submit">Submit</button>
-                            </form>
-                        </div>
+                    <h3 class="text-primary text-center mt-4">Silahkan subscribe untuk mendapatkan info promo</h3>
+                    <div class="col-lg-6">
+                        @if (session('status'))
+                            <div class="alert alert-success">
+                                {{ session('status') }}
+                            </div>
+                        @elseif (session('oops'))
+                            <div class="alert alert-danger">
+                                {{ session('oops') }}
+                            </div>
+                        @endif
+                        <form wire:submit="subscriber">
+                            @error('fullname')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                            <input type="text" class="w-100 form-control border-0 py-3 mb-4"
+                                placeholder="Nama lengkap" wire:model="fullname">
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                            <input type="email" class="w-100 form-control border-0 py-3 mb-4"
+                                placeholder="Email aktif" wire:model="email">
+                            @error('messages')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                            <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10" placeholder="Tinggalkan pesan"
+                                wire:model="messages"></textarea>
+                            <button class="w-100 btn form-control border-secondary py-3 bg-primary text-white "
+                                type="submit">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>

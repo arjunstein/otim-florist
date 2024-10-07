@@ -26,20 +26,20 @@ class Bungapapanhappywedding extends Component
     {
         SEOMeta::setTitle('Bunga papan wedding');
         SEOMeta::setDescription('karangan bunga papan wedding terbaik di jakarta');
-        SEOMeta::setCanonical('https://otimflorist.com');
+        SEOMeta::setCanonical('https://otimfloristjakarta.com');
 
         OpenGraph::setDescription('karangan bunga papan wedding jakarta terbaik');
         OpenGraph::setTitle('Bunga papan wedding terbaik di jakarta');
-        OpenGraph::setUrl('https://otimflorist.com');
+        OpenGraph::setUrl('https://otimfloristjakarta.com');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
+        OpenGraph::addImage('https://otimfloristjakarta.com/img/landing.jpeg');
 
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle('Jual bunga papan wedding');
         JsonLd::setDescription('Bunga papan wedding jakarta');
-        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
+        JsonLd::addImage('https://otimfloristjakarta.com/img/landing.jpeg');
 
         Visitor::saveVisitor();
     }

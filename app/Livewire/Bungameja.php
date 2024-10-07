@@ -26,7 +26,7 @@ class Bungameja extends Component
     {
         SEOMeta::setTitle('Bunga meja');
         SEOMeta::setDescription('Menyediakan bunga meja untuk acara kantor dan sebagainya');
-        SEOMeta::setCanonical('https://otimflorist.com/kategori/bunga-meja');
+        SEOMeta::setCanonical('https://otimfloristjakarta.com/kategori/bunga-meja');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "toko bunga jakarta",
@@ -76,16 +76,16 @@ class Bungameja extends Component
 
         OpenGraph::setDescription('Menyediakan bunga meja untuk acara kantor dan sebagainya');
         OpenGraph::setTitle('Jual bunga meja');
-        OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-meja');
+        OpenGraph::setUrl('https://otimfloristjakarta.com/kategori/bunga-meja');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/front.webp');
+        OpenGraph::addImage('https://otimfloristjakarta.com/img/front.webp');
 
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle('Jual bunga meja');
         JsonLd::setDescription('Menyediakan bunga meja untuk acara kantor dan sebagainya');
-        OpenGraph::addImage('https://otimflorist.com/img/front.webp');
+        OpenGraph::addImage('https://otimfloristjakarta.com/img/front.webp');
 
         Visitor::saveVisitor();
     }

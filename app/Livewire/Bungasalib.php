@@ -26,7 +26,7 @@ class Bungasalib extends Component
     {
         SEOMeta::setTitle('Bunga salib');
         SEOMeta::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
-        SEOMeta::setCanonical('https://otimflorist.com/kategori/bunga-salib');
+        SEOMeta::setCanonical('https://otimfloristjakarta.com/kategori/bunga-salib');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "toko bunga jakarta",
@@ -76,16 +76,16 @@ class Bungasalib extends Component
 
         OpenGraph::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
         OpenGraph::setTitle('Jual bunga salib');
-        OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-salib');
+        OpenGraph::setUrl('https://otimfloristjakarta.com/kategori/bunga-salib');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
+        OpenGraph::addImage('https://otimfloristjakarta.com/img/landing.jpeg');
 
         TwitterCard::setTitle('Jual bunga salib');
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle('Jual bunga salib');
         JsonLd::setDescription('Menyediakan bunga salib untuk keperluan pemakaman dan dukacita');
-        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
+        JsonLd::addImage('https://otimfloristjakarta.com/img/landing.jpeg');
 
         Visitor::saveVisitor();
     }

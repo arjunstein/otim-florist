@@ -27,7 +27,7 @@ class Bungapapancongratulation extends Component
     {
         SEOMeta::setTitle('Bunga papan congratulations');
         SEOMeta::setDescription('Menyediakan bunga papan congratulations untuk berbagai acara');
-        SEOMeta::setCanonical('https://otimflorist.com/kategori/bunga-papan-conratulations');
+        SEOMeta::setCanonical('https://otimfloristjakarta.com/kategori/bunga-papan-conratulations');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "toko bunga jakarta",
@@ -77,16 +77,16 @@ class Bungapapancongratulation extends Component
 
         OpenGraph::setDescription('Menyediakan bunga papan congratulations untuk berbagai acara');
         OpenGraph::setTitle('Jual bunga papan congratulations');
-        OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-papan-conratulations');
+        OpenGraph::setUrl('https://otimfloristjakarta.com/kategori/bunga-papan-conratulations');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
+        OpenGraph::addImage('https://otimfloristjakarta.com/img/landing.jpeg');
 
         TwitterCard::setTitle('Jual bunga papan congratulations');
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle('Jual bunga papan congratulations');
         JsonLd::setDescription('Menyediakan bunga papan congratulations untuk berbagai acara');
-        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
+        JsonLd::addImage('https://otimfloristjakarta.com/img/landing.jpeg');
 
         Visitor::saveVisitor();
     }

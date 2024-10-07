@@ -26,7 +26,7 @@ class Bungapapan extends Component
     {
         SEOMeta::setTitle('Bunga papan');
         SEOMeta::setDescription('Toko karangan bunga yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        SEOMeta::setCanonical('https://otimflorist.com/kategori/bunga-papan');
+        SEOMeta::setCanonical('https://otimfloristjakarta.com/kategori/bunga-papan');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "toko bunga jakarta",
@@ -76,16 +76,16 @@ class Bungapapan extends Component
 
         OpenGraph::setDescription('bunga papan jakarta dan sekitarnya murah berkualitas');
         OpenGraph::setTitle('Jual bunga papan');
-        OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-papan');
+        OpenGraph::setUrl('https://otimfloristjakarta.com/kategori/bunga-papan');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/landing.jpeg');
+        OpenGraph::addImage('https://otimfloristjakarta.com/img/landing.jpeg');
 
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle('Jual bunga papan');
         JsonLd::setDescription('Toko bunga online yang menawarkan berbagai macam bunga segar untuk berbagai acara seperti ulang tahun, pernikahan, dan hari spesial lainnya. Pilih dari berbagai buket dan karangan bunga yang cantik dan menawan');
-        JsonLd::addImage('https://otimflorist.com/img/landing.jpeg');
+        JsonLd::addImage('https://otimfloristjakarta.com/img/landing.jpeg');
 
         Visitor::saveVisitor();
     }

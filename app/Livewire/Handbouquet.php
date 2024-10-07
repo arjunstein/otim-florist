@@ -26,7 +26,7 @@ class Handbouquet extends Component
     {
         SEOMeta::setTitle('Hand bouquet jakarta');
         SEOMeta::setDescription('Menjual hand buket bisa request desain dan bunga');
-        SEOMeta::setCanonical('https://otimflorist.com/kategori/hand-bouquet');
+        SEOMeta::setCanonical('https://otimfloristjakarta.com/kategori/hand-bouquet');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "toko bunga jakarta",
@@ -76,16 +76,16 @@ class Handbouquet extends Component
 
         OpenGraph::setDescription('Menjual hand buket bisa request desain dan bunga');
         OpenGraph::setTitle('Jual hand bouquet jakarta');
-        OpenGraph::setUrl('https://otimflorist.com/kategori/hand-bouquet');
+        OpenGraph::setUrl('https://otimfloristjakarta.com/kategori/hand-bouquet');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/hand-bouquet-bridal.webp');
+        OpenGraph::addImage('https://otimfloristjakarta.com/img/hand-bouquet-bridal.webp');
 
         TwitterCard::setTitle('Jual hand bouquet jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle('Jual hand bouquet jakarta');
         JsonLd::setDescription('Menjual hand buket bisa request desain dan bunga');
-        JsonLd::addImage('https://otimflorist.com/img/hand-bouquet-bridal.webp');
+        JsonLd::addImage('https://otimfloristjakarta.com/img/hand-bouquet-bridal.webp');
 
         Visitor::saveVisitor();
     }

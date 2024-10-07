@@ -26,7 +26,7 @@ class Bungastanding extends Component
     {
         SEOMeta::setTitle('Bunga standing');
         SEOMeta::setDescription('Menyediakan bunga standing untuk berbagai keperluan');
-        SEOMeta::setCanonical('https://otimflorist.com/kategori/bunga-standing');
+        SEOMeta::setCanonical('https://otimfloristjakarta.com/kategori/bunga-standing');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "toko bunga jakarta",
@@ -77,16 +77,16 @@ class Bungastanding extends Component
 
         OpenGraph::setDescription('Menyediakan bunga standing untuk berbagai keperluan');
         OpenGraph::setTitle('Jual bunga standing');
-        OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-standing');
+        OpenGraph::setUrl('https://otimfloristjakarta.com/kategori/bunga-standing');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimflorist.com/img/bunga-standing.webp');
+        OpenGraph::addImage('https://otimfloristjakarta.com/img/bunga-standing.webp');
 
         TwitterCard::setTitle('Bunga standing');
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle('Jual bunga standing');
         JsonLd::setDescription('Menyediakan bunga standing untuk berbagai keperluan murah berkualitas');
-        JsonLd::addImage('https://otimflorist.com/img/bunga-standing.webp');
+        JsonLd::addImage('https://otimfloristjakarta.com/img/bunga-standing.webp');
 
         Visitor::saveVisitor();
     }

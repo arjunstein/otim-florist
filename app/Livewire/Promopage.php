@@ -32,7 +32,7 @@ class Promopage extends Component
 
         SEOMeta::setTitle('Promo produk pilihan');
         SEOMeta::setDescription('promo bunga jakarta segera pesan sekarang sebelum promo berakhir');
-        SEOMeta::setCanonical('https://otimflorist.com/promo');
+        SEOMeta::setCanonical('https://otimfloristjakarta.com/promo');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "promo karangan bunga murah",
@@ -85,18 +85,19 @@ class Promopage extends Component
         ]);
 
         OpenGraph::setDescription('Promo produk pilihan hanya hari ini saja');
-        OpenGraph::setTitle(!empty($this->ad->first()->title) ? $this->ad->first()->title : 'Promo Bunga Murah | Otim Florist');
-        OpenGraph::setUrl('https://otimflorist.com/promo');
+        OpenGraph::setTitle(!empty($this->ad) && $this->ad->first() ? $this->ad->first()->title : 'Promo Bunga Murah | Otim Florist');
+        OpenGraph::setUrl('https://otimfloristjakarta.com/promo');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage(!empty($this->ad->first()->image) ? 'https://otimflorist.com/storage/' . $this->ad->first()->image : '');
+        OpenGraph::addImage(!empty($this->ad) && $this->ad->first() && !empty($this->ad->first()->image) ? 'https://otimfloristjakarta.com/storage/' . $this->ad->first()->image : '');
+
 
 
         TwitterCard::setTitle('Promo bunga papan jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
-        JsonLd::setTitle(!empty($this->ad->first()->title) ? $this->ad->first()->title : 'Promo Bunga Murah | Otim Florist');
+        JsonLd::setTitle(!empty($this->ad) && $this->ad->first() ? $this->ad->first()->title : 'Promo Bunga Murah | Otim Florist');
         JsonLd::setDescription('Promo produk pilihan hanya hari ini saja');
-        JsonLd::addImage(!empty($this->ad->first()->image) ? 'https://otimflorist.com/storage/' . $this->ad->first()->image : '');
+        JsonLd::addImage(!empty($this->ad) && $this->ad->first() && !empty($this->ad->first()->image) ? 'https://otimfloristjakarta.com/storage/' . $this->ad->first()->image : '');
 
         Visitor::saveVisitor();
     }

@@ -40,7 +40,7 @@ class Visitor extends Model
         $device = $agent->deviceType();
         $isRobot = $agent->isRobot();
 
-        if ($isRobot === false) {
+        if ($isRobot) {
             self::create([
                 'ip' => $ip,
                 'os' => $os,

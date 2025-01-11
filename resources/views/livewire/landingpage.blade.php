@@ -13,7 +13,7 @@
                                 <div class="carousel-item {{ $i == 0 ? 'active' : '' }} rounded">
                                     <img src="{{ asset('storage/' . $ads->image) }}"
                                         class="img-fluid w-100 h-100 bg-secondary rounded" alt="{{ $ads->title }}">
-                                    <a href="{{ route('promo') }}" class="w-100 h-100" wire:navigate></a>
+                                    <a href="{{ url($ads->url) }}" class="w-100 h-100" target="_blank"></a>
                                 </div>
                             @empty
                             @endforelse

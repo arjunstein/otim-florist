@@ -60,10 +60,23 @@ class ProductResource extends Resource
                     ->required()
                     ->numeric()
                     ->prefix('Rp'),
+                Forms\Components\TextInput::make('discount')
+                    ->label('Diskon')
+                    ->numeric()
+                    ->maxValue(100)
+                    ->suffix('%')
+                    ->reactive()
+                    ->afterStateUpdated(function (Set $set, Get $get) {
+                        $price = $get('price');
+                        $discount = $get('discount');
+                        $salePrice = $price && $discount ? $price - ($price * $discount / 100) : $price;
+                        $set('sale_price', $salePrice);
+                    }),
                 Forms\Components\TextInput::make('sale_price')
                     ->label('Harga promo')
                     ->numeric()
-                    ->prefix('Rp'),
+                    ->prefix('Rp')
+                    ->readOnly(),
                 Forms\Components\Textarea::make('product_description')
                     ->label('Deskripsi produk')
                     ->required()
@@ -93,6 +106,10 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('price')
                     ->label('Harga')
                     ->money('Rp.')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('discount')
+                    ->label('Diskon')
+                    ->suffix('%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sale_price')
                     ->label('Harga promo')

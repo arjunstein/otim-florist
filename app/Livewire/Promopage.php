@@ -27,7 +27,7 @@ class Promopage extends Component
     public function mount()
     {
         $this->ad = Cache::remember('ads-promo', 60 * 60 * 6, function () {
-            return Ad::all()->first();
+            return Ad::all();
         });
 
         SEOMeta::setTitle('Promo produk pilihan');
@@ -90,8 +90,6 @@ class Promopage extends Component
         OpenGraph::addProperty('type', 'articles');
         OpenGraph::addImage(!empty($this->ad) && $this->ad->first() && !empty($this->ad->first()->image) ? 'https://otimfloristjakarta.com/storage/' . $this->ad->first()->image : '');
 
-
-
         TwitterCard::setTitle('Promo bunga papan jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
@@ -122,7 +120,7 @@ class Promopage extends Component
     private function getProducts($amount)
     {
         return Cache::remember("products-promo-{$amount}", 60 * 60 * 6, function () use ($amount) {
-            return Product::where('sale_price', '!=', null)
+            return Product::where('discount', '!=', null)
                 ->orderBy('sale_price', 'asc')
                 ->paginate($amount);
         });

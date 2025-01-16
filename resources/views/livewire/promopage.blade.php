@@ -46,13 +46,13 @@
                                                     style="flex-direction: column;">
                                                     <p class="fs-c fs-5 fw-bold mb-2">
                                                         <span class="text-decoration-line-through text-danger">
-                                                            {{ isset($product->sale_price) ? 'Rp. ' . number_format($product->price) : '' }}
+                                                            {{ isset($product->discount) ? 'Rp. ' . number_format($product->price) : '' }}
                                                         </span>
                                                         <span
-                                                            class="{{ isset($product->sale_price) ? 'text-success' : 'text-dark' }}">
+                                                            class="{{ isset($product->discount) ? 'text-success' : 'text-dark' }}">
 
                                                             Rp.
-                                                            {{ isset($product->sale_price) ? number_format($product->sale_price) : number_format($product->price) }}
+                                                            {{ isset($product->discount) ? number_format($product->sale_price) : number_format($product->price) }}
                                                         </span>
                                                     </p>
                                                     <a href="{{ route('order', ['id' => Str::slug($product->id)]) }}"

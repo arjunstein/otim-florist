@@ -102,7 +102,7 @@ class Landingpage extends Component
         $cachedView = Cache::remember("landingpage-html-{$this->amount}", 60 * 60 * 6, function () {
             $products = Cache::remember("products-{$this->amount}", 60 * 60 * 6, function () {
                 return Product::where('product_name', 'LIKE', '%bp%')
-                    ->where('sale_price', null)
+                    ->where('discount', null)
                     ->orderBy('price', 'asc')->take($this->amount)->get();
             });
 

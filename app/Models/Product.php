@@ -56,5 +56,13 @@ class Product extends Model
             Cache::forget("products-hand-bouquet-20"); // delete cache hand bouquet
             Cache::forget("categories_with_count"); // delete cache product detail
         });
+
+        static::saving(function ($product) {
+            if ($product->price && $product->discount) {
+                $product->sale_price = $product->price - ($product->price * $product->discount / 100);
+            } else {
+                $product->sale_price = $product->price; // Jika tidak ada diskon, gunakan harga asli
+            }
+        });
     }
 }

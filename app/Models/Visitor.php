@@ -34,6 +34,9 @@ class Visitor extends Model
             }
         }
 
+        $endpoint = env('ENDPOINT_IP_API') . $ip;
+        $data = json_decode(file_get_contents($endpoint), true);
+
         $agent = new Agent();
         $os = $agent->platform();
         $browser = $agent->browser();
@@ -46,6 +49,8 @@ class Visitor extends Model
                 'os' => $os,
                 'browser' => $browser,
                 'device_type' => $device,
+                'country' => $data['country'] ?? null,
+                'city' => $data['city'] ?? null,
             ]);
 
             $session->put('last_visited', $currentTime);

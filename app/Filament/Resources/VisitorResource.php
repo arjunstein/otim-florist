@@ -57,6 +57,12 @@ class VisitorResource extends Resource
                 Tables\Columns\TextColumn::make('device_type')
                     ->label('Device Type')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('country')
+                    ->label('Negara')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('city')
+                    ->label('Kota')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Last Visit')
                     ->dateTime()

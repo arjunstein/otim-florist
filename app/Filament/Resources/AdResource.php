@@ -25,7 +25,6 @@ class AdResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('url')
-                    ->required()
                     ->activeUrl()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')

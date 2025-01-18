@@ -26,6 +26,10 @@ class LatestVisitor extends BaseWidget
                     ->label('Browser'),
                 TextColumn::make('device_type')
                     ->label('Device type'),
+                TextColumn::make('country')
+                    ->label('Negara'),
+                TextColumn::make('city')
+                    ->label('Kota'),
                 TextColumn::make('created_at')
                     ->label('Last visited'),
             ])->paginated(false);

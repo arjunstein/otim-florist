@@ -34,8 +34,15 @@ class Visitor extends Model
             }
         }
 
-        $endpoint = env('ENDPOINT_IP_API') . $ip;
-        $data = json_decode(file_get_contents($endpoint), true);
+        $endpoint = env('ENDPOINT_IP_API') . "103.166.90.146";
+        $data = unserialize(file_get_contents($endpoint));
+        if ($data['status'] === 'success') {
+            $country = $data['country'];
+            $city = $data['city'];
+        } else {
+            $country = 'Unknown';
+            $city = 'Unknown';
+        }
 
         $agent = new Agent();
         $os = $agent->platform();
@@ -49,8 +56,8 @@ class Visitor extends Model
                 'os' => $os,
                 'browser' => $browser,
                 'device_type' => $device,
-                'country' => $data['country'] ?? null,
-                'city' => $data['city'] ?? null,
+                'country' => $country,
+                'city' => $city,
             ]);
 
             $session->put('last_visited', $currentTime);

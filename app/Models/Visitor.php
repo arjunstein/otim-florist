@@ -34,7 +34,7 @@ class Visitor extends Model
             }
         }
 
-        $endpoint = env('ENDPOINT_IP_API') . "103.166.90.146";
+        $endpoint = env('ENDPOINT_IP_API') . $ip;
         $data = unserialize(file_get_contents($endpoint));
         if ($data['status'] === 'success') {
             $country = $data['country'];

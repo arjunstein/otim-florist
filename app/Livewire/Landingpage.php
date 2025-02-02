@@ -29,7 +29,7 @@ class Landingpage extends Component
     {
         SEOMeta::setTitle('Otim Florist Jakarta');
         SEOMeta::setDescription('Jual bunga papan, bunga standing, bunga meja, bunga pengantin, bunga salib');
-        SEOMeta::setCanonical('https://otimfloristjakarta.com');
+        SEOMeta::setCanonical('https://otimflorist.com');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "toko bunga jakarta",
@@ -79,16 +79,16 @@ class Landingpage extends Component
 
         OpenGraph::setTitle('Jual bunga papan');
         OpenGraph::setDescription('Jual bunga papan, bunga standing, bunga meja, bunga pengantin, bunga salib');
-        OpenGraph::setUrl('https://otimfloristjakarta.com');
+        OpenGraph::setUrl('https://otimflorist.com');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimfloristjakarta.com/img/front.webp');
+        OpenGraph::addImage('https://otimflorist.com/img/front.webp');
 
         TwitterCard::setTitle('Otim Florist Jakarta');
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle('Jual bunga papan');
         JsonLd::setDescription('Jual bunga papan, bunga standing, bunga meja, bunga pengantin, bunga salib');
-        JsonLd::addImage('https://otimfloristjakarta.com/img/front.webp/');
+        JsonLd::addImage('https://otimflorist.com/img/front.webp/');
 
         $this->ad = Cache::remember('ads', 60 * 60 * 6, function () {
             return Ad::all();

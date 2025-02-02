@@ -26,7 +26,7 @@ class Bungapapandukacita extends Component
     {
         SEOMeta::setTitle('Bunga papan dukacita');
         SEOMeta::setDescription('Menjual bunga papan dukacita berbagai ukuran dan bisa request desain warna');
-        SEOMeta::setCanonical('https://otimfloristjakarta.com/kategori/bunga-papan-dukacita');
+        SEOMeta::setCanonical('https://otimflorist.com/kategori/bunga-papan-dukacita');
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "toko bunga jakarta",
@@ -76,16 +76,16 @@ class Bungapapandukacita extends Component
 
         OpenGraph::setDescription('Menjual bunga papan dukacita berbagai ukuran dan bisa request desain warna');
         OpenGraph::setTitle('Jual bunga papan dukacita');
-        OpenGraph::setUrl('https://otimfloristjakarta.com/kategori/bunga-papan-dukacita');
+        OpenGraph::setUrl('https://otimflorist.com/kategori/bunga-papan-dukacita');
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimfloristjakarta.com/img/front.webp');
+        OpenGraph::addImage('https://otimflorist.com/img/front.webp');
 
         TwitterCard::setTitle('Jual bunga papan dukacita');
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle('Jual bunga papan dukacita');
         JsonLd::setDescription('Menjual bunga papan dukacita berbagai ukuran dan bisa request desain warna');
-        JsonLd::addImage('https://otimfloristjakarta.com/img/front.webp');
+        JsonLd::addImage('https://otimflorist.com/img/front.webp');
 
         Visitor::saveVisitor();
     }

@@ -51,7 +51,7 @@ class ProdukDetail extends Component
 
         SEOMeta::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
         SEOMeta::setDescription($this->produk->product_description);
-        SEOMeta::setCanonical('https://otimfloristjakarta.com/produk/' . $slug . '/' . $product_name . '/' . $id);
+        SEOMeta::setCanonical('https://otimflorist.com/produk/' . $slug . '/' . $product_name . '/' . $id);
         SEOMeta::addKeyword([
             "karangan bunga jakarta",
             "toko bunga jakarta",
@@ -101,16 +101,16 @@ class ProdukDetail extends Component
 
         OpenGraph::setDescription($this->produk->product_description);
         OpenGraph::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
-        OpenGraph::setUrl('https://otimfloristjakarta.com/produk/' . $slug . '/' . $product_name . '/' . $id);
+        OpenGraph::setUrl('https://otimflorist.com/produk/' . $slug . '/' . $product_name . '/' . $id);
         OpenGraph::addProperty('type', 'articles');
-        OpenGraph::addImage('https://otimfloristjakarta.com/storage' . $this->produk->image);
+        OpenGraph::addImage('https://otimflorist.com/storage' . $this->produk->image);
 
         TwitterCard::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
         TwitterCard::setSite('@otimfloristjakarta');
 
         JsonLd::setTitle(ucwords(str_replace('-', ' ', $slug . ' ' . ucwords($product_name))));
         JsonLd::setDescription($this->produk->product_description);
-        JsonLd::addImage('https://otimfloristjakarta.com/storage' . $this->produk->image);
+        JsonLd::addImage('https://otimflorist.com/storage' . $this->produk->image);
 
         Popular::saveVisitedProduct($this->produk->id, $this->produk->category_id);
         Visitor::saveVisitor();

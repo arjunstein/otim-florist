@@ -9,7 +9,7 @@ use Flowframe\Trend\TrendValue;
 
 class VisitorChart extends ChartWidget
 {
-    protected static ?string $heading = 'Visitor';
+    protected static ?string $heading = 'Pengunjung';
     protected static string $color = 'success';
     public ?string $filter = 'month';
 

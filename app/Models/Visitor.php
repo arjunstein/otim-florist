@@ -75,4 +75,26 @@ class Visitor extends Model
             ->groupBy('os')
             ->get();
     }
+
+    public static function getCountries($start, $end): Collection
+    {
+        return self::select(
+            'country',
+            DB::raw('count(*) as count')
+        )
+            ->whereBetween('created_at', [$start, $end])
+            ->groupBy('country')
+            ->get();
+    }
+
+    public static function getCities($start, $end): Collection
+    {
+        return self::select(
+            'city',
+            DB::raw('count(*) as count')
+        )
+            ->whereBetween('created_at', [$start, $end])
+            ->groupBy('city')
+            ->get();
+    }
 }

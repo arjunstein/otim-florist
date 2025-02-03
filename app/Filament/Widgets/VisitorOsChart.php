@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 
 class VisitorOsChart extends ChartWidget
 {
-    protected static ?string $heading = "OS Visitor";
+    protected static ?string $heading = "OS Pengunjung";
     public ?string $filter = 'month';
 
     public function updateFilter($newFilter)

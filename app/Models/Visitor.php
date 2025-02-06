@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Request;
 use Jenssegers\Agent\Agent;
 
@@ -17,40 +20,41 @@ class Visitor extends Model
 
     public static function saveVisitor()
     {
-        $sessionLength = 60 * 60; // 1 jam
         $ip = Request::ip();
-        $session = Request::session();
+        $cacheKey = 'last_visited_' . $ip;
 
-        $lastVisited = $session->get('last_visited');
-        $currentTime = time();
-
-        if ($lastVisited && ($currentTime - $lastVisited < $sessionLength)) {
-            $exists = self::where('ip', $ip)
-                ->where('created_at', '>=', date('Y-m-d H:i:s', $lastVisited))
-                ->exists();
-
-            if ($exists) {
-                return;
-            }
+        // Cek jika IP sudah tersimpan dalam cache untuk periode 1 jam
+        if (Cache::has($cacheKey)) {
+            return;
         }
 
+        // Cek apakah IP ini sudah ada di database dalam 1 jam terakhir
+        $oneHourAgo = Carbon::now()->subHour();
+        $exists = self::where('ip', $ip)
+            ->where('created_at', '>=', $oneHourAgo)
+            ->exists();
+
+        if ($exists) {
+            return;
+        }
+
+        // Mengambil data lokasi berdasarkan IP
         $endpoint = env('ENDPOINT_IP_API') . $ip;
-        $data = unserialize(file_get_contents($endpoint));
-        if ($data['status'] === 'success') {
-            $country = $data['country'];
-            $city = $data['city'];
-        } else {
-            $country = 'Unknown';
-            $city = 'Unknown';
-        }
+        $response = Http::get($endpoint);
+        $data = $response->successful() ? $response->json() : ['status' => 'failed'];
 
+        $country = $data['status'] === 'success' ? $data['country'] : 'Unknown';
+        $city = $data['status'] === 'success' ? $data['city'] : 'Unknown';
+
+        // Deteksi informasi user
         $agent = new Agent();
         $os = $agent->platform();
         $browser = $agent->browser();
         $device = $agent->deviceType();
         $isRobot = $agent->isRobot();
 
-        if ($isRobot === false) {
+        // Jika bukan robot, simpan ke database
+        if (!$isRobot) {
             self::create([
                 'ip' => $ip,
                 'os' => $os,
@@ -60,10 +64,10 @@ class Visitor extends Model
                 'city' => $city,
             ]);
 
-            $session->put('last_visited', $currentTime);
+            // Simpan ke cache agar tidak duplikat dalam 1 jam
+            Cache::put($cacheKey, true, now()->addHour());
         }
     }
-
 
     public static function getVisitorOs($start, $end): Collection
     {

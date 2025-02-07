@@ -34,7 +34,7 @@ class Visitor extends Model
             }
         }
 
-        $endpoint = env('ENDPOINT_IP_API') . $ip;
+        $endpoint = env('ENDPOINT_IP_API') . $ip . "?fields=status,continent,country,city,query";
         $data = unserialize(file_get_contents($endpoint));
         if ($data['status'] === 'success' && $data['continent'] === 'Asia') {
             $country = $data['country'];
@@ -49,7 +49,7 @@ class Visitor extends Model
         $browser = $agent->browser();
         $device = $agent->deviceType();
         $isRobot = $agent->isRobot();
-
+        dd($data);
         if (!$isRobot) {
             self::create([
                 'ip' => $ip,

@@ -36,7 +36,7 @@ class Visitor extends Model
 
         $endpoint = env('ENDPOINT_IP_API') . $ip;
         $data = unserialize(file_get_contents($endpoint));
-        if ($data['status'] === 'success') {
+        if ($data['status'] === 'success' && $data['continent'] === 'Asia') {
             $country = $data['country'];
             $city = $data['city'];
         } else {

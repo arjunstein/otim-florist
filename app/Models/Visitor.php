@@ -40,8 +40,7 @@ class Visitor extends Model
             $country = $data['country'];
             $city = $data['city'];
         } else {
-            $country = 'Unknown';
-            $city = 'Unknown';
+            return;
         }
 
         $agent = new Agent();
@@ -49,7 +48,7 @@ class Visitor extends Model
         $browser = $agent->browser();
         $device = $agent->deviceType();
         $isRobot = $agent->isRobot();
-        dd($data);
+
         if (!$isRobot) {
             self::create([
                 'ip' => $ip,

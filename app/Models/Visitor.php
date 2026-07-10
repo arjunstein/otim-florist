@@ -35,13 +35,16 @@ class Visitor extends Model
         }
 
         $endpoint = env('ENDPOINT_IP_API') . $ip . "?fields=status,continent,country,city,query";
-        $data = unserialize(file_get_contents($endpoint));
-        if ($data['status'] === 'success' && $data['continent'] === 'Asia') {
-            $country = $data['country'];
-            $city = $data['city'];
-        } else {
+        $data = @file_get_contents($endpoint);
+        if ($data === false) {
             return;
         }
+        $data = unserialize($data);
+        if (!$data || $data['status'] !== 'success' || $data['continent'] !== 'Asia') {
+            return;
+        }
+        $country = $data['country'];
+        $city = $data['city'];
 
         $agent = new Agent();
         $os = $agent->platform();

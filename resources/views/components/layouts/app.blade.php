@@ -17,10 +17,6 @@
     @include('components._partials.footer')
     <!-- Footer End -->
 
-    <!-- Copyright Start -->
-    @include('components._partials.copyright')
-    <!-- Copyright End -->
-
     {{-- whatsapp button --}}
     <a href="https://wa.me/6281808881477?text=Hi%20saya%20ingin%20pesan%20bunga%20mohon%20dibantu" class="whatsapp" target="_blank">
         <i class="fab fa-whatsapp fab-icon"></i>

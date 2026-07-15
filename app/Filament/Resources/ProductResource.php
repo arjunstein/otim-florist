@@ -69,8 +69,13 @@ class ProductResource extends Resource
                     ->afterStateUpdated(function (Set $set, Get $get) {
                         $price = $get('price');
                         $discount = $get('discount');
-                        $salePrice = $price && $discount ? $price - ($price * $discount / 100) : $price;
-                        $set('sale_price', $salePrice);
+                        
+                        if ($discount > 0) {
+                            $salePrice = $price - ($price * $discount / 100);
+                            $set('sale_price', $salePrice);
+                        } else {
+                            $set('sale_price', null);
+                        }
                     }),
                 Forms\Components\TextInput::make('sale_price')
                     ->label('Harga promo')

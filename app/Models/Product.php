@@ -58,10 +58,10 @@ class Product extends Model
         });
 
         static::saving(function ($product) {
-            if ($product->price && $product->discount) {
+            if ($product->price && $product->discount > 0) {
                 $product->sale_price = $product->price - ($product->price * $product->discount / 100);
             } else {
-                $product->sale_price = $product->price; // Jika tidak ada diskon, gunakan harga asli
+                $product->sale_price = null;
             }
         });
     }

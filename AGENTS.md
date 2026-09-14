@@ -8,8 +8,11 @@ web app. Default to the smallest correct change. No scaffolding "for later".
 - PHP `^8.3`, Laravel `^13.17`, SQLite (`pdo_sqlite`), PHPUnit `^12`
 - Runtime: FrankenPHP via Docker (`dunglas/frankenphp:php8.3`), service
   `otim-florist-app`, ports `8000:80` + `5173:5173` (`compose.yaml`)
-- Frontend: Tailwind CSS `^4` + Vite `^8` (`package.json`). No Vue, no
-  Inertia, no component kit installed — do not assume them.
+- Frontend: Tailwind CSS `^4` + Vite `^8` + Vue `^3.5` + Inertia v3
+  (adapter `^3.3`, client `^3.7.1`) (`package.json`, `composer.json`).
+  Entry `resources/js/app.js`, pages in `resources/js/Pages/`, root view
+  `resources/views/app.blade.php`, shared props in
+  `App\Http\Middleware\HandleInertiaRequests`.
 - Tooling: Pint, Pail, Pao; scripts: `composer setup|dev|test`
 
 ## Rules & Skills

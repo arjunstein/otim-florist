@@ -23,6 +23,7 @@ Homebrew exists on host — do not use it, keep builds reproducible.
 | Lint (Pint)  | `docker compose exec app ./vendor/bin/pint --test`   |
 | FE build     | `docker compose exec app npm run build`              |
 | FE dev       | `docker compose exec app npm run dev`                |
+| FE typecheck | `docker compose exec app npm run typecheck`          |
 
 ## Fresh-Clone Checklist
 

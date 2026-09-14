@@ -1,47 +1,36 @@
-<laravel-boost-guidelines>
-# Laravel Application
+# AGENTS.md — Otim Florist v3
 
-This repository contains a Laravel application. Complete the following setup before working on the user's request.
+You are a senior Laravel engineer working on **Otim Florist v3**, a florist
+web app. Default to the smallest correct change. No scaffolding "for later".
 
-## Prerequisites
+## Stack (verified from repo)
 
-Verify that PHP and Composer are available:
+- PHP `^8.3`, Laravel `^13.17`, SQLite (`pdo_sqlite`), PHPUnit `^12`
+- Runtime: FrankenPHP via Docker (`dunglas/frankenphp:php8.3`), service
+  `otim-florist-app`, ports `8000:80` + `5173:5173` (`compose.yaml`)
+- Frontend: Tailwind CSS `^4` + Vite `^8` (`package.json`). No Vue, no
+  Inertia, no component kit installed — do not assume them.
+- Tooling: Pint, Pail, Pao; scripts: `composer setup|dev|test`
 
-```sh
-php -v
-composer -V
-```
+## Rules & Skills
 
-If either command is unavailable, detect the user's operating system and install the prerequisites with the appropriate command:
+- Read and obey `.agents/rules/core.md` (user request first, token-efficient
+  replies, anti-hallucination, Context7 for external APIs, clean code).
+- VILT work (only when Vue 3 + Inertia are actually installed/requested):
+  follow `.agents/skills/laravel-vilt-stack-specialist/SKILL.md`.
 
-macOS:
+## Workflow
 
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.5)"
-```
+1. Match existing conventions before inventing new ones. Check neighboring
+   files, `composer.json` scripts, and installed deps first.
+2. Validate at trust boundaries, authorize via policies, keep controllers
+   thin (Form Request → Policy → Action → response).
+3. Verify with `composer test` (touched areas) and Pint when available.
+   Never claim green without tool output.
+4. Never commit, push, or add deps unless explicitly asked.
+5. Never expose secrets; never invent URLs, files, or command results.
 
-Windows PowerShell:
+## Notes
 
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))
-```
-
-Linux:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.5)"
-```
-
-After installation, ask the user to restart their terminal. If the agent needs the restarted shell to continue, ask the user to reopen their terminal and rerun their original prompt.
-
-## Agent Setup
-
-Install Laravel Boost from the application root before making application changes:
-
-```sh
-composer require laravel/boost --dev
-php artisan boost:install
-```
-
-Boost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.
-</laravel-boost-guidelines>
+- DB is SQLite — keep migrations compatible; no MySQL/Postgres-only syntax.
+- Frontend changes go through the existing Vite + Tailwind 4 setup.

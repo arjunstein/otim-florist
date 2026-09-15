@@ -13,10 +13,10 @@ class DashboardController extends Controller
     {
         return Inertia::render('Dashboard/Overview', [
             'stats' => [
-                ['label' => 'Revenue today', 'value' => 'Rp 4.2M', 'delta' => '+12% vs yesterday', 'up' => true, 'icon' => '💰'],
-                ['label' => 'Orders today', 'value' => '18', 'delta' => '+3 vs yesterday', 'up' => true, 'icon' => '🧾'],
-                ['label' => 'Bouquets in stock', 'value' => '132', 'delta' => '6 sold today', 'up' => false, 'icon' => '💐'],
-                ['label' => 'Pending orders', 'value' => '5', 'delta' => '2 need arranging', 'up' => false, 'icon' => '⏳'],
+                ['label' => 'Revenue today', 'value' => 'Rp 4.2M', 'delta' => '+12% vs yesterday', 'up' => true],
+                ['label' => 'Orders today', 'value' => '18', 'delta' => '+3 vs yesterday', 'up' => true],
+                ['label' => 'Bouquets in stock', 'value' => '132', 'delta' => '6 sold today', 'up' => false],
+                ['label' => 'Pending orders', 'value' => '5', 'delta' => '2 need arranging', 'up' => false],
             ],
             'sales' => [
                 ['label' => 'Mon', 'value' => 32],

@@ -3,7 +3,6 @@ export interface Stat {
     value: string;
     delta: string;
     up: boolean;
-    icon: string;
 }
 
 export interface SalePoint {

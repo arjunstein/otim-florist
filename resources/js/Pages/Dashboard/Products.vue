@@ -28,55 +28,62 @@ const filtered = computed(() =>
 <template>
     <PageHeader title="Products" subtitle="Catalog with live stock status.">
         <template #actions>
-            <span class="text-xs text-stone-400">{{ filtered.length }} of {{ products.length }}</span>
+            <span class="rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+                {{ filtered.length }} of {{ products.length }}
+            </span>
         </template>
     </PageHeader>
 
     <CardSection title="Catalog" subtitle="Search and filter update the table below.">
         <template #actions>
-            <div class="flex flex-col gap-2 sm:flex-row">
+            <fieldset class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+                <legend class="sr-only">Catalog filters</legend>
+                <label for="product-search" class="sr-only">Search products</label>
                 <input
+                    id="product-search"
                     v-model="query"
                     type="search"
-                    placeholder="Search products…"
-                    class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm outline-none focus:border-emerald-600 sm:w-52"
+                    placeholder="Search products"
+                    class="min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus:border-ring focus:ring-2 focus:ring-ring/20 sm:w-56"
                 />
+                <label for="product-category" class="sr-only">Filter by category</label>
                 <select
+                    id="product-category"
                     v-model="category"
-                    class="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600"
+                    class="min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20 sm:w-auto"
                 >
                     <option value="All">All categories</option>
                     <option v-for="c in categories" :key="c" :value="c">{{ c }}</option>
                 </select>
-            </div>
+            </fieldset>
         </template>
-        <div class="-m-5 overflow-x-auto">
-            <table class="w-full min-w-[560px] text-left text-sm">
+        <div class="-m-5 sm:-m-6">
+            <table class="w-full text-left text-sm">
                 <thead>
-                    <tr class="border-b border-stone-100 text-xs uppercase tracking-wide text-stone-400">
-                        <th class="px-5 py-3 font-medium">Product</th>
-                        <th class="px-5 py-3 font-medium">Category</th>
-                        <th class="px-5 py-3 text-right font-medium">Price</th>
-                        <th class="px-5 py-3 text-right font-medium">Stock</th>
-                        <th class="px-5 py-3 text-right font-medium">Status</th>
+                    <tr class="border-b bg-muted/50 text-xs uppercase tracking-wide text-muted-foreground">
+                        <th class="px-3 py-3 font-semibold text-[11px] sm:px-6 sm:text-xs">Product</th>
+                        <th class="hidden px-5 py-3 font-semibold md:table-cell">Category</th>
+                        <th class="hidden px-5 py-3 text-right font-semibold sm:table-cell">Price</th>
+                        <th class="hidden px-5 py-3 text-right font-semibold lg:table-cell">Stock</th>
+                        <th class="px-3 py-3 text-right font-semibold text-[11px] sm:px-6 sm:text-xs">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
                         v-for="product in filtered"
                         :key="product.id"
-                        class="border-b border-stone-50 last:border-0 hover:bg-stone-50/60"
+                        class="border-b last:border-0 hover:bg-muted/60"
                     >
-                        <td class="px-5 py-3 font-semibold">{{ product.name }}</td>
-                        <td class="px-5 py-3 text-stone-500">{{ product.category }}</td>
-                        <td class="px-5 py-3 text-right font-medium">{{ product.price }}</td>
-                        <td class="px-5 py-3 text-right">{{ product.stock }}</td>
-                        <td class="px-5 py-3 text-right">
+                        <td class="break-words px-3 py-3.5 font-semibold sm:px-6">{{ product.name }}</td>
+                        <td class="hidden px-5 py-3 text-muted-foreground md:table-cell">{{ product.category }}</td>
+                        <td class="hidden px-5 py-3 text-right font-medium sm:table-cell">{{ product.price }}</td>
+                        <td class="hidden px-5 py-3 text-right lg:table-cell">{{ product.stock }}</td>
+                        <td class="px-3 py-3 text-right sm:px-6">
                             <StatusBadge :status="stockStatus(product.stock)" />
                         </td>
                     </tr>
                     <tr v-if="filtered.length === 0">
-                        <td colspan="5" class="px-5 py-10 text-center text-sm text-stone-400">
+                        <td colspan="5" class="px-5 py-12 text-center text-sm text-muted-foreground">
                             No products match your filter.
                         </td>
                     </tr>

@@ -9,21 +9,21 @@ const classes = computed(
     () =>
         (
             {
-                Pending: 'bg-amber-100 text-amber-800 ring-amber-200',
-                Arranging: 'bg-sky-100 text-sky-800 ring-sky-200',
-                Delivered: 'bg-emerald-100 text-emerald-800 ring-emerald-200',
-                'In stock': 'bg-emerald-100 text-emerald-800 ring-emerald-200',
-                'Low stock': 'bg-amber-100 text-amber-800 ring-amber-200',
-                'Out of stock': 'bg-red-100 text-red-700 ring-red-200',
+                Pending: 'bg-warning text-warning-foreground',
+                Arranging: 'bg-info text-info-foreground',
+                Delivered: 'bg-success text-success-foreground',
+                'In stock': 'bg-success text-success-foreground',
+                'Low stock': 'bg-warning text-warning-foreground',
+                'Out of stock': 'bg-destructive text-destructive-foreground',
             } as Record<string, string>
-        )[props.status] ?? 'bg-stone-100 text-stone-600 ring-stone-200',
+        )[props.status] ?? 'bg-muted text-muted-foreground',
 );
 </script>
 
 <template>
     <span
         :class="[
-            'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset',
+            'inline-flex min-h-6 items-center rounded-full px-2.5 text-xs font-semibold',
             classes,
         ]"
     >

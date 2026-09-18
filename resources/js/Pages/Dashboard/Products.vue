@@ -299,7 +299,7 @@ function deleteProduct(): void {
         </div>
     </dialog>
 
-    <CardSection title="Catalog" subtitle="Search, filter, and manage products.">
+    <CardSection title="Total products" :subtitle="`${products.length} products`">
         <template #actions>
             <fieldset class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
                 <legend class="sr-only">Catalog filters</legend>

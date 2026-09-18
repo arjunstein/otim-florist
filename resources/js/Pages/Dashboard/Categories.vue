@@ -294,13 +294,7 @@ function deleteCategory(): void {
         </form>
     </dialog>
 
-    <CardSection title="All categories" subtitle="Changes save immediately.">
-        <template #actions>
-            <span class="rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">
-                {{ categories.length }} categories
-            </span>
-        </template>
-
+    <CardSection title="Total categories" :subtitle="`${categories.length} categories`">
         <div v-if="categories.length === 0" class="rounded-xl border border-dashed bg-muted/40 p-8 text-center">
             <p class="font-medium">No categories yet</p>
             <p class="mt-1 text-sm text-muted-foreground">Add first category using form above.</p>
@@ -308,12 +302,18 @@ function deleteCategory(): void {
 
         <ul v-else class="flex flex-col gap-3">
             <li v-for="category in categories" :key="category.id" class="rounded-xl border bg-card p-4">
-                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <p class="font-semibold">{{ category.name }}</p>
-                        <p class="mt-1 text-sm text-muted-foreground">Added {{ category.createdAt }}</p>
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <div class="grid flex-1 gap-3 sm:grid-cols-[minmax(0,1fr)_10rem] sm:items-center">
+                        <div class="min-w-0">
+                            <p class="text-xs font-medium uppercase tracking-wide text-muted-foreground">Category</p>
+                            <p class="mt-1 break-words font-semibold">{{ category.name }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium uppercase tracking-wide text-muted-foreground">Created</p>
+                            <p class="mt-1 text-sm text-muted-foreground">{{ category.createdAt }}</p>
+                        </div>
                     </div>
-                    <div class="flex gap-2">
+                    <div class="flex gap-2 sm:shrink-0">
                         <button
                             type="button"
                             class="grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground"

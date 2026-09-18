@@ -316,17 +316,25 @@ function deleteCategory(): void {
                     <div class="flex gap-2">
                         <button
                             type="button"
-                            class="min-h-11 rounded-xl px-4 text-sm font-semibold text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground"
+                            class="grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground"
+                            :aria-label="`Edit ${category.name}`"
+                            :title="`Edit ${category.name}`"
                             @click="startEditing(category)"
                         >
-                            Edit
+                            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </button>
                         <button
                             type="button"
-                            class="min-h-11 rounded-xl px-4 text-sm font-semibold text-destructive-foreground transition-colors duration-200 hover:bg-destructive"
+                            class="grid size-11 place-items-center rounded-xl text-destructive-foreground transition-colors duration-200 hover:bg-destructive"
+                            :aria-label="`Delete ${category.name}`"
+                            :title="`Delete ${category.name}`"
                             @click="openDeleteDialog(category)"
                         >
-                            Delete
+                            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6m5 4v6m4-6v6" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </button>
                     </div>
                 </div>

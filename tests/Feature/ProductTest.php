@@ -1,0 +1,105 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class ProductTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_products_page_renders_persisted_products_and_categories(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+        Product::create([
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'price' => 350000,
+        ]);
+
+        $this->get('/products')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Dashboard/Products')
+                ->has('categories', 1)
+                ->where('categories.0.name', 'Bouquet')
+                ->has('products', 1)
+                ->where('products.0.name', 'Rose Bouquet M')
+                ->where('products.0.category.name', 'Bouquet')
+                ->where('products.0.price', 350000)
+            );
+    }
+
+    public function test_product_can_be_created(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+
+        $this->post('/products', [
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'price' => 350000,
+        ])
+            ->assertRedirect('/products')
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('products', [
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'price' => 350000,
+        ]);
+    }
+
+    public function test_product_fields_must_be_valid(): void
+    {
+        $this->post('/products', [
+            'name' => '',
+            'category_id' => 999,
+            'price' => -1,
+        ])->assertSessionHasErrors(['name', 'category_id', 'price']);
+    }
+
+    public function test_product_can_be_updated_and_deleted(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+        $product = Product::create([
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'price' => 350000,
+        ]);
+
+        $this->put("/products/{$product->id}", [
+            'name' => 'Rose Bouquet L',
+            'category_id' => $category->id,
+            'price' => 450000,
+        ])->assertRedirect('/products');
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'name' => 'Rose Bouquet L',
+            'price' => 450000,
+        ]);
+
+        $this->delete("/products/{$product->id}")->assertRedirect('/products');
+
+        $this->assertDatabaseMissing('products', ['id' => $product->id]);
+    }
+
+    public function test_category_with_products_cannot_be_deleted(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+        Product::create([
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'price' => 350000,
+        ]);
+
+        $this->delete("/categories/{$category->id}")
+            ->assertRedirect('/categories')
+            ->assertSessionHas('error');
+
+        $this->assertDatabaseHas('categories', ['id' => $category->id]);
+    }
+}

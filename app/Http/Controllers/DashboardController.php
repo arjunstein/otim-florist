@@ -42,21 +42,6 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function products(): Response
-    {
-        return Inertia::render('Dashboard/Products', [
-            'categories' => ['Bouquet', 'Basket', 'Box', 'Wrap'],
-            'products' => [
-                ['id' => 1, 'name' => 'Rose Bouquet M', 'category' => 'Bouquet', 'price' => 'Rp 350K', 'stock' => 14],
-                ['id' => 2, 'name' => 'Lily Basket', 'category' => 'Basket', 'price' => 'Rp 275K', 'stock' => 6],
-                ['id' => 3, 'name' => 'Orchid Box', 'category' => 'Box', 'price' => 'Rp 520K', 'stock' => 9],
-                ['id' => 4, 'name' => 'Sunflower Wrap', 'category' => 'Wrap', 'price' => 'Rp 180K', 'stock' => 22],
-                ['id' => 5, 'name' => 'Tulip Bouquet S', 'category' => 'Bouquet', 'price' => 'Rp 220K', 'stock' => 0],
-                ['id' => 6, 'name' => 'Peony Basket L', 'category' => 'Basket', 'price' => 'Rp 410K', 'stock' => 4],
-            ],
-        ]);
-    }
-
     public function settings(): Response
     {
         return Inertia::render('Dashboard/Settings', [

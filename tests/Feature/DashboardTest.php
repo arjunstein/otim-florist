@@ -24,17 +24,6 @@ class DashboardTest extends TestCase
             );
     }
 
-    public function test_products_renders_with_dummy_props(): void
-    {
-        $this->get('/products')
-            ->assertOk()
-            ->assertInertia(fn ($page) => $page
-                ->component('Dashboard/Products')
-                ->has('products', 6)
-                ->has('categories', 4)
-            );
-    }
-
     public function test_settings_renders_with_store_prop(): void
     {
         $this->get('/settings')

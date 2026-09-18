@@ -33,14 +33,18 @@ export interface DashboardProps {
 export interface Product {
     id: number;
     name: string;
-    category: string;
-    price: string;
-    stock: number;
+    category: ProductCategory;
+    price: number;
+}
+
+export interface ProductCategory {
+    id: number;
+    name: string;
 }
 
 export interface ProductsProps {
     products: Product[];
-    categories: string[];
+    categories: ProductCategory[];
 }
 
 export interface Category {

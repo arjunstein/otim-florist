@@ -158,7 +158,6 @@ onUnmounted(() => {
                     </svg>
                     <div>
                         <p class="font-semibold tracking-tight">Otim Florist</p>
-                        <p class="mt-0.5 text-xs text-muted-foreground">Store operations</p>
                     </div>
                 </div>
             </div>
@@ -178,7 +177,6 @@ onUnmounted(() => {
                     {{ item.label }}
                 </Link>
             </nav>
-            <p class="border-t px-6 py-4 text-xs text-muted-foreground">Demo workspace · v0.1</p>
         </aside>
 
         <Transition
@@ -204,7 +202,6 @@ onUnmounted(() => {
                     <div class="flex items-center justify-between border-b px-5 py-4">
                         <div>
                             <h2 id="mobile-navigation-title" class="font-semibold tracking-tight">Otim Florist</h2>
-                            <p class="mt-0.5 text-xs text-muted-foreground">Store operations</p>
                         </div>
                         <button
                             ref="mobileNavigationClose"
@@ -241,44 +238,41 @@ onUnmounted(() => {
 
         <div class="md:pl-72">
             <header class="sticky top-0 z-10 border-b bg-card/95 backdrop-blur">
-                <div class="flex min-h-16 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-                    <div class="shrink-0">
-                        <p class="text-sm font-semibold md:hidden">Otim Florist</p>
-                        <p class="hidden text-sm text-muted-foreground md:block">{{ title }}</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button
-                            ref="mobileNavigationToggle"
-                            type="button"
-                            class="grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground md:hidden"
-                            aria-label="Open navigation"
-                            aria-controls="mobile-navigation"
-                            :aria-expanded="mobileNavigationOpen"
-                            @click="openMobileNavigation"
-                        >
-                            <svg class="size-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
-                            </svg>
-                        </button>
+                <div class="flex min-h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
+                    <button
+                        ref="mobileNavigationToggle"
+                        type="button"
+                        class="grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground md:hidden"
+                        aria-label="Open navigation"
+                        aria-controls="mobile-navigation"
+                        :aria-expanded="mobileNavigationOpen"
+                        @click="openMobileNavigation"
+                    >
+                        <svg class="size-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <p class="hidden text-sm text-muted-foreground md:block">{{ title }}</p>
+                    <div class="ml-auto flex items-center gap-2">
                         <div class="flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-secondary py-1 pl-1 pr-3 text-sm font-medium text-secondary-foreground">
-                        <button
-                            type="button"
-                            class="grid size-11 place-items-center rounded-full text-secondary-foreground transition-colors duration-200 hover:bg-card"
-                            aria-label="Toggle dark mode"
-                            :aria-pressed="isDark"
-                            :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
-                            @click="toggleTheme"
-                        >
-                            <svg v-if="isDark" class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.75" />
-                                <path d="M12 2.5v2M12 19.5v2M21.5 12h-2M4.5 12h-2M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4M18.7 18.7l-1.4-1.4M6.7 6.7 5.3 5.3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
-                            </svg>
-                            <svg v-else class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                        <span class="grid size-9 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">A</span>
-                        <span class="hidden sm:inline">Admin</span>
+                            <button
+                                type="button"
+                                class="grid size-11 place-items-center rounded-full text-secondary-foreground transition-colors duration-200 hover:bg-card"
+                                aria-label="Toggle dark mode"
+                                :aria-pressed="isDark"
+                                :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+                                @click="toggleTheme"
+                            >
+                                <svg v-if="isDark" class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.75" />
+                                    <path d="M12 2.5v2M12 19.5v2M21.5 12h-2M4.5 12h-2M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4M18.7 18.7l-1.4-1.4M6.7 6.7 5.3 5.3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+                                </svg>
+                                <svg v-else class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <span class="grid size-9 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">A</span>
+                            <span class="hidden sm:inline">Admin</span>
                         </div>
                     </div>
                 </div>

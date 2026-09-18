@@ -16,7 +16,7 @@ const maxSale = computed(() => Math.max(...props.sales.map((s) => s.value), 1));
 </script>
 
 <template>
-    <PageHeader title="Overview" subtitle="Today's store performance at a glance.">
+    <PageHeader title="Dashboard" subtitle="Today's store performance at a glance.">
         <template #actions>
             <Link
                 href="/products"

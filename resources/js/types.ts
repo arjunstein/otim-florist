@@ -43,6 +43,16 @@ export interface ProductsProps {
     categories: string[];
 }
 
+export interface Category {
+    id: number;
+    name: string;
+    createdAt: string;
+}
+
+export interface CategoriesProps {
+    categories: Category[];
+}
+
 export interface SettingsProps {
     store: {
         name: string;

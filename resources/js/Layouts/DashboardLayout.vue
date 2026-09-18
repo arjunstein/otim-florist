@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
 import { applyTheme, currentTheme, type Theme } from '@/theme';
+import { activeToast, dismissToast, showToast } from '@/toast';
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 
 const page = usePage();
 
 const nav = [
-    { label: 'Overview', href: '/dashboard', component: 'Dashboard/Overview' },
+    { label: 'Dashboard', href: '/dashboard', component: 'Dashboard/Overview' },
     { label: 'Products', href: '/products', component: 'Dashboard/Products' },
+    { label: 'Categories', href: '/categories', component: 'Dashboard/Categories' },
     { label: 'Settings', href: '/settings', component: 'Dashboard/Settings' },
 ] as const;
 
@@ -73,6 +75,24 @@ const desktopViewport = window.matchMedia('(min-width: 768px)');
 applyTheme(theme.value);
 
 watch(mobileNavigationOpen, (isOpen) => document.body.classList.toggle('overflow-hidden', isOpen));
+watch(
+    () => flash.value.success,
+    (message) => {
+        if (message) {
+            showToast('success', message);
+        }
+    },
+    { immediate: true },
+);
+watch(
+    () => flash.value.error,
+    (message) => {
+        if (message) {
+            showToast('error', message);
+        }
+    },
+    { immediate: true },
+);
 
 onMounted(() => {
     systemTheme.addEventListener('change', updateSystemTheme);
@@ -96,6 +116,36 @@ onUnmounted(() => {
         >
             Skip to content
         </a>
+        <Transition
+            enter-active-class="transition duration-200 ease-out motion-reduce:transition-none"
+            enter-from-class="translate-y-2 opacity-0"
+            leave-active-class="transition duration-150 ease-in motion-reduce:transition-none"
+            leave-to-class="translate-y-2 opacity-0"
+        >
+            <div
+                v-if="activeToast"
+                :role="activeToast.type === 'error' ? 'alert' : 'status'"
+                aria-live="polite"
+                :class="[
+                    'fixed right-4 top-4 z-[60] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-2xl border p-4 shadow-lg',
+                    activeToast.type === 'success'
+                        ? 'bg-success text-success-foreground'
+                        : 'bg-destructive text-destructive-foreground',
+                ]"
+            >
+                <p class="flex-1 text-sm font-semibold">{{ activeToast.message }}</p>
+                <button
+                    type="button"
+                    class="grid size-8 shrink-0 place-items-center rounded-lg transition-colors duration-200 hover:bg-card/30"
+                    aria-label="Dismiss notification"
+                    @click="dismissToast"
+                >
+                    <svg class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+        </Transition>
         <aside
             class="fixed inset-y-0 left-0 hidden w-72 flex-col border-r bg-card md:flex"
         >
@@ -232,12 +282,6 @@ onUnmounted(() => {
                         </div>
                     </div>
                 </div>
-                <p v-if="flash.success" role="status" class="border-t bg-success px-4 py-3 text-sm font-medium text-success-foreground sm:px-6 lg:px-8">
-                    {{ flash.success }}
-                </p>
-                <p v-if="flash.error" role="alert" class="border-t bg-destructive px-4 py-3 text-sm font-medium text-destructive-foreground sm:px-6 lg:px-8">
-                    {{ flash.error }}
-                </p>
             </header>
 
             <main id="main-content" class="mx-auto flex max-w-7xl flex-col gap-6 p-4 sm:p-6 lg:gap-8 lg:p-8">

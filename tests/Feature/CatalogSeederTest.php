@@ -10,14 +10,14 @@ class CatalogSeederTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_catalog_seeder_creates_idempotent_public_catalog_data(): void
+    public function test_catalog_seeder_creates_idempotent_categories_without_products(): void
     {
         $this->seed(CatalogSeeder::class);
         $this->seed(CatalogSeeder::class);
 
-        $this->assertDatabaseCount('categories', 4);
-        $this->assertDatabaseCount('products', 8);
-        $this->assertDatabaseHas('categories', ['name' => 'Bouquets', 'slug' => 'bouquets']);
-        $this->assertDatabaseHas('products', ['name' => 'Rose Romance', 'slug' => 'rose-romance', 'price' => 350000]);
+        $this->assertDatabaseCount('categories', 5);
+        $this->assertDatabaseCount('products', 0);
+        $this->assertDatabaseHas('categories', ['name' => 'Bunga Papan', 'slug' => 'bunga-papan']);
+        $this->assertDatabaseHas('categories', ['name' => 'Hand Bouquet', 'slug' => 'hand-bouquet']);
     }
 }

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
+import SeoJsonLd from '@/Components/SeoJsonLd.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
 defineOptions({ layout: StorefrontLayout });
 
 const props = defineProps<{
+    canonicalUrl: string;
     product: {
         name: string;
         description: string | null;
@@ -23,12 +25,35 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
     currency: 'IDR',
     maximumFractionDigits: 0,
 });
+
+const pageTitle = `${props.product.name} | ${props.product.category.name} | Otim Florist`;
+const pageDescription = (props.product.description || `${props.product.name} dari Otim Florist.`).slice(0, 160);
+const productSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: props.product.name,
+    description: pageDescription,
+    url: props.canonicalUrl,
+    image: props.product.imageUrl ? [props.product.imageUrl] : undefined,
+    brand: {
+        '@type': 'Brand',
+        name: 'Otim Florist',
+    },
+}).replace(/</g, '\\u003c');
 </script>
 
 <template>
-    <Head :title="product.name">
-        <meta name="description" :content="`${product.name} dari Otim Florist.`" />
+    <Head :title="pageTitle">
+        <meta name="description" :content="pageDescription" />
+        <link rel="canonical" :href="canonicalUrl" />
+        <meta property="og:title" :content="pageTitle" />
+        <meta property="og:description" :content="pageDescription" />
+        <meta property="og:type" content="product" />
+        <meta property="og:url" :content="canonicalUrl" />
+        <meta v-if="product.imageUrl" property="og:image" :content="product.imageUrl" />
     </Head>
+
+    <SeoJsonLd :content="productSchema" />
 
     <section class="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-2 lg:items-center lg:px-8 lg:py-20">
         <div>

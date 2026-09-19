@@ -6,6 +6,7 @@ import { Head } from '@inertiajs/vue3';
 defineOptions({ layout: StorefrontLayout });
 
 defineProps<{
+    canonicalUrl: string;
     products: Array<{
         name: string;
         slug: string;
@@ -21,8 +22,13 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Rangkaian bunga untuk setiap momen">
+    <Head title="Rangkaian bunga untuk setiap momen | Otim Florist">
         <meta name="description" content="Jelajahi rangkaian bunga pilihan dari Otim Florist." />
+        <link rel="canonical" :href="canonicalUrl" />
+        <meta property="og:title" content="Rangkaian bunga untuk setiap momen | Otim Florist" />
+        <meta property="og:description" content="Jelajahi rangkaian bunga pilihan dari Otim Florist." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" :content="canonicalUrl" />
     </Head>
 
     <section class="relative isolate overflow-hidden border-b bg-primary text-primary-foreground">

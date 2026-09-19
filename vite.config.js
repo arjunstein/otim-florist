@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import inertia from '@inertiajs/vite';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import tailwindcss from '@tailwindcss/vite';
@@ -8,6 +9,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.ts'],
+            ssr: 'resources/js/ssr.ts',
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {
@@ -24,10 +26,14 @@ export default defineConfig({
                 },
             },
         }),
+        inertia({
+            ssr: 'resources/js/ssr.ts',
+        }),
     ],
     server: {
         host: '0.0.0.0',
         port: 5173,
+        strictPort: true,
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },

@@ -21,7 +21,7 @@ const flash = computed(() => page.props.flash as { success?: string; error?: str
 const auth = computed(() => page.props.auth as { user: { name: string; email: string } | null });
 const userInitial = computed(() => auth.value.user?.name.trim().charAt(0).toUpperCase() ?? 'A');
 const theme = ref<Theme>(currentTheme());
-const isDark = ref(document.documentElement.classList.contains('dark'));
+const isDark = ref(false);
 const mobileNavigationOpen = ref(false);
 const mobileNavigationToggle = ref<HTMLButtonElement | null>(null);
 const mobileNavigationClose = ref<HTMLButtonElement | null>(null);
@@ -31,7 +31,7 @@ const cancelLogoutButton = ref<HTMLButtonElement | null>(null);
 function setTheme(value: Theme): void {
     theme.value = value;
     applyTheme(value);
-    isDark.value = document.documentElement.classList.contains('dark');
+    isDark.value = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
 }
 
 function toggleTheme(): void {
@@ -81,17 +81,19 @@ function handleKeydown(event: KeyboardEvent): void {
 }
 
 function closeNavigationOnDesktop(): void {
-    if (desktopViewport.matches) {
+    if (desktopViewport?.matches) {
         closeMobileNavigation(false);
     }
 }
 
-const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
-const desktopViewport = window.matchMedia('(min-width: 768px)');
+let systemTheme: MediaQueryList | undefined;
+let desktopViewport: MediaQueryList | undefined;
 
-applyTheme(theme.value);
-
-watch(mobileNavigationOpen, (isOpen) => document.body.classList.toggle('overflow-hidden', isOpen));
+watch(mobileNavigationOpen, (isOpen) => {
+    if (typeof document !== 'undefined') {
+        document.body.classList.toggle('overflow-hidden', isOpen);
+    }
+});
 watch(
     () => flash.value.success,
     (message) => {
@@ -112,14 +114,18 @@ watch(
 );
 
 onMounted(() => {
+    isDark.value = document.documentElement.classList.contains('dark');
+    systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+    desktopViewport = window.matchMedia('(min-width: 768px)');
+    applyTheme(theme.value);
     systemTheme.addEventListener('change', updateSystemTheme);
     desktopViewport.addEventListener('change', closeNavigationOnDesktop);
     window.addEventListener('keydown', handleKeydown);
 });
 
 onUnmounted(() => {
-    systemTheme.removeEventListener('change', updateSystemTheme);
-    desktopViewport.removeEventListener('change', closeNavigationOnDesktop);
+    systemTheme?.removeEventListener('change', updateSystemTheme);
+    desktopViewport?.removeEventListener('change', closeNavigationOnDesktop);
     window.removeEventListener('keydown', handleKeydown);
     document.body.classList.remove('overflow-hidden');
 });

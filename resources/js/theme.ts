@@ -7,12 +7,20 @@ function isTheme(value: string | undefined): value is Theme {
 }
 
 export function currentTheme(): Theme {
+    if (typeof document === 'undefined') {
+        return 'system';
+    }
+
     const theme = document.documentElement.dataset.theme;
 
     return isTheme(theme) ? theme : 'system';
 }
 
 export function applyTheme(theme: Theme): void {
+    if (typeof window === 'undefined') {
+        return;
+    }
+
     const root = document.documentElement;
     const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 

@@ -3,7 +3,7 @@ import CardSection from '@/Components/CardSection.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import type { SettingsProps } from '@/types';
-import { useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 defineOptions({ layout: DashboardLayout });
@@ -39,6 +39,8 @@ const fields = [
 </script>
 
 <template>
+    <Head title="Settings" />
+
     <PageHeader title="Settings" subtitle="Store profile and account security." />
 
     <CardSection title="Store profile" subtitle="Changes are validated, nothing is persisted.">

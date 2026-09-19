@@ -5,7 +5,7 @@ import StatCard from '@/Components/StatCard.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import type { DashboardProps } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 defineOptions({ layout: DashboardLayout });
@@ -16,6 +16,8 @@ const maxSale = computed(() => Math.max(...props.sales.map((s) => s.value), 1));
 </script>
 
 <template>
+    <Head title="Dashboard" />
+
     <PageHeader title="Dashboard" subtitle="Today's store performance at a glance.">
         <template #actions>
             <Link

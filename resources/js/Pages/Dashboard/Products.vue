@@ -5,7 +5,7 @@ import PaginationControls from '@/Components/PaginationControls.vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { showToast } from '@/toast';
 import type { Product, ProductsProps } from '@/types';
-import { Link, router, useForm } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { computed, nextTick, ref } from 'vue';
 
 defineOptions({ layout: DashboardLayout });
@@ -139,6 +139,8 @@ function queueFilters(): void {
 </script>
 
 <template>
+    <Head title="Products" />
+
     <PageHeader title="Products" subtitle="Manage catalog prices and categories.">
         <template #actions>
             <Link

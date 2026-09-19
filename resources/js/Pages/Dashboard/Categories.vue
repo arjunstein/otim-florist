@@ -5,7 +5,7 @@ import PaginationControls from '@/Components/PaginationControls.vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { showToast } from '@/toast';
 import type { CategoriesProps, Category } from '@/types';
-import { router, useForm } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
 
 defineOptions({ layout: DashboardLayout });
@@ -115,6 +115,8 @@ function changePerPage(perPage: number): void {
 </script>
 
 <template>
+    <Head title="Categories" />
+
     <PageHeader title="Categories" subtitle="Create and manage product categories.">
         <template #actions>
             <button

@@ -27,14 +27,14 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
 
 <template>
     <Head :title="product.name">
-        <meta name="description" :content="`${product.name} from Otim Florist.`" />
+        <meta name="description" :content="`${product.name} dari Otim Florist.`" />
     </Head>
 
     <section class="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-2 lg:items-center lg:px-8 lg:py-20">
         <div>
-            <nav aria-label="Breadcrumb">
+            <nav aria-label="Jejak navigasi">
                 <ol class="flex min-h-11 flex-wrap items-center gap-2 text-sm font-semibold text-muted-foreground">
-                    <li><Link href="/" class="rounded-lg transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Home</Link></li>
+                    <li><Link href="/" class="rounded-lg transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Beranda</Link></li>
                     <li aria-hidden="true">/</li>
                     <li><Link :href="`/categories/${product.category.slug}`" class="rounded-lg transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">{{ product.category.name }}</Link></li>
                     <li aria-hidden="true">/</li>
@@ -57,9 +57,9 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
                 <p v-if="product.salePrice" class="text-base text-muted-foreground line-through">{{ priceFormatter.format(product.price) }}</p>
                 <p class="text-2xl font-semibold text-primary">{{ priceFormatter.format(product.salePrice ?? product.price) }}</p>
             </div>
-            <p class="mt-7 text-base leading-7 text-muted-foreground">{{ product.description || 'A carefully selected arrangement, prepared with the same attention to every meaningful occasion.' }}</p>
+            <p class="mt-7 text-base leading-7 text-muted-foreground">{{ product.description || 'Rangkaian pilihan yang disiapkan dengan perhatian untuk setiap momen bermakna.' }}</p>
             <Link href="/" class="mt-8 inline-flex min-h-11 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors duration-200 hover:bg-primary/90">
-                Explore more flowers
+                Lihat koleksi lainnya
             </Link>
         </div>
     </section>

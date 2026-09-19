@@ -21,8 +21,8 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Fresh flowers for every moment">
-        <meta name="description" content="Explore thoughtfully arranged flowers from Otim Florist." />
+    <Head title="Rangkaian bunga untuk setiap momen">
+        <meta name="description" content="Jelajahi rangkaian bunga pilihan dari Otim Florist." />
     </Head>
 
     <section class="relative isolate overflow-hidden border-b bg-primary text-primary-foreground">
@@ -31,10 +31,10 @@ defineProps<{
         <div class="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:px-8 lg:py-28">
             <div class="max-w-2xl">
                 <p class="text-xs font-semibold uppercase tracking-[0.24em] text-primary-foreground/65">Otim Florist</p>
-                <h1 class="mt-5 text-5xl leading-[0.94] sm:text-6xl lg:text-7xl">Flowers for every meaningful moment.</h1>
-                <p class="mt-6 max-w-xl text-base leading-7 text-primary-foreground/70 sm:text-lg">Thoughtfully arranged florals for celebrations, gratitude, and the moments that deserve to be remembered.</p>
+                <h1 class="mt-5 text-5xl leading-[0.94] sm:text-6xl lg:text-7xl">Bunga untuk setiap momen bermakna.</h1>
+                <p class="mt-6 max-w-xl text-base leading-7 text-primary-foreground/70 sm:text-lg">Rangkaian bunga pilihan untuk perayaan, ungkapan terima kasih, dan setiap momen yang layak dikenang.</p>
                 <a href="#collection" class="mt-9 inline-flex min-h-11 items-center rounded-xl bg-primary-foreground px-5 text-sm font-semibold text-primary shadow-sm transition-colors duration-200 hover:bg-primary-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary">
-                    Browse collection
+                    Lihat koleksi
                 </a>
             </div>
             <div class="relative mx-auto grid aspect-square w-full max-w-sm place-items-center rounded-[2rem] border border-primary-foreground/15 bg-primary-foreground/10 shadow-2xl backdrop-blur-sm">
@@ -50,15 +50,15 @@ defineProps<{
     <section id="collection" class="border-t border-primary/10">
         <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
             <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-primary">The collection</p>
-                <h2 class="mt-3 text-4xl leading-none sm:text-5xl">Freshly chosen for you</h2>
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Koleksi pilihan</p>
+                <h2 class="mt-3 text-4xl leading-none sm:text-5xl">Pilihan segar untuk Anda</h2>
             </div>
             <div v-if="products.length" class="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 <ProductCard v-for="product in products" :key="product.slug" :product="product" />
             </div>
             <div v-else class="mt-7 rounded-2xl border border-dashed bg-card p-8 text-center">
-                <p class="font-semibold">Our collection is coming soon.</p>
-                <p class="mt-2 text-sm text-muted-foreground">Please check back shortly for fresh arrangements.</p>
+                <p class="font-semibold">Koleksi kami segera hadir.</p>
+                <p class="mt-2 text-sm text-muted-foreground">Silakan kembali lagi untuk melihat rangkaian bunga terbaru.</p>
             </div>
         </div>
     </section>

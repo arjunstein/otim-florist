@@ -64,7 +64,7 @@ onUnmounted(() => {
             href="#main-content"
             class="sr-only fixed left-4 top-4 z-50 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground focus:not-sr-only"
         >
-            Skip to content
+            Langsung ke konten
         </a>
         <header class="sticky top-0 z-20 border-b bg-background/85 backdrop-blur-xl">
             <div class="mx-auto flex min-h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
@@ -76,7 +76,7 @@ onUnmounted(() => {
                     </svg>
                     <span class="font-semibold tracking-tight">Otim Florist</span>
                 </Link>
-                <nav class="ml-auto hidden items-center gap-1 lg:flex" aria-label="Main navigation">
+                <nav class="ml-auto hidden items-center gap-1 lg:flex" aria-label="Navigasi utama">
                     <Link
                         v-for="category in navigationCategories"
                         :key="category.slug"
@@ -90,7 +90,7 @@ onUnmounted(() => {
                     ref="mobileNavigationToggle"
                     type="button"
                     class="ml-auto grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:hidden"
-                    aria-label="Open navigation"
+                    aria-label="Buka navigasi"
                     aria-controls="mobile-navigation"
                     :aria-expanded="mobileNavigationOpen"
                     @click="openMobileNavigation"
@@ -112,23 +112,23 @@ onUnmounted(() => {
                 <button
                     type="button"
                     class="absolute inset-0 bg-foreground/30 backdrop-blur-sm"
-                    aria-label="Close navigation"
+                    aria-label="Tutup navigasi"
                     @click="closeMobileNavigation(false)"
                 />
                 <nav
                     id="mobile-navigation"
                     class="absolute right-0 top-0 flex h-dvh w-72 max-w-[calc(100%-2rem)] flex-col border-l bg-card p-4 shadow-xl"
-                    aria-label="Mobile navigation"
+                    aria-label="Navigasi seluler"
                     aria-modal="true"
                     role="dialog"
                 >
                     <div class="flex min-h-11 items-center justify-between">
-                        <p class="font-semibold tracking-tight">Navigation</p>
+                        <p class="font-semibold tracking-tight">Navigasi</p>
                         <button
                             ref="mobileNavigationClose"
                             type="button"
                             class="grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                            aria-label="Close navigation"
+                            aria-label="Tutup navigasi"
                             @click="closeMobileNavigation()"
                         >
                             <svg class="size-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -165,8 +165,8 @@ onUnmounted(() => {
                 v-if="showBackToTop"
                 type="button"
                 class="fixed bottom-4 right-4 z-30 grid size-11 place-items-center rounded-full bg-primary text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:bottom-6 sm:right-6"
-                aria-label="Back to top"
-                title="Back to top"
+                aria-label="Kembali ke atas"
+                title="Kembali ke atas"
                 @click="scrollToTop"
             >
                 <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -177,7 +177,7 @@ onUnmounted(() => {
 
         <footer class="border-t border-primary/15 bg-primary text-primary-foreground">
             <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-8 text-sm text-primary-foreground/70 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-                <p>Thoughtful flowers, simply arranged.</p>
+                <p>Rangkaian bunga penuh makna, ditata dengan sepenuh hati.</p>
                 <p>© {{ new Date().getFullYear() }} Otim Florist</p>
             </div>
         </footer>

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
@@ -22,12 +23,14 @@ class DashboardTest extends TestCase
     public function test_overview_renders_catalog_summary(): void
     {
         $category = Category::create(['name' => 'Bouquet']);
-        Product::create([
+        $product = Product::create([
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
+            'image_path' => 'products/rose.jpg',
             'price' => 350000,
             'sale_price' => 300000,
         ]);
+        Product::query()->whereKey($product->getKey())->update(['click_count' => 12]);
 
         $this->get('/dashboard')
             ->assertOk()
@@ -39,6 +42,9 @@ class DashboardTest extends TestCase
                 ->where('recentProducts.0.name', 'Rose Bouquet M')
                 ->where('recentProducts.0.salePrice', 300000)
                 ->where('categorySummary.0.name', 'Bouquet')
+                ->where('mostClickedProducts.0.name', 'Rose Bouquet M')
+                ->where('mostClickedProducts.0.imageUrl', Storage::disk('public')->url('products/rose.jpg'))
+                ->where('mostClickedProducts.0.clickCount', 12)
             );
     }
 

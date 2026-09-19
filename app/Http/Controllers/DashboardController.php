@@ -48,6 +48,20 @@ class DashboardController extends Controller
                     'name' => $category->name,
                     'productCount' => $category->products_count,
                 ]),
+            'mostClickedProducts' => Product::query()
+                ->with('category:id,name')
+                ->where('click_count', '>', 0)
+                ->orderByDesc('click_count')
+                ->orderBy('name')
+                ->take(5)
+                ->get()
+                ->map(fn (Product $product) => [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'imageUrl' => $product->image_path ? Storage::disk('public')->url($product->image_path) : null,
+                    'categoryName' => $product->category->name,
+                    'clickCount' => $product->click_count,
+                ]),
         ]);
     }
 

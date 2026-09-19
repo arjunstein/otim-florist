@@ -8,6 +8,7 @@ type NavigationCategory = {
 };
 
 const mobileNavigationOpen = ref(false);
+const showBackToTop = ref(false);
 const mobileNavigationToggle = ref<HTMLButtonElement | null>(null);
 const mobileNavigationClose = ref<HTMLButtonElement | null>(null);
 const page = usePage<{ navigationCategories: NavigationCategory[] }>();
@@ -32,11 +33,27 @@ function handleKeydown(event: KeyboardEvent): void {
     }
 }
 
+function updateBackToTopVisibility(): void {
+    showBackToTop.value = window.scrollY > 400;
+}
+
+function scrollToTop(): void {
+    window.scrollTo({
+        top: 0,
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    });
+}
+
 watch(mobileNavigationOpen, (isOpen) => document.body.classList.toggle('overflow-hidden', isOpen));
 
-onMounted(() => window.addEventListener('keydown', handleKeydown));
+onMounted(() => {
+    window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
+    updateBackToTopVisibility();
+});
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown);
+    window.removeEventListener('scroll', updateBackToTopVisibility);
     document.body.classList.remove('overflow-hidden');
 });
 </script>
@@ -137,6 +154,26 @@ onUnmounted(() => {
         <main id="main-content">
             <slot />
         </main>
+
+        <Transition
+            enter-active-class="transition duration-200 ease-out motion-reduce:transition-none"
+            enter-from-class="translate-y-2 opacity-0"
+            leave-active-class="transition duration-150 ease-in motion-reduce:transition-none"
+            leave-to-class="translate-y-2 opacity-0"
+        >
+            <button
+                v-if="showBackToTop"
+                type="button"
+                class="fixed bottom-4 right-4 z-30 grid size-11 place-items-center rounded-full bg-primary text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:bottom-6 sm:right-6"
+                aria-label="Back to top"
+                title="Back to top"
+                @click="scrollToTop"
+            >
+                <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="m18 15-6-6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+        </Transition>
 
         <footer class="border-t border-primary/15 bg-primary text-primary-foreground">
             <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-8 text-sm text-primary-foreground/70 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">

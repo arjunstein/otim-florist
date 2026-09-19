@@ -39,6 +39,8 @@ class StorefrontController extends Controller
 
     public function showProduct(Product $product): Response
     {
+        Product::query()->whereKey($product->getKey())->increment('click_count');
+        $product->refresh();
         $product->load('category:id,name,slug');
 
         return Inertia::render('Storefront/Product', [

@@ -51,6 +51,11 @@ class StorefrontTest extends TestCase
                 ->where('product.slug', $product->slug)
             );
 
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'click_count' => 1,
+        ]);
+
         $this->get("/categories/{$category->slug}")
             ->assertOk()
             ->assertInertia(fn ($page) => $page

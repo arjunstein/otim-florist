@@ -81,4 +81,31 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
             </div>
         </CardSection>
     </section>
+
+    <CardSection title="Most viewed products" subtitle="Ranked by public product-page visits.">
+        <template #actions>
+            <span v-if="mostClickedProducts.length" class="rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">Top {{ mostClickedProducts.length }}</span>
+        </template>
+        <ol v-if="mostClickedProducts.length" class="-mx-5 divide-y sm:-mx-6">
+            <li v-for="(product, index) in mostClickedProducts" :key="product.id">
+                <Link :href="`/products?search=${encodeURIComponent(product.name)}`" class="grid min-h-16 grid-cols-[2.5rem_2.75rem_minmax(0,1fr)_auto] items-center gap-3 px-5 py-3 transition-colors hover:bg-muted/60 sm:px-6">
+                    <span :class="['grid size-9 place-items-center rounded-full text-sm font-semibold', index === 0 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground']">{{ index + 1 }}</span>
+                    <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="size-11 rounded-lg object-cover" loading="lazy" />
+                    <span v-else class="grid size-11 place-items-center rounded-lg bg-secondary text-sm font-semibold text-primary" aria-hidden="true">{{ product.name.charAt(0) }}</span>
+                    <span class="min-w-0">
+                        <span class="block truncate text-base font-semibold">{{ product.name }}</span>
+                        <span class="block truncate text-sm text-muted-foreground">{{ product.categoryName }}</span>
+                    </span>
+                    <span class="text-right">
+                        <span class="block text-base font-semibold text-primary">{{ product.clickCount }}</span>
+                        <span class="block text-xs font-medium text-muted-foreground">views</span>
+                    </span>
+                </Link>
+            </li>
+        </ol>
+        <div v-else class="rounded-xl border border-dashed bg-muted/30 p-8 text-center">
+            <p class="font-semibold">No product clicks yet</p>
+            <p class="mt-1 text-sm text-muted-foreground">Visits to public product pages will appear here.</p>
+        </div>
+    </CardSection>
 </template>

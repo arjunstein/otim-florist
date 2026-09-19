@@ -20,10 +20,19 @@ export interface CategorySummary {
     productCount: number;
 }
 
+export interface MostClickedProduct {
+    id: number;
+    name: string;
+    imageUrl: string | null;
+    categoryName: string;
+    clickCount: number;
+}
+
 export interface DashboardProps {
     stats: Stat[];
     recentProducts: RecentProduct[];
     categorySummary: CategorySummary[];
+    mostClickedProducts: MostClickedProduct[];
 }
 
 export interface Product {

@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -26,6 +28,7 @@ class ProductTest extends TestCase
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
             'price' => 350000,
+            'sale_price' => 300000,
         ]);
 
         $this->get('/products')
@@ -79,6 +82,7 @@ class ProductTest extends TestCase
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
             'price' => 350000,
+            'sale_price' => 300000,
         ])
             ->assertRedirect('/products')
             ->assertSessionHas('success');
@@ -87,8 +91,54 @@ class ProductTest extends TestCase
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
             'price' => 350000,
+            'sale_price' => 300000,
             'slug' => 'rose-bouquet-m',
         ]);
+    }
+
+    public function test_product_image_and_description_can_be_created_updated_and_deleted(): void
+    {
+        Storage::fake('public');
+        $category = Category::create(['name' => 'Bouquet']);
+
+        $this->post('/products', [
+            'name' => 'Rose Bouquet M',
+            'description' => 'A soft pink rose arrangement.',
+            'category_id' => $category->id,
+            'price' => 350000,
+            'image' => UploadedFile::fake()->image('rose.jpg'),
+        ])->assertRedirect('/products');
+
+        $product = Product::firstOrFail();
+        $firstImagePath = $product->image_path;
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'description' => 'A soft pink rose arrangement.',
+        ]);
+        Storage::disk('public')->assertExists($firstImagePath);
+
+        $this->put("/products/{$product->id}", [
+            'name' => 'Rose Bouquet L',
+            'description' => 'A larger pink rose arrangement.',
+            'category_id' => $category->id,
+            'price' => 450000,
+            'image' => UploadedFile::fake()->image('rose-large.jpg'),
+        ])->assertRedirect('/products');
+
+        $product->refresh();
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'description' => 'A larger pink rose arrangement.',
+        ]);
+        Storage::disk('public')->assertMissing($firstImagePath);
+        Storage::disk('public')->assertExists($product->image_path);
+
+        $imagePath = $product->image_path;
+        $this->delete("/products/{$product->id}")->assertRedirect('/products');
+
+        Storage::disk('public')->assertMissing($imagePath);
     }
 
     public function test_product_fields_must_be_valid(): void
@@ -98,6 +148,18 @@ class ProductTest extends TestCase
             'category_id' => 999,
             'price' => -1,
         ])->assertSessionHasErrors(['name', 'category_id', 'price']);
+    }
+
+    public function test_sale_price_must_be_lower_than_regular_price(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+
+        $this->post('/products', [
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'price' => 350000,
+            'sale_price' => 350000,
+        ])->assertSessionHasErrors('sale_price');
     }
 
     public function test_product_can_be_updated_and_deleted(): void

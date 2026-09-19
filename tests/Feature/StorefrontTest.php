@@ -16,8 +16,11 @@ class StorefrontTest extends TestCase
         $category = Category::create(['name' => 'Bouquet']);
         Product::create([
             'name' => 'Rose Bouquet M',
+            'description' => 'A soft pink rose arrangement.',
+            'image_path' => 'products/rose.jpg',
             'category_id' => $category->id,
             'price' => 350000,
+            'sale_price' => 300000,
         ]);
 
         $this->get('/')
@@ -26,6 +29,8 @@ class StorefrontTest extends TestCase
                 ->component('Storefront/Catalog')
                 ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('products.0.slug', 'rose-bouquet-m')
+                ->where('products.0.description', 'A soft pink rose arrangement.')
+                ->where('products.0.salePrice', 300000)
             );
     }
 

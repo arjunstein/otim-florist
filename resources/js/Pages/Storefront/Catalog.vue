@@ -9,7 +9,9 @@ defineProps<{
     products: Array<{
         name: string;
         slug: string;
+        imageUrl: string | null;
         price: number;
+        salePrice: number | null;
         category: {
             name: string;
             slug: string;

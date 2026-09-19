@@ -33,8 +33,11 @@ export interface DashboardProps {
 export interface Product {
     id: number;
     name: string;
+    description: string | null;
+    imageUrl: string | null;
     category: ProductCategory;
     price: number;
+    salePrice: number | null;
 }
 
 export interface ProductCategory {

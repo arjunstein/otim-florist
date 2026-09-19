@@ -21,14 +21,21 @@ const isDeleting = ref(false);
 const productDialog = ref<HTMLDialogElement | null>(null);
 const deleteDialog = ref<HTMLDialogElement | null>(null);
 const productNameInput = ref<HTMLInputElement | null>(null);
+const productImageInput = ref<HTMLInputElement | null>(null);
 const cancelDeleteButton = ref<HTMLButtonElement | null>(null);
+const imagePreviewUrl = ref<string | null>(null);
 const productForm = useForm({
     name: '',
+    description: '',
     category_id: '',
     price: '',
+    sale_price: '',
+    image: null as File | null,
+    _method: '',
 });
 
 const isEditing = computed(() => editingProduct.value !== null);
+const productImagePreview = computed(() => imagePreviewUrl.value ?? editingProduct.value?.imageUrl ?? null);
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat('id-ID', {
@@ -39,9 +46,7 @@ function formatPrice(price: number): string {
 }
 
 function openCreateDialog(): void {
-    editingProduct.value = null;
-    productForm.reset();
-    productForm.clearErrors();
+    resetProductForm();
     productDialog.value?.showModal();
     nextTick(() => productNameInput.value?.focus());
 }
@@ -49,8 +54,12 @@ function openCreateDialog(): void {
 function openEditDialog(product: Product): void {
     editingProduct.value = product;
     productForm.name = product.name;
+    productForm.description = product.description ?? '';
     productForm.category_id = String(product.category.id);
     productForm.price = String(product.price);
+    productForm.sale_price = product.salePrice ? String(product.salePrice) : '';
+    productForm.image = null;
+    productForm._method = '';
     productForm.clearErrors();
     productDialog.value?.showModal();
     nextTick(() => productNameInput.value?.focus());
@@ -61,24 +70,55 @@ function closeProductDialog(): void {
 }
 
 function resetProductForm(): void {
+    releaseImagePreview();
     editingProduct.value = null;
     productForm.reset();
     productForm.clearErrors();
+    if (productImageInput.value) {
+        productImageInput.value.value = '';
+    }
+}
+
+function selectImage(event: Event): void {
+    releaseImagePreview();
+
+    const [image] = (event.target as HTMLInputElement).files ?? [];
+    productForm.image = image ?? null;
+    imagePreviewUrl.value = image ? URL.createObjectURL(image) : null;
+}
+
+function clearSelectedImage(): void {
+    releaseImagePreview();
+    productForm.image = null;
+
+    if (productImageInput.value) {
+        productImageInput.value.value = '';
+    }
+}
+
+function releaseImagePreview(): void {
+    if (imagePreviewUrl.value) {
+        URL.revokeObjectURL(imagePreviewUrl.value);
+        imagePreviewUrl.value = null;
+    }
 }
 
 function saveProduct(): void {
     const options = {
+        forceFormData: true,
         preserveScroll: true,
         onSuccess: closeProductDialog,
         onError: () => showToast('error', 'Product could not be saved. Check the form.'),
     };
 
     if (editingProduct.value) {
-        productForm.put(`/products/${editingProduct.value.id}`, options);
+        productForm._method = 'put';
+        productForm.post(`/products/${editingProduct.value.id}`, options);
 
         return;
     }
 
+    productForm._method = '';
     productForm.post('/products', options);
 }
 
@@ -164,7 +204,7 @@ function queueFilters(): void {
     <dialog
         ref="productDialog"
         aria-labelledby="product-dialog-title"
-        class="m-auto w-[calc(100%-2rem)] max-w-lg overflow-hidden rounded-2xl border bg-card p-0 text-card-foreground shadow-xl backdrop:bg-foreground/30 backdrop:backdrop-blur-sm"
+        class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-2xl border bg-card p-0 text-card-foreground shadow-xl backdrop:bg-foreground/30 backdrop:backdrop-blur-sm"
         @close="resetProductForm"
     >
         <form class="flex flex-col" @submit.prevent="saveProduct">
@@ -173,7 +213,7 @@ function queueFilters(): void {
                     <h2 id="product-dialog-title" class="text-lg font-semibold tracking-tight">
                         {{ isEditing ? 'Edit product' : 'Add product' }}
                     </h2>
-                    <p class="mt-1 text-sm text-muted-foreground">Set product category and price.</p>
+                    <p class="mt-1 text-sm text-muted-foreground">Add product details, price, and image.</p>
                 </div>
                 <button
                     type="button"
@@ -224,6 +264,25 @@ function queueFilters(): void {
                         {{ productForm.errors.category_id }}
                     </p>
                 </div>
+                <div class="flex flex-col gap-1.5 sm:col-span-2">
+                    <label for="product-description" class="text-sm font-medium">Description <span class="text-muted-foreground">(optional)</span></label>
+                    <textarea
+                        id="product-description"
+                        v-model="productForm.description"
+                        rows="4"
+                        maxlength="2000"
+                        :aria-describedby="productForm.errors.description ? 'product-description-error' : undefined"
+                        :aria-invalid="Boolean(productForm.errors.description)"
+                        :class="[
+                            'w-full resize-y rounded-xl border bg-background px-3 py-2.5 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus:border-ring focus:ring-2 focus:ring-ring/20',
+                            productForm.errors.description ? 'border-destructive' : '',
+                        ]"
+                        placeholder="Describe the arrangement, flowers, and occasion."
+                    />
+                    <p v-if="productForm.errors.description" id="product-description-error" role="alert" class="text-sm text-destructive-foreground">
+                        {{ productForm.errors.description }}
+                    </p>
+                </div>
                 <div class="flex flex-col gap-1.5">
                     <label for="product-price" class="text-sm font-medium">Price (Rp)</label>
                     <input
@@ -245,6 +304,60 @@ function queueFilters(): void {
                     <p v-if="productForm.errors.price" id="product-price-error" role="alert" class="text-sm text-destructive-foreground">
                         {{ productForm.errors.price }}
                     </p>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label for="product-sale-price" class="text-sm font-medium">Sale price <span class="text-muted-foreground">(optional)</span></label>
+                    <input
+                        id="product-sale-price"
+                        v-model="productForm.sale_price"
+                        type="number"
+                        min="0"
+                        :max="productForm.price || undefined"
+                        step="1000"
+                        inputmode="numeric"
+                        :aria-describedby="productForm.errors.sale_price ? 'product-sale-price-error' : undefined"
+                        :aria-invalid="Boolean(productForm.errors.sale_price)"
+                        :class="[
+                            'min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20',
+                            productForm.errors.sale_price ? 'border-destructive' : '',
+                        ]"
+                        placeholder="300000"
+                    />
+                    <p v-if="productForm.errors.sale_price" id="product-sale-price-error" role="alert" class="text-sm text-destructive-foreground">
+                        {{ productForm.errors.sale_price }}
+                    </p>
+                </div>
+                <div class="flex flex-col gap-1.5 sm:col-span-2">
+                    <label for="product-image" class="text-sm font-medium">Product image <span class="text-muted-foreground">(optional)</span></label>
+                    <input
+                        id="product-image"
+                        ref="productImageInput"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        :aria-describedby="productForm.errors.image ? 'product-image-error' : 'product-image-help'"
+                        :aria-invalid="Boolean(productForm.errors.image)"
+                        :class="[
+                            'min-h-11 w-full rounded-xl border bg-background px-3 py-2 text-sm shadow-xs file:mr-3 file:rounded-lg file:border-0 file:bg-secondary file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-secondary-foreground hover:file:bg-secondary/80 focus:border-ring focus:ring-2 focus:ring-ring/20',
+                            productForm.errors.image ? 'border-destructive' : '',
+                        ]"
+                        @change="selectImage"
+                    />
+                    <p id="product-image-help" class="text-xs leading-5 text-muted-foreground">JPG, PNG, or WebP up to 5 MB.</p>
+                    <p v-if="productForm.errors.image" id="product-image-error" role="alert" class="text-sm text-destructive-foreground">
+                        {{ productForm.errors.image }}
+                    </p>
+                    <div v-if="productImagePreview" class="relative overflow-hidden rounded-xl border bg-muted/30">
+                        <img :src="productImagePreview" alt="Product image preview" class="aspect-[4/3] w-full object-cover" />
+                        <button
+                            v-if="productForm.image"
+                            type="button"
+                            class="absolute right-3 top-3 min-h-11 rounded-lg bg-background/95 px-3 text-sm font-semibold shadow-sm transition-colors hover:bg-background"
+                            @click="clearSelectedImage"
+                        >
+                            Remove image
+                        </button>
+                    </div>
+                    <p v-if="productForm.progress" class="text-sm text-muted-foreground">Uploading {{ productForm.progress.percentage }}%</p>
                 </div>
             </div>
             <footer class="flex flex-col-reverse gap-2 border-t bg-muted/30 px-5 py-4 sm:flex-row sm:justify-end sm:px-6">
@@ -362,9 +475,20 @@ function queueFilters(): void {
                 </thead>
                 <tbody>
                     <tr v-for="product in products.data" :key="product.id" class="border-b last:border-0 hover:bg-muted/60">
-                        <td class="break-words px-3 py-3.5 font-semibold sm:px-6">{{ product.name }}</td>
+                        <td class="px-3 py-3.5 sm:px-6">
+                            <div class="flex min-w-0 items-center gap-3">
+                                <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="size-11 shrink-0 rounded-lg object-cover" />
+                                <div class="min-w-0">
+                                    <p class="break-words font-semibold">{{ product.name }}</p>
+                                    <p v-if="product.description" class="mt-0.5 line-clamp-1 text-xs font-normal text-muted-foreground">{{ product.description }}</p>
+                                </div>
+                            </div>
+                        </td>
                         <td class="px-5 py-3 text-muted-foreground">{{ product.category.name }}</td>
-                        <td class="px-5 py-3 text-right font-medium">{{ formatPrice(product.price) }}</td>
+                        <td class="px-5 py-3 text-right font-medium">
+                            <p v-if="product.salePrice" class="text-xs font-normal text-muted-foreground line-through">{{ formatPrice(product.price) }}</p>
+                            <p :class="product.salePrice ? 'text-primary' : ''">{{ formatPrice(product.salePrice ?? product.price) }}</p>
+                        </td>
                         <td class="px-3 py-3 text-right sm:px-6">
                             <div class="flex justify-end gap-2">
                                 <button

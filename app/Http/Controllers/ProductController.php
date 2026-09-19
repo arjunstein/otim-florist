@@ -7,6 +7,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -34,11 +35,14 @@ class ProductController extends Controller
                 'data' => $products->getCollection()->map(fn (Product $product) => [
                     'id' => $product->id,
                     'name' => $product->name,
+                    'description' => $product->description,
+                    'imageUrl' => $product->image_path ? Storage::disk('public')->url($product->image_path) : null,
                     'category' => [
                         'id' => $product->category->id,
                         'name' => $product->category->name,
                     ],
                     'price' => $product->price,
+                    'salePrice' => $product->sale_price,
                 ]),
                 'pagination' => [
                     'currentPage' => $products->currentPage(),
@@ -60,22 +64,44 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request): RedirectResponse
     {
-        Product::create($request->validated());
+        Product::create($this->productAttributes($request));
 
         return to_route('products.index')->with('success', 'Product created.');
     }
 
     public function update(ProductRequest $request, Product $product): RedirectResponse
     {
-        $product->update($request->validated());
+        $attributes = $this->productAttributes($request);
+        $previousImagePath = isset($attributes['image_path']) ? $product->image_path : null;
+
+        $product->update($attributes);
+
+        if ($previousImagePath) {
+            Storage::disk('public')->delete($previousImagePath);
+        }
 
         return to_route('products.index')->with('success', 'Product updated.');
     }
 
     public function destroy(Product $product): RedirectResponse
     {
+        if ($product->image_path) {
+            Storage::disk('public')->delete($product->image_path);
+        }
+
         $product->delete();
 
         return to_route('products.index')->with('success', 'Product deleted.');
+    }
+
+    private function productAttributes(ProductRequest $request): array
+    {
+        $attributes = $request->safe()->except('image');
+
+        if ($request->hasFile('image')) {
+            $attributes['image_path'] = $request->file('image')->store('products', 'public');
+        }
+
+        return $attributes;
     }
 }

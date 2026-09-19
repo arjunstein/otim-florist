@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -75,7 +76,7 @@ class StorefrontController extends Controller
     }
 
     /**
-     * @return array{id: int, name: string, slug: string, price: int, category: array{id: int, name: string, slug: string}}
+     * @return array{id: int, name: string, slug: string, description: ?string, imageUrl: ?string, price: int, salePrice: ?int, category: array{id: int, name: string, slug: string}}
      */
     private function productData(Product $product): array
     {
@@ -83,7 +84,10 @@ class StorefrontController extends Controller
             'id' => $product->id,
             'name' => $product->name,
             'slug' => $product->slug,
+            'description' => $product->description,
+            'imageUrl' => $product->image_path ? Storage::disk('public')->url($product->image_path) : null,
             'price' => $product->price,
+            'salePrice' => $product->sale_price,
             'category' => [
                 'id' => $product->category->id,
                 'name' => $product->category->name,

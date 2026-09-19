@@ -11,7 +11,7 @@ class StorefrontTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_public_catalog_renders_categories_and_products(): void
+    public function test_public_catalog_renders_navigation_categories_and_products(): void
     {
         $category = Category::create(['name' => 'Bouquet']);
         Product::create([
@@ -24,7 +24,7 @@ class StorefrontTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Storefront/Catalog')
-                ->where('categories.0.slug', 'bouquet')
+                ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('products.0.slug', 'rose-bouquet-m')
             );
     }
@@ -42,6 +42,7 @@ class StorefrontTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Storefront/Product')
+                ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('product.slug', $product->slug)
             );
 
@@ -50,6 +51,7 @@ class StorefrontTest extends TestCase
             ->assertInertia(fn ($page) => $page
                 ->component('Storefront/Category')
                 ->where('category.slug', $category->slug)
+                ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('products.0.slug', $product->slug)
             );
     }

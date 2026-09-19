@@ -29,12 +29,13 @@ defineProps<{
 
     <section class="border-b bg-secondary/45">
         <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-            <Link href="/" class="inline-flex min-h-11 items-center gap-2 rounded-xl text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
-                <svg class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                All flowers
-            </Link>
+            <nav aria-label="Breadcrumb">
+                <ol class="flex min-h-11 items-center gap-2 text-sm font-semibold text-muted-foreground">
+                    <li><Link href="/" class="rounded-lg transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Home</Link></li>
+                    <li aria-hidden="true">/</li>
+                    <li aria-current="page" class="text-foreground">{{ category.name }}</li>
+                </ol>
+            </nav>
             <p class="mt-8 text-sm font-semibold uppercase tracking-[0.16em] text-primary">Collection</p>
             <h1 class="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">{{ category.name }}</h1>
             <p class="mt-4 text-base text-muted-foreground">

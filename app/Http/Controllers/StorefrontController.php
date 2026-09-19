@@ -12,11 +12,7 @@ class StorefrontController extends Controller
     public function index(): Response
     {
         return Inertia::render('Storefront/Catalog', [
-            'categories' => Category::query()
-                ->withCount('products')
-                ->orderBy('name')
-                ->get()
-                ->map(fn (Category $category) => $this->categoryData($category)),
+            'navigationCategories' => $this->navigationCategories(),
             'products' => Product::query()
                 ->with('category:id,name,slug')
                 ->orderBy('name')
@@ -34,6 +30,7 @@ class StorefrontController extends Controller
             ->get();
 
         return Inertia::render('Storefront/Category', [
+            'navigationCategories' => $this->navigationCategories(),
             'category' => $this->categoryData($category),
             'products' => $products->map(fn (Product $product) => $this->productData($product)),
         ]);
@@ -44,8 +41,24 @@ class StorefrontController extends Controller
         $product->load('category:id,name,slug');
 
         return Inertia::render('Storefront/Product', [
+            'navigationCategories' => $this->navigationCategories(),
             'product' => $this->productData($product),
         ]);
+    }
+
+    /**
+     * @return array<int, array{name: string, slug: string}>
+     */
+    private function navigationCategories(): array
+    {
+        return Category::query()
+            ->orderBy('name')
+            ->get(['name', 'slug'])
+            ->map(fn (Category $category) => [
+                'name' => $category->name,
+                'slug' => $category->slug,
+            ])
+            ->all();
     }
 
     /**

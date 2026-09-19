@@ -29,12 +29,15 @@ const price = new Intl.NumberFormat('id-ID', {
 
     <section class="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-2 lg:items-center lg:px-8 lg:py-20">
         <div>
-            <Link :href="`/categories/${product.category.slug}`" class="inline-flex min-h-11 items-center gap-2 rounded-xl text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
-                <svg class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                {{ product.category.name }}
-            </Link>
+            <nav aria-label="Breadcrumb">
+                <ol class="flex min-h-11 flex-wrap items-center gap-2 text-sm font-semibold text-muted-foreground">
+                    <li><Link href="/" class="rounded-lg transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Home</Link></li>
+                    <li aria-hidden="true">/</li>
+                    <li><Link :href="`/categories/${product.category.slug}`" class="rounded-lg transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">{{ product.category.name }}</Link></li>
+                    <li aria-hidden="true">/</li>
+                    <li aria-current="page" class="text-foreground">{{ product.name }}</li>
+                </ol>
+            </nav>
             <div class="mt-6 grid aspect-square max-w-xl place-items-center rounded-[2rem] border bg-secondary/70 shadow-sm">
                 <svg class="size-52 text-primary" viewBox="0 0 40 40" fill="none" aria-hidden="true">
                     <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".18" />

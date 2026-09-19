@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import ProductCard from '@/Components/Storefront/ProductCard.vue';
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 
 defineOptions({ layout: StorefrontLayout });
 
 defineProps<{
-    categories: Array<{
-        name: string;
-        slug: string;
-        productCount: number;
-    }>;
     products: Array<{
         name: string;
         slug: string;
@@ -46,33 +41,6 @@ defineProps<{
                     <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".45" />
                 </svg>
             </div>
-        </div>
-    </section>
-
-    <section v-if="categories.length" class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div class="flex items-end justify-between gap-4">
-            <div>
-                <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Browse by type</p>
-                <h2 class="mt-2 text-2xl font-semibold tracking-tight">Find your kind of flowers</h2>
-            </div>
-        </div>
-        <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Link
-                v-for="category in categories"
-                :key="category.slug"
-                :href="`/categories/${category.slug}`"
-                class="group flex min-h-24 items-center justify-between rounded-2xl border bg-card p-5 transition-colors duration-200 hover:bg-secondary"
-            >
-                <span>
-                    <span class="block font-semibold">{{ category.name }}</span>
-                    <span class="mt-1 block text-sm text-muted-foreground">
-                        {{ category.productCount }} {{ category.productCount === 1 ? 'product' : 'products' }}
-                    </span>
-                </span>
-                <svg class="size-5 text-muted-foreground transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transition-none" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </Link>
         </div>
     </section>
 

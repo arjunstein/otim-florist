@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductIndexRequest;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
@@ -11,8 +12,16 @@ use Inertia\Response;
 
 class ProductController extends Controller
 {
-    public function index(): Response
+    public function index(ProductIndexRequest $request): Response
     {
+        $products = Product::query()
+            ->with('category:id,name')
+            ->when($request->search(), fn ($query, string $search) => $query->where('name', 'like', "%{$search}%"))
+            ->when($request->categoryId(), fn ($query, int $categoryId) => $query->where('category_id', $categoryId))
+            ->orderBy('name')
+            ->paginate($request->perPage())
+            ->withQueryString();
+
         return Inertia::render('Dashboard/Products', [
             'categories' => Category::query()
                 ->orderBy('name')
@@ -21,11 +30,8 @@ class ProductController extends Controller
                     'id' => $category->id,
                     'name' => $category->name,
                 ]),
-            'products' => Product::query()
-                ->with('category:id,name')
-                ->orderBy('name')
-                ->get()
-                ->map(fn (Product $product) => [
+            'products' => [
+                'data' => $products->getCollection()->map(fn (Product $product) => [
                     'id' => $product->id,
                     'name' => $product->name,
                     'category' => [
@@ -34,6 +40,21 @@ class ProductController extends Controller
                     ],
                     'price' => $product->price,
                 ]),
+                'pagination' => [
+                    'currentPage' => $products->currentPage(),
+                    'lastPage' => $products->lastPage(),
+                    'perPage' => $products->perPage(),
+                    'total' => $products->total(),
+                    'from' => $products->firstItem(),
+                    'to' => $products->lastItem(),
+                    'nextPageUrl' => $products->nextPageUrl(),
+                    'prevPageUrl' => $products->previousPageUrl(),
+                ],
+            ],
+            'filters' => [
+                'search' => $request->search(),
+                'categoryId' => $request->categoryId(),
+            ],
         ]);
     }
 

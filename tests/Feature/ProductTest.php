@@ -34,10 +34,40 @@ class ProductTest extends TestCase
                 ->component('Dashboard/Products')
                 ->has('categories', 1)
                 ->where('categories.0.name', 'Bouquet')
-                ->has('products', 1)
-                ->where('products.0.name', 'Rose Bouquet M')
-                ->where('products.0.category.name', 'Bouquet')
-                ->where('products.0.price', 350000)
+                ->has('products.data', 1)
+                ->where('products.data.0.name', 'Rose Bouquet M')
+                ->where('products.data.0.category.name', 'Bouquet')
+                ->where('products.data.0.price', 350000)
+            );
+    }
+
+    public function test_products_page_paginates_with_selected_page_size(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+
+        foreach (range(1, 11) as $number) {
+            Product::create([
+                'name' => "Product {$number}",
+                'category_id' => $category->id,
+                'price' => $number * 10000,
+            ]);
+        }
+
+        $this->get('/products?per_page=10')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->has('products.data', 10)
+                ->where('products.pagination.currentPage', 1)
+                ->where('products.pagination.lastPage', 2)
+                ->where('products.pagination.perPage', 10)
+                ->where('products.pagination.total', 11)
+            );
+
+        $this->get('/products?per_page=10&page=2')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->has('products.data', 1)
+                ->where('products.pagination.currentPage', 2)
             );
     }
 

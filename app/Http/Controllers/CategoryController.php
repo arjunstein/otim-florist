@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\PaginationRequest;
 use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -10,17 +11,31 @@ use Inertia\Response;
 
 class CategoryController extends Controller
 {
-    public function index(): Response
+    public function index(PaginationRequest $request): Response
     {
+        $categories = Category::query()
+            ->orderBy('name')
+            ->paginate($request->perPage())
+            ->withQueryString();
+
         return Inertia::render('Dashboard/Categories', [
-            'categories' => Category::query()
-                ->orderBy('name')
-                ->get()
-                ->map(fn (Category $category) => [
+            'categories' => [
+                'data' => $categories->getCollection()->map(fn (Category $category) => [
                     'id' => $category->id,
                     'name' => $category->name,
                     'createdAt' => $category->created_at->format('d M Y'),
                 ]),
+                'pagination' => [
+                    'currentPage' => $categories->currentPage(),
+                    'lastPage' => $categories->lastPage(),
+                    'perPage' => $categories->perPage(),
+                    'total' => $categories->total(),
+                    'from' => $categories->firstItem(),
+                    'to' => $categories->lastItem(),
+                    'nextPageUrl' => $categories->nextPageUrl(),
+                    'prevPageUrl' => $categories->previousPageUrl(),
+                ],
+            ],
         ]);
     }
 

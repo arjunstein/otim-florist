@@ -26,8 +26,32 @@ class CategoryTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Dashboard/Categories')
-                ->has('categories', 1)
-                ->where('categories.0.name', 'Bouquet')
+                ->has('categories.data', 1)
+                ->where('categories.data.0.name', 'Bouquet')
+            );
+    }
+
+    public function test_categories_page_paginates_with_selected_page_size(): void
+    {
+        foreach (range(1, 11) as $number) {
+            Category::create(['name' => "Category {$number}"]);
+        }
+
+        $this->get('/categories?per_page=10')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->has('categories.data', 10)
+                ->where('categories.pagination.currentPage', 1)
+                ->where('categories.pagination.lastPage', 2)
+                ->where('categories.pagination.perPage', 10)
+                ->where('categories.pagination.total', 11)
+            );
+
+        $this->get('/categories?per_page=10&page=2')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->has('categories.data', 1)
+                ->where('categories.pagination.currentPage', 2)
             );
     }
 

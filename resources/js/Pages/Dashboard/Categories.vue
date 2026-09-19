@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import CardSection from '@/Components/CardSection.vue';
 import PageHeader from '@/Components/PageHeader.vue';
+import PaginationControls from '@/Components/PaginationControls.vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { showToast } from '@/toast';
 import type { CategoriesProps, Category } from '@/types';
@@ -9,7 +10,7 @@ import { nextTick, ref } from 'vue';
 
 defineOptions({ layout: DashboardLayout });
 
-defineProps<CategoriesProps>();
+const props = defineProps<CategoriesProps>();
 
 const createForm = useForm({ name: '' });
 const editForm = useForm({ name: '' });
@@ -106,6 +107,10 @@ function deleteCategory(): void {
             showToast('error', 'Category could not be deleted.');
         },
     });
+}
+
+function changePerPage(perPage: number): void {
+    router.get('/categories', { per_page: perPage }, { preserveScroll: true, preserveState: true, replace: true });
 }
 </script>
 
@@ -294,14 +299,14 @@ function deleteCategory(): void {
         </form>
     </dialog>
 
-    <CardSection title="Total categories" :subtitle="`${categories.length} categories`">
-        <div v-if="categories.length === 0" class="rounded-xl border border-dashed bg-muted/40 p-8 text-center">
+    <CardSection title="Total categories" :subtitle="`${categories.pagination.total} categories`">
+        <div v-if="categories.pagination.total === 0" class="rounded-xl border border-dashed bg-muted/40 p-8 text-center">
             <p class="font-medium">No categories yet</p>
             <p class="mt-1 text-sm text-muted-foreground">Add first category using form above.</p>
         </div>
 
         <ul v-else class="flex flex-col gap-3">
-            <li v-for="category in categories" :key="category.id" class="rounded-xl border bg-card p-4">
+            <li v-for="category in categories.data" :key="category.id" class="rounded-xl border bg-card p-4">
                 <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
                     <div class="grid flex-1 gap-3 sm:grid-cols-[minmax(0,1fr)_10rem] sm:items-center">
                         <div class="min-w-0">
@@ -340,5 +345,11 @@ function deleteCategory(): void {
                 </div>
             </li>
         </ul>
+        <PaginationControls
+            v-if="categories.pagination.total"
+            class="mt-5"
+            :pagination="categories.pagination"
+            @per-page-change="changePerPage"
+        />
     </CardSection>
 </template>

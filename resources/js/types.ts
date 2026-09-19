@@ -42,9 +42,29 @@ export interface ProductCategory {
     name: string;
 }
 
+export interface Pagination {
+    currentPage: number;
+    lastPage: number;
+    perPage: number;
+    total: number;
+    from: number | null;
+    to: number | null;
+    nextPageUrl: string | null;
+    prevPageUrl: string | null;
+}
+
+export interface Paginated<T> {
+    data: T[];
+    pagination: Pagination;
+}
+
 export interface ProductsProps {
-    products: Product[];
+    products: Paginated<Product>;
     categories: ProductCategory[];
+    filters: {
+        search: string | null;
+        categoryId: number | null;
+    };
 }
 
 export interface Category {
@@ -54,7 +74,7 @@ export interface Category {
 }
 
 export interface CategoriesProps {
-    categories: Category[];
+    categories: Paginated<Category>;
 }
 
 export interface SettingsProps {

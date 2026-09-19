@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import CardSection from '@/Components/CardSection.vue';
 import PageHeader from '@/Components/PageHeader.vue';
+import PaginationControls from '@/Components/PaginationControls.vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { showToast } from '@/toast';
 import type { Product, ProductsProps } from '@/types';
@@ -11,8 +12,9 @@ defineOptions({ layout: DashboardLayout });
 
 const props = defineProps<ProductsProps>();
 
-const query = ref('');
-const category = ref('All');
+const query = ref(props.filters.search ?? '');
+const category = ref(props.filters.categoryId ? String(props.filters.categoryId) : 'All');
+let filterTimer: ReturnType<typeof window.setTimeout> | undefined;
 const editingProduct = ref<Product | null>(null);
 const deletingProduct = ref<Product | null>(null);
 const isDeleting = ref(false);
@@ -25,14 +27,6 @@ const productForm = useForm({
     category_id: '',
     price: '',
 });
-
-const filtered = computed(() =>
-    props.products.filter(
-        (product) =>
-            (category.value === 'All' || product.category.name === category.value) &&
-            product.name.toLowerCase().includes(query.value.toLowerCase()),
-    ),
-);
 
 const isEditing = computed(() => editingProduct.value !== null);
 
@@ -117,6 +111,30 @@ function deleteProduct(): void {
             showToast('error', 'Product could not be deleted.');
         },
     });
+}
+
+function applyFilters(perPage = props.products.pagination.perPage): void {
+    window.clearTimeout(filterTimer);
+    filterTimer = undefined;
+
+    router.get(
+        '/products',
+        {
+            search: query.value || undefined,
+            category_id: category.value === 'All' ? undefined : category.value,
+            per_page: perPage,
+        },
+        {
+            preserveScroll: true,
+            preserveState: true,
+            replace: true,
+        },
+    );
+}
+
+function queueFilters(): void {
+    window.clearTimeout(filterTimer);
+    filterTimer = window.setTimeout(() => applyFilters(), 300);
 }
 </script>
 
@@ -299,10 +317,9 @@ function deleteProduct(): void {
         </div>
     </dialog>
 
-    <CardSection title="Total products" :subtitle="`${products.length} products`">
+    <CardSection title="Total products" :subtitle="`${products.pagination.total} products`">
         <template #actions>
-            <fieldset class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                <legend class="sr-only">Catalog filters</legend>
+            <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row" role="search">
                 <label for="product-search" class="sr-only">Search products</label>
                 <input
                     id="product-search"
@@ -310,23 +327,25 @@ function deleteProduct(): void {
                     type="search"
                     placeholder="Search products"
                     class="min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus:border-ring focus:ring-2 focus:ring-ring/20 sm:w-56"
+                    @input="queueFilters"
                 />
                 <label for="catalog-category" class="sr-only">Filter by category</label>
                 <select
                     id="catalog-category"
                     v-model="category"
                     class="min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20 sm:w-auto"
+                    @change="applyFilters()"
                 >
                     <option value="All">All categories</option>
-                    <option v-for="item in categories" :key="item.id" :value="item.name">{{ item.name }}</option>
+                    <option v-for="item in categories" :key="item.id" :value="String(item.id)">{{ item.name }}</option>
                 </select>
-            </fieldset>
+            </div>
         </template>
 
-        <div v-if="products.length === 0" class="rounded-xl border border-dashed bg-muted/40 p-8 text-center">
-            <p class="font-medium">No products yet</p>
+        <div v-if="products.pagination.total === 0" class="rounded-xl border border-dashed bg-muted/40 p-8 text-center">
+            <p class="font-medium">{{ filters.search || filters.categoryId ? 'No products match your filters.' : 'No products yet' }}</p>
             <p class="mt-1 text-sm text-muted-foreground">
-                {{ categories.length === 0 ? 'Create a category first, then add your first product.' : 'Add your first product to the catalog.' }}
+                {{ filters.search || filters.categoryId ? 'Try a different keyword or category.' : categories.length === 0 ? 'Create a category first, then add your first product.' : 'Add your first product to the catalog.' }}
             </p>
         </div>
         <div v-else class="-m-5 overflow-x-auto sm:-m-6">
@@ -340,7 +359,7 @@ function deleteProduct(): void {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="product in filtered" :key="product.id" class="border-b last:border-0 hover:bg-muted/60">
+                    <tr v-for="product in products.data" :key="product.id" class="border-b last:border-0 hover:bg-muted/60">
                         <td class="break-words px-3 py-3.5 font-semibold sm:px-6">{{ product.name }}</td>
                         <td class="px-5 py-3 text-muted-foreground">{{ product.category.name }}</td>
                         <td class="px-5 py-3 text-right font-medium">{{ formatPrice(product.price) }}</td>
@@ -371,13 +390,14 @@ function deleteProduct(): void {
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="filtered.length === 0">
-                        <td colspan="4" class="px-5 py-12 text-center text-sm text-muted-foreground">
-                            No products match your filter.
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
+        <PaginationControls
+            v-if="products.pagination.total"
+            class="mt-5"
+            :pagination="products.pagination"
+            @per-page-change="applyFilters"
+        />
     </CardSection>
 </template>

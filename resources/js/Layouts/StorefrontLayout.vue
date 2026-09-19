@@ -49,7 +49,7 @@ onUnmounted(() => {
         >
             Skip to content
         </a>
-        <header class="sticky top-0 z-20 border-b bg-card/95 backdrop-blur">
+        <header class="sticky top-0 z-20 border-b bg-background/85 backdrop-blur-xl">
             <div class="mx-auto flex min-h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
                 <Link href="/" class="flex min-h-11 shrink-0 items-center gap-2.5 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                     <svg class="size-8 text-primary" viewBox="0 0 40 40" fill="none" aria-hidden="true">
@@ -59,13 +59,7 @@ onUnmounted(() => {
                     </svg>
                     <span class="font-semibold tracking-tight">Otim Florist</span>
                 </Link>
-                <nav class="ml-auto hidden items-center gap-1 sm:flex" aria-label="Main navigation">
-                    <Link
-                        href="/"
-                        class="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                        Home
-                    </Link>
+                <nav class="ml-auto hidden items-center gap-1 lg:flex" aria-label="Main navigation">
                     <Link
                         v-for="category in navigationCategories"
                         :key="category.slug"
@@ -78,7 +72,7 @@ onUnmounted(() => {
                 <button
                     ref="mobileNavigationToggle"
                     type="button"
-                    class="ml-auto grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:hidden"
+                    class="ml-auto grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:hidden"
                     aria-label="Open navigation"
                     aria-controls="mobile-navigation"
                     :aria-expanded="mobileNavigationOpen"
@@ -97,7 +91,7 @@ onUnmounted(() => {
             leave-active-class="transition-opacity duration-150 ease-in motion-reduce:transition-none"
             leave-to-class="opacity-0"
         >
-            <div v-if="mobileNavigationOpen" class="fixed inset-0 z-40 sm:hidden">
+            <div v-if="mobileNavigationOpen" class="fixed inset-0 z-40 lg:hidden">
                 <button
                     type="button"
                     class="absolute inset-0 bg-foreground/30 backdrop-blur-sm"
@@ -127,13 +121,6 @@ onUnmounted(() => {
                     </div>
                     <div class="mt-6 flex flex-col gap-1">
                         <Link
-                            href="/"
-                            class="flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                            @click="closeMobileNavigation(false)"
-                        >
-                            Home
-                        </Link>
-                        <Link
                             v-for="category in navigationCategories"
                             :key="category.slug"
                             :href="`/categories/${category.slug}`"
@@ -151,8 +138,8 @@ onUnmounted(() => {
             <slot />
         </main>
 
-        <footer class="border-t bg-card">
-            <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <footer class="border-t border-primary/15 bg-primary text-primary-foreground">
+            <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-8 text-sm text-primary-foreground/70 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
                 <p>Thoughtful flowers, simply arranged.</p>
                 <p>© {{ new Date().getFullYear() }} Otim Florist</p>
             </div>

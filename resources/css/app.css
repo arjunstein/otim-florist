@@ -3,7 +3,121 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
-@theme {
+:root {
+    color-scheme: light;
+    --background: oklch(0.985 0.012 142);
+    --foreground: oklch(0.25 0.04 153);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.25 0.04 153);
+    --primary: oklch(0.48 0.12 151);
+    --primary-foreground: oklch(0.99 0.01 142);
+    --secondary: oklch(0.95 0.025 148);
+    --secondary-foreground: oklch(0.31 0.06 151);
+    --muted: oklch(0.95 0.012 153);
+    --muted-foreground: oklch(0.48 0.025 158);
+    --accent: oklch(0.94 0.035 355);
+    --accent-foreground: oklch(0.38 0.09 355);
+    --border: oklch(0.88 0.025 150);
+    --ring: oklch(0.48 0.12 151);
+    --success: oklch(0.93 0.05 151);
+    --success-foreground: oklch(0.31 0.08 151);
+    --warning: oklch(0.94 0.06 88);
+    --warning-foreground: oklch(0.42 0.09 75);
+    --info: oklch(0.93 0.04 235);
+    --info-foreground: oklch(0.35 0.08 245);
+    --destructive: oklch(0.94 0.04 20);
+    --destructive-foreground: oklch(0.43 0.12 25);
+}
+
+:root.dark {
+    color-scheme: dark;
+    --background: oklch(0.19 0.025 153);
+    --foreground: oklch(0.95 0.015 142);
+    --card: oklch(0.23 0.025 153);
+    --card-foreground: oklch(0.95 0.015 142);
+    --primary: oklch(0.72 0.12 151);
+    --primary-foreground: oklch(0.19 0.025 153);
+    --secondary: oklch(0.3 0.04 151);
+    --secondary-foreground: oklch(0.93 0.02 143);
+    --muted: oklch(0.28 0.02 153);
+    --muted-foreground: oklch(0.76 0.025 151);
+    --accent: oklch(0.35 0.07 355);
+    --accent-foreground: oklch(0.95 0.03 355);
+    --border: oklch(0.36 0.025 153);
+    --ring: oklch(0.72 0.12 151);
+    --success: oklch(0.31 0.07 151);
+    --success-foreground: oklch(0.9 0.06 151);
+    --warning: oklch(0.36 0.06 80);
+    --warning-foreground: oklch(0.95 0.07 90);
+    --info: oklch(0.32 0.05 240);
+    --info-foreground: oklch(0.91 0.04 235);
+    --destructive: oklch(0.34 0.08 25);
+    --destructive-foreground: oklch(0.94 0.05 20);
+}
+
+.storefront {
+    color-scheme: light;
+    --background: oklch(0.975 0.018 80);
+    --foreground: oklch(0.29 0.05 28);
+    --card: oklch(0.995 0.008 80);
+    --card-foreground: oklch(0.29 0.05 28);
+    --primary: oklch(0.54 0.13 32);
+    --primary-foreground: oklch(0.99 0.01 80);
+    --secondary: oklch(0.94 0.035 25);
+    --secondary-foreground: oklch(0.36 0.07 28);
+    --muted: oklch(0.95 0.018 75);
+    --muted-foreground: oklch(0.5 0.035 35);
+    --accent: oklch(0.91 0.055 20);
+    --accent-foreground: oklch(0.39 0.09 25);
+    --border: oklch(0.87 0.025 65);
+    --ring: oklch(0.54 0.13 32);
+    --success: oklch(0.92 0.045 145);
+    --success-foreground: oklch(0.3 0.07 145);
+    --warning: oklch(0.94 0.06 80);
+    --warning-foreground: oklch(0.42 0.09 75);
+    --info: oklch(0.92 0.035 235);
+    --info-foreground: oklch(0.34 0.07 245);
+    --destructive: oklch(0.92 0.045 20);
+    --destructive-foreground: oklch(0.42 0.11 25);
+}
+
+@theme inline {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-border: var(--border);
+    --color-ring: var(--ring);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground antialiased;
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-ring;
+    }
 }

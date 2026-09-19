@@ -12,3 +12,13 @@ services:
       - .:/app
     environment:
       SERVER_NAME: ":80"
+      INERTIA_SSR_URL: "http://ssr:13714"
+
+  ssr:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    profiles: ["production"]
+    volumes:
+      - .:/app
+    command: php artisan inertia:start-ssr

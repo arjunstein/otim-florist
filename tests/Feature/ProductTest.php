@@ -57,6 +57,7 @@ class ProductTest extends TestCase
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
             'price' => 350000,
+            'slug' => 'rose-bouquet-m',
         ]);
     }
 
@@ -88,6 +89,7 @@ class ProductTest extends TestCase
             'id' => $product->id,
             'name' => 'Rose Bouquet L',
             'price' => 450000,
+            'slug' => 'rose-bouquet-l',
         ]);
 
         $this->delete("/products/{$product->id}")->assertRedirect('/products');

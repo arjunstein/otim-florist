@@ -37,7 +37,7 @@ class CategoryTest extends TestCase
             ->assertRedirect('/categories')
             ->assertSessionHas('success');
 
-        $this->assertDatabaseHas('categories', ['name' => 'Basket']);
+        $this->assertDatabaseHas('categories', ['name' => 'Basket', 'slug' => 'basket']);
     }
 
     public function test_category_name_must_be_unique(): void
@@ -48,6 +48,15 @@ class CategoryTest extends TestCase
             ->assertSessionHasErrors('name');
     }
 
+    public function test_category_slug_stays_unique_when_names_normalize_the_same(): void
+    {
+        Category::create(['name' => 'Fresh Flowers']);
+        Category::create(['name' => 'Fresh-Flowers']);
+
+        $this->assertDatabaseHas('categories', ['slug' => 'fresh-flowers']);
+        $this->assertDatabaseHas('categories', ['slug' => 'fresh-flowers-2']);
+    }
+
     public function test_category_can_be_updated_and_deleted(): void
     {
         $category = Category::create(['name' => 'Bouquet']);
@@ -55,7 +64,7 @@ class CategoryTest extends TestCase
         $this->put("/categories/{$category->id}", ['name' => 'Premium Bouquet'])
             ->assertRedirect('/categories');
 
-        $this->assertDatabaseHas('categories', ['name' => 'Premium Bouquet']);
+        $this->assertDatabaseHas('categories', ['name' => 'Premium Bouquet', 'slug' => 'premium-bouquet']);
 
         $this->delete("/categories/{$category->id}")
             ->assertRedirect('/categories');

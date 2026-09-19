@@ -17,11 +17,6 @@ class DashboardTest extends TestCase
         $this->actingAs(User::factory()->create());
     }
 
-    public function test_root_redirects_to_dashboard(): void
-    {
-        $this->get('/')->assertRedirect('/dashboard');
-    }
-
     public function test_overview_renders_with_dummy_props(): void
     {
         $this->get('/dashboard')

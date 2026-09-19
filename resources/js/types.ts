@@ -5,29 +5,25 @@ export interface Stat {
     up: boolean;
 }
 
-export interface SalePoint {
-    label: string;
-    value: number;
-}
-
-export interface Order {
-    id: string;
-    customer: string;
-    item: string;
-    total: string;
-    status: 'Pending' | 'Arranging' | 'Delivered';
-}
-
-export interface LowStock {
+export interface RecentProduct {
+    id: number;
     name: string;
-    left: number;
+    imageUrl: string | null;
+    categoryName: string;
+    price: number;
+    salePrice: number | null;
+}
+
+export interface CategorySummary {
+    id: number;
+    name: string;
+    productCount: number;
 }
 
 export interface DashboardProps {
     stats: Stat[];
-    sales: SalePoint[];
-    orders: Order[];
-    lowStock: LowStock[];
+    recentProducts: RecentProduct[];
+    categorySummary: CategorySummary[];
 }
 
 export interface Product {

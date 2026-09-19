@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -11,34 +14,40 @@ class DashboardController extends Controller
 {
     public function overview(): Response
     {
+        $totalProducts = Product::count();
+        $productsWithImages = Product::query()->whereNotNull('image_path')->count();
+
         return Inertia::render('Dashboard/Overview', [
             'stats' => [
-                ['label' => 'Revenue today', 'value' => 'Rp 4.2M', 'delta' => '+12% vs yesterday', 'up' => true],
-                ['label' => 'Orders today', 'value' => '18', 'delta' => '+3 vs yesterday', 'up' => true],
-                ['label' => 'Bouquets in stock', 'value' => '132', 'delta' => '6 sold today', 'up' => false],
-                ['label' => 'Pending orders', 'value' => '5', 'delta' => '2 need arranging', 'up' => false],
+                ['label' => 'Total products', 'value' => (string) $totalProducts, 'delta' => 'Available in your catalog', 'up' => true],
+                ['label' => 'Categories', 'value' => (string) Category::count(), 'delta' => 'Organize your collection', 'up' => true],
+                ['label' => 'On sale', 'value' => (string) Product::query()->whereNotNull('sale_price')->count(), 'delta' => 'Products with active offers', 'up' => true],
+                ['label' => 'Image coverage', 'value' => "{$productsWithImages}/{$totalProducts}", 'delta' => 'Products with a photo', 'up' => $productsWithImages === $totalProducts],
             ],
-            'sales' => [
-                ['label' => 'Mon', 'value' => 32],
-                ['label' => 'Tue', 'value' => 45],
-                ['label' => 'Wed', 'value' => 28],
-                ['label' => 'Thu', 'value' => 52],
-                ['label' => 'Fri', 'value' => 68],
-                ['label' => 'Sat', 'value' => 91],
-                ['label' => 'Sun', 'value' => 74],
-            ],
-            'orders' => [
-                ['id' => 'OF-1041', 'customer' => 'Ayu Lestari', 'item' => 'Rose Bouquet M', 'total' => 'Rp 350K', 'status' => 'Delivered'],
-                ['id' => 'OF-1042', 'customer' => 'Budi Santoso', 'item' => 'Lily Basket', 'total' => 'Rp 275K', 'status' => 'Arranging'],
-                ['id' => 'OF-1043', 'customer' => 'Citra Dewi', 'item' => 'Sunflower Wrap', 'total' => 'Rp 180K', 'status' => 'Pending'],
-                ['id' => 'OF-1044', 'customer' => 'Dedi Prasetyo', 'item' => 'Orchid Box', 'total' => 'Rp 520K', 'status' => 'Arranging'],
-                ['id' => 'OF-1045', 'customer' => 'Eka Putri', 'item' => 'Tulip Bouquet S', 'total' => 'Rp 220K', 'status' => 'Pending'],
-            ],
-            'lowStock' => [
-                ['name' => 'White roses', 'left' => 8],
-                ['name' => 'Baby breath', 'left' => 5],
-                ['name' => 'Kraft wrap', 'left' => 12],
-            ],
+            'recentProducts' => Product::query()
+                ->with('category:id,name')
+                ->latest()
+                ->take(5)
+                ->get()
+                ->map(fn (Product $product) => [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'imageUrl' => $product->image_path ? Storage::disk('public')->url($product->image_path) : null,
+                    'categoryName' => $product->category->name,
+                    'price' => $product->price,
+                    'salePrice' => $product->sale_price,
+                ]),
+            'categorySummary' => Category::query()
+                ->withCount('products')
+                ->orderByDesc('products_count')
+                ->orderBy('name')
+                ->take(5)
+                ->get()
+                ->map(fn (Category $category) => [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'productCount' => $category->products_count,
+                ]),
         ]);
     }
 

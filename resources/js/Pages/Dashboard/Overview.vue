@@ -20,18 +20,7 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
 <template>
     <Head title="Dashboard" />
 
-    <PageHeader title="Dashboard" subtitle="Your catalog at a glance.">
-        <template #actions>
-            <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                <Link href="/categories" class="inline-flex min-h-11 items-center justify-center rounded-xl border bg-background px-4 text-sm font-semibold transition-colors hover:bg-secondary">
-                    Manage categories
-                </Link>
-                <Link href="/products" class="inline-flex min-h-11 items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-colors duration-200 hover:bg-primary/90">
-                    Manage products
-                </Link>
-            </div>
-        </template>
-    </PageHeader>
+    <PageHeader title="Dashboard" subtitle="Your catalog at a glance." />
 
     <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard v-for="stat in stats" :key="stat.label" :label="stat.label" :value="stat.value" :delta="stat.delta" :up="stat.up" />

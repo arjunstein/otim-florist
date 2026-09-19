@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import { applyTheme, currentTheme, type Theme } from '@/theme';
 import { activeToast, dismissToast, showToast } from '@/toast';
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
@@ -18,11 +18,15 @@ const title = computed(
     () => nav.find((item) => item.component === current.value)?.label ?? 'Dashboard',
 );
 const flash = computed(() => page.props.flash as { success?: string; error?: string });
+const auth = computed(() => page.props.auth as { user: { name: string; email: string } | null });
+const userInitial = computed(() => auth.value.user?.name.trim().charAt(0).toUpperCase() ?? 'A');
 const theme = ref<Theme>(currentTheme());
 const isDark = ref(document.documentElement.classList.contains('dark'));
 const mobileNavigationOpen = ref(false);
 const mobileNavigationToggle = ref<HTMLButtonElement | null>(null);
 const mobileNavigationClose = ref<HTMLButtonElement | null>(null);
+const logoutDialog = ref<HTMLDialogElement | null>(null);
+const cancelLogoutButton = ref<HTMLButtonElement | null>(null);
 
 function setTheme(value: Theme): void {
     theme.value = value;
@@ -32,6 +36,19 @@ function setTheme(value: Theme): void {
 
 function toggleTheme(): void {
     setTheme(isDark.value ? 'light' : 'dark');
+}
+
+function logout(): void {
+    router.post('/logout');
+}
+
+function openLogoutDialog(): void {
+    logoutDialog.value?.showModal();
+    nextTick(() => cancelLogoutButton.value?.focus());
+}
+
+function closeLogoutDialog(): void {
+    logoutDialog.value?.close();
 }
 
 function updateSystemTheme(): void {
@@ -58,7 +75,7 @@ function closeMobileNavigationFromControl(): void {
 }
 
 function handleKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Escape' && mobileNavigationOpen.value) {
+    if (event.key === 'Escape' && mobileNavigationOpen.value && !logoutDialog.value?.open) {
         closeMobileNavigation();
     }
 }
@@ -146,6 +163,41 @@ onUnmounted(() => {
                 </button>
             </div>
         </Transition>
+        <dialog
+            ref="logoutDialog"
+            aria-labelledby="logout-dialog-title"
+            aria-describedby="logout-dialog-description"
+            class="m-auto w-[calc(100%-2rem)] max-w-sm overflow-hidden rounded-2xl border bg-card p-0 text-card-foreground shadow-xl backdrop:bg-foreground/30 backdrop:backdrop-blur-sm"
+        >
+            <div class="px-5 pb-5 pt-6 sm:px-6">
+                <div class="flex size-11 items-center justify-center rounded-xl bg-secondary text-secondary-foreground">
+                    <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <path d="M10 17l5-5-5-5M15 12H3M14 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h2 id="logout-dialog-title" class="mt-4 text-lg font-semibold tracking-tight">Sign out?</h2>
+                <p id="logout-dialog-description" class="mt-2 text-sm leading-6 text-muted-foreground">
+                    You will need to sign in again to access the dashboard.
+                </p>
+            </div>
+            <footer class="flex flex-col-reverse gap-2 border-t bg-muted/30 px-5 py-4 sm:flex-row sm:justify-end sm:px-6">
+                <button
+                    ref="cancelLogoutButton"
+                    type="button"
+                    class="min-h-11 rounded-xl px-4 text-sm font-semibold text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    @click="closeLogoutDialog"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="button"
+                    class="min-h-11 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-colors duration-200 hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    @click="logout"
+                >
+                    Sign out
+                </button>
+            </footer>
+        </dialog>
         <aside
             class="fixed inset-y-0 left-0 hidden w-72 flex-col border-r bg-card md:flex"
         >
@@ -177,6 +229,28 @@ onUnmounted(() => {
                     {{ item.label }}
                 </Link>
             </nav>
+            <div class="border-t p-4">
+                <div class="flex items-center gap-3 rounded-xl bg-secondary/70 p-2">
+                    <span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                        {{ userInitial }}
+                    </span>
+                    <div class="min-w-0 flex-1">
+                        <p class="truncate text-sm font-semibold">{{ auth.user?.name }}</p>
+                        <p class="truncate text-xs text-muted-foreground">{{ auth.user?.email }}</p>
+                    </div>
+                    <button
+                        type="button"
+                        class="grid size-11 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors duration-200 hover:bg-card hover:text-secondary-foreground"
+                        aria-label="Sign out"
+                        title="Sign out"
+                        @click="openLogoutDialog"
+                    >
+                        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M10 17l5-5-5-5M15 12H3M14 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </aside>
 
         <Transition
@@ -232,6 +306,28 @@ onUnmounted(() => {
                             {{ item.label }}
                         </Link>
                     </nav>
+                    <div class="border-t p-4">
+                        <div class="flex items-center gap-3 rounded-xl bg-secondary/70 p-2">
+                            <span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                                {{ userInitial }}
+                            </span>
+                            <div class="min-w-0 flex-1">
+                                <p class="truncate text-sm font-semibold">{{ auth.user?.name }}</p>
+                                <p class="truncate text-xs text-muted-foreground">{{ auth.user?.email }}</p>
+                            </div>
+                            <button
+                                type="button"
+                                class="grid size-11 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors duration-200 hover:bg-card hover:text-secondary-foreground"
+                                aria-label="Sign out"
+                                title="Sign out"
+                                @click="openLogoutDialog"
+                            >
+                                <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <path d="M10 17l5-5-5-5M15 12H3M14 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
                 </aside>
             </div>
         </Transition>
@@ -254,26 +350,22 @@ onUnmounted(() => {
                     </button>
                     <p class="hidden text-sm text-muted-foreground md:block">{{ title }}</p>
                     <div class="ml-auto flex items-center gap-2">
-                        <div class="flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-secondary py-1 pl-1 pr-3 text-sm font-medium text-secondary-foreground">
-                            <button
-                                type="button"
-                                class="grid size-11 place-items-center rounded-full text-secondary-foreground transition-colors duration-200 hover:bg-card"
-                                aria-label="Toggle dark mode"
-                                :aria-pressed="isDark"
-                                :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
-                                @click="toggleTheme"
-                            >
-                                <svg v-if="isDark" class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.75" />
-                                    <path d="M12 2.5v2M12 19.5v2M21.5 12h-2M4.5 12h-2M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4M18.7 18.7l-1.4-1.4M6.7 6.7 5.3 5.3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
-                                </svg>
-                                <svg v-else class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </button>
-                            <span class="grid size-9 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">A</span>
-                            <span class="hidden sm:inline">Admin</span>
-                        </div>
+                        <button
+                            type="button"
+                            class="grid size-11 place-items-center rounded-full bg-secondary text-secondary-foreground transition-colors duration-200 hover:bg-muted"
+                            aria-label="Toggle dark mode"
+                            :aria-pressed="isDark"
+                            :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+                            @click="toggleTheme"
+                        >
+                            <svg v-if="isDark" class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.75" />
+                                <path d="M12 2.5v2M12 19.5v2M21.5 12h-2M4.5 12h-2M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4M18.7 18.7l-1.4-1.4M6.7 6.7 5.3 5.3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+                            </svg>
+                            <svg v-else class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </header>

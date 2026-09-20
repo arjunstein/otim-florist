@@ -17,7 +17,9 @@ function submit(): void {
 </script>
 
 <template>
-    <Head title="Sign in" />
+    <Head title="Sign in">
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
 
     <main class="grid min-h-dvh place-items-center bg-background p-4 sm:p-6">
         <section class="w-full max-w-md rounded-2xl border bg-card p-6 shadow-lg sm:p-8" aria-labelledby="login-title">

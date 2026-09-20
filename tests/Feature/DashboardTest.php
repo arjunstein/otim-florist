@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
@@ -17,16 +20,31 @@ class DashboardTest extends TestCase
         $this->actingAs(User::factory()->create());
     }
 
-    public function test_overview_renders_with_dummy_props(): void
+    public function test_overview_renders_catalog_summary(): void
     {
+        $category = Category::create(['name' => 'Bouquet']);
+        $product = Product::create([
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'image_path' => 'products/rose.jpg',
+            'price' => 350000,
+            'sale_price' => 300000,
+        ]);
+        Product::query()->whereKey($product->getKey())->update(['click_count' => 12]);
+
         $this->get('/dashboard')
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Dashboard/Overview')
                 ->has('stats', 4)
-                ->has('sales', 7)
-                ->has('orders', 5)
-                ->has('lowStock', 3)
+                ->where('stats.0.value', '1')
+                ->where('stats.2.value', '1')
+                ->where('recentProducts.0.name', 'Rose Bouquet M')
+                ->where('recentProducts.0.salePrice', 300000)
+                ->where('categorySummary.0.name', 'Bouquet')
+                ->where('mostClickedProducts.0.name', 'Rose Bouquet M')
+                ->where('mostClickedProducts.0.imageUrl', Storage::disk('public')->url('products/rose.jpg'))
+                ->where('mostClickedProducts.0.clickCount', 12)
             );
     }
 

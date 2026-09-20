@@ -11,21 +11,27 @@ class StorefrontTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_public_catalog_renders_categories_and_products(): void
+    public function test_public_catalog_renders_navigation_categories_and_products(): void
     {
         $category = Category::create(['name' => 'Bouquet']);
         Product::create([
             'name' => 'Rose Bouquet M',
+            'description' => 'A soft pink rose arrangement.',
+            'image_path' => 'products/rose.jpg',
             'category_id' => $category->id,
             'price' => 350000,
+            'sale_price' => 300000,
         ]);
 
         $this->get('/')
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Storefront/Catalog')
-                ->where('categories.0.slug', 'bouquet')
+                ->where('canonicalUrl', route('storefront.home'))
+                ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('products.0.slug', 'rose-bouquet-m')
+                ->where('products.0.description', 'A soft pink rose arrangement.')
+                ->where('products.0.salePrice', 300000)
             );
     }
 
@@ -42,15 +48,45 @@ class StorefrontTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Storefront/Product')
+                ->where('canonicalUrl', route('storefront.products.show', $product))
+                ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('product.slug', $product->slug)
             );
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'click_count' => 1,
+        ]);
 
         $this->get("/categories/{$category->slug}")
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Storefront/Category')
                 ->where('category.slug', $category->slug)
+                ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('products.0.slug', $product->slug)
             );
+    }
+
+    public function test_sitemap_lists_public_catalog_urls_and_robots_references_it(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+        $product = Product::create([
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'price' => 350000,
+        ]);
+
+        $this->get('/sitemap.xml')
+            ->assertOk()
+            ->assertHeader('Content-Type', 'application/xml; charset=UTF-8')
+            ->assertSee(route('storefront.home'), false)
+            ->assertSee(route('storefront.categories.show', $category), false)
+            ->assertSee(route('storefront.products.show', $product), false);
+
+        $this->get('/robots.txt')
+            ->assertOk()
+            ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
+            ->assertSee('Sitemap: '.route('sitemap'), false);
     }
 }

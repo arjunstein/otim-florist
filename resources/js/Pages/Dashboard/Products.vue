@@ -6,7 +6,7 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { showToast } from '@/toast';
 import type { Product, ProductsProps } from '@/types';
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref } from 'vue';
 
 defineOptions({ layout: DashboardLayout });
 
@@ -20,15 +20,33 @@ const deletingProduct = ref<Product | null>(null);
 const isDeleting = ref(false);
 const productDialog = ref<HTMLDialogElement | null>(null);
 const deleteDialog = ref<HTMLDialogElement | null>(null);
+const cropDialog = ref<HTMLDialogElement | null>(null);
 const productNameInput = ref<HTMLInputElement | null>(null);
+const productImageInput = ref<HTMLInputElement | null>(null);
 const cancelDeleteButton = ref<HTMLButtonElement | null>(null);
+const imagePreviewUrl = ref<string | null>(null);
+const cropCanvas = ref<HTMLCanvasElement | null>(null);
+const cropImage = ref<HTMLImageElement | null>(null);
+const cropImageUrl = ref<string | null>(null);
+const cropImageName = ref('product-image');
+const cropZoom = ref(1);
+const cropOffset = ref({ x: 0, y: 0 });
+const cropDragStart = ref<{ x: number; y: number; offsetX: number; offsetY: number } | null>(null);
+
+const cropWidth = 1200;
+const cropHeight = 900;
 const productForm = useForm({
     name: '',
+    description: '',
     category_id: '',
     price: '',
+    sale_price: '',
+    image: null as File | null,
+    _method: '',
 });
 
 const isEditing = computed(() => editingProduct.value !== null);
+const productImagePreview = computed(() => imagePreviewUrl.value ?? editingProduct.value?.imageUrl ?? null);
 
 function formatPrice(price: number): string {
     return new Intl.NumberFormat('id-ID', {
@@ -39,9 +57,7 @@ function formatPrice(price: number): string {
 }
 
 function openCreateDialog(): void {
-    editingProduct.value = null;
-    productForm.reset();
-    productForm.clearErrors();
+    resetProductForm();
     productDialog.value?.showModal();
     nextTick(() => productNameInput.value?.focus());
 }
@@ -49,8 +65,12 @@ function openCreateDialog(): void {
 function openEditDialog(product: Product): void {
     editingProduct.value = product;
     productForm.name = product.name;
+    productForm.description = product.description ?? '';
     productForm.category_id = String(product.category.id);
     productForm.price = String(product.price);
+    productForm.sale_price = product.salePrice ? String(product.salePrice) : '';
+    productForm.image = null;
+    productForm._method = '';
     productForm.clearErrors();
     productDialog.value?.showModal();
     nextTick(() => productNameInput.value?.focus());
@@ -61,24 +81,230 @@ function closeProductDialog(): void {
 }
 
 function resetProductForm(): void {
+    releaseImagePreview();
     editingProduct.value = null;
     productForm.reset();
     productForm.clearErrors();
+    if (productImageInput.value) {
+        productImageInput.value.value = '';
+    }
 }
+
+function selectImage(event: Event): void {
+    const [image] = (event.target as HTMLInputElement).files ?? [];
+
+    if (!image) {
+        return;
+    }
+
+    openCropDialog(image);
+}
+
+function clearSelectedImage(): void {
+    releaseImagePreview();
+    productForm.image = null;
+
+    if (productImageInput.value) {
+        productImageInput.value.value = '';
+    }
+}
+
+function releaseImagePreview(): void {
+    if (imagePreviewUrl.value) {
+        URL.revokeObjectURL(imagePreviewUrl.value);
+        imagePreviewUrl.value = null;
+    }
+}
+
+function openCropDialog(file: File): void {
+    resetCropDialog();
+    cropImageName.value = file.name.replace(/\.[^/.]+$/, '') || 'product-image';
+    cropImageUrl.value = URL.createObjectURL(file);
+
+    const image = new Image();
+    image.onload = () => {
+        cropImage.value = image;
+        cropZoom.value = 1;
+        cropOffset.value = centeredCropOffset();
+        drawCrop();
+        cropDialog.value?.showModal();
+    };
+    image.onerror = () => {
+        showToast('error', 'Image could not be opened. Choose another file.');
+        resetCropDialog();
+    };
+    image.src = cropImageUrl.value;
+}
+
+function cropScale(): number {
+    if (!cropImage.value) {
+        return 1;
+    }
+
+    return Math.max(cropWidth / cropImage.value.naturalWidth, cropHeight / cropImage.value.naturalHeight) * cropZoom.value;
+}
+
+function centeredCropOffset(): { x: number; y: number } {
+    if (!cropImage.value) {
+        return { x: 0, y: 0 };
+    }
+
+    const scale = cropScale();
+
+    return {
+        x: (cropWidth - cropImage.value.naturalWidth * scale) / 2,
+        y: (cropHeight - cropImage.value.naturalHeight * scale) / 2,
+    };
+}
+
+function clampCropOffset(offset: { x: number; y: number }): { x: number; y: number } {
+    if (!cropImage.value) {
+        return { x: 0, y: 0 };
+    }
+
+    const scale = cropScale();
+    const renderedWidth = cropImage.value.naturalWidth * scale;
+    const renderedHeight = cropImage.value.naturalHeight * scale;
+
+    return {
+        x: Math.min(0, Math.max(cropWidth - renderedWidth, offset.x)),
+        y: Math.min(0, Math.max(cropHeight - renderedHeight, offset.y)),
+    };
+}
+
+function drawCrop(): void {
+    const canvas = cropCanvas.value;
+    const image = cropImage.value;
+
+    if (!canvas || !image) {
+        return;
+    }
+
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+        return;
+    }
+
+    cropOffset.value = clampCropOffset(cropOffset.value);
+    const scale = cropScale();
+    const width = image.naturalWidth * scale;
+    const height = image.naturalHeight * scale;
+
+    context.clearRect(0, 0, cropWidth, cropHeight);
+    context.drawImage(image, cropOffset.value.x, cropOffset.value.y, width, height);
+}
+
+function updateCropZoom(): void {
+    cropOffset.value = clampCropOffset(cropOffset.value);
+    drawCrop();
+}
+
+function startCropDrag(event: PointerEvent): void {
+    const canvas = cropCanvas.value;
+
+    if (!canvas || !event.isPrimary) {
+        return;
+    }
+
+    cropDragStart.value = {
+        x: event.clientX,
+        y: event.clientY,
+        offsetX: cropOffset.value.x,
+        offsetY: cropOffset.value.y,
+    };
+    window.addEventListener('pointermove', moveCropImage);
+    window.addEventListener('pointerup', endCropDrag, { once: true });
+    window.addEventListener('pointercancel', endCropDrag, { once: true });
+}
+
+function moveCropImage(event: PointerEvent): void {
+    const canvas = cropCanvas.value;
+    const dragStart = cropDragStart.value;
+
+    if (!canvas || !dragStart) {
+        return;
+    }
+
+    const bounds = canvas.getBoundingClientRect();
+    cropOffset.value = clampCropOffset({
+        x: dragStart.offsetX + ((event.clientX - dragStart.x) * cropWidth) / bounds.width,
+        y: dragStart.offsetY + ((event.clientY - dragStart.y) * cropHeight) / bounds.height,
+    });
+    drawCrop();
+}
+
+function endCropDrag(): void {
+    cropDragStart.value = null;
+    window.removeEventListener('pointermove', moveCropImage);
+    window.removeEventListener('pointerup', endCropDrag);
+    window.removeEventListener('pointercancel', endCropDrag);
+}
+
+function saveCroppedImage(): void {
+    const canvas = cropCanvas.value;
+
+    if (!canvas) {
+        return;
+    }
+
+    canvas.toBlob((blob) => {
+        if (!blob) {
+            showToast('error', 'Image could not be cropped. Try another file.');
+
+            return;
+        }
+
+        releaseImagePreview();
+        productForm.image = new File([blob], `${cropImageName.value}.webp`, { type: 'image/webp' });
+        imagePreviewUrl.value = URL.createObjectURL(productForm.image);
+        cropDialog.value?.close();
+    }, 'image/webp', 0.9);
+}
+
+function cancelCropDialog(): void {
+    cropDialog.value?.close();
+}
+
+function resetCropDialog(): void {
+    endCropDrag();
+    cropImage.value = null;
+    cropDragStart.value = null;
+    cropOffset.value = { x: 0, y: 0 };
+    cropZoom.value = 1;
+
+    if (cropImageUrl.value) {
+        URL.revokeObjectURL(cropImageUrl.value);
+        cropImageUrl.value = null;
+    }
+
+    if (productImageInput.value) {
+        productImageInput.value.value = '';
+    }
+}
+
+onBeforeUnmount(() => {
+    window.removeEventListener('pointermove', moveCropImage);
+    window.removeEventListener('pointerup', endCropDrag);
+    window.removeEventListener('pointercancel', endCropDrag);
+});
 
 function saveProduct(): void {
     const options = {
+        forceFormData: true,
         preserveScroll: true,
         onSuccess: closeProductDialog,
         onError: () => showToast('error', 'Product could not be saved. Check the form.'),
     };
 
     if (editingProduct.value) {
-        productForm.put(`/products/${editingProduct.value.id}`, options);
+        productForm._method = 'put';
+        productForm.post(`/products/${editingProduct.value.id}`, options);
 
         return;
     }
 
+    productForm._method = '';
     productForm.post('/products', options);
 }
 
@@ -164,7 +390,7 @@ function queueFilters(): void {
     <dialog
         ref="productDialog"
         aria-labelledby="product-dialog-title"
-        class="m-auto w-[calc(100%-2rem)] max-w-lg overflow-hidden rounded-2xl border bg-card p-0 text-card-foreground shadow-xl backdrop:bg-foreground/30 backdrop:backdrop-blur-sm"
+        class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-2xl border bg-card p-0 text-card-foreground shadow-xl backdrop:bg-foreground/30 backdrop:backdrop-blur-sm"
         @close="resetProductForm"
     >
         <form class="flex flex-col" @submit.prevent="saveProduct">
@@ -173,7 +399,7 @@ function queueFilters(): void {
                     <h2 id="product-dialog-title" class="text-lg font-semibold tracking-tight">
                         {{ isEditing ? 'Edit product' : 'Add product' }}
                     </h2>
-                    <p class="mt-1 text-sm text-muted-foreground">Set product category and price.</p>
+                    <p class="mt-1 text-sm text-muted-foreground">Add product details, price, and image.</p>
                 </div>
                 <button
                     type="button"
@@ -224,6 +450,25 @@ function queueFilters(): void {
                         {{ productForm.errors.category_id }}
                     </p>
                 </div>
+                <div class="flex flex-col gap-1.5 sm:col-span-2">
+                    <label for="product-description" class="text-sm font-medium">Description <span class="text-muted-foreground">(optional)</span></label>
+                    <textarea
+                        id="product-description"
+                        v-model="productForm.description"
+                        rows="4"
+                        maxlength="2000"
+                        :aria-describedby="productForm.errors.description ? 'product-description-error' : undefined"
+                        :aria-invalid="Boolean(productForm.errors.description)"
+                        :class="[
+                            'w-full resize-y rounded-xl border bg-background px-3 py-2.5 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus:border-ring focus:ring-2 focus:ring-ring/20',
+                            productForm.errors.description ? 'border-destructive' : '',
+                        ]"
+                        placeholder="Describe the arrangement, flowers, and occasion."
+                    />
+                    <p v-if="productForm.errors.description" id="product-description-error" role="alert" class="text-sm text-destructive-foreground">
+                        {{ productForm.errors.description }}
+                    </p>
+                </div>
                 <div class="flex flex-col gap-1.5">
                     <label for="product-price" class="text-sm font-medium">Price (Rp)</label>
                     <input
@@ -246,6 +491,60 @@ function queueFilters(): void {
                         {{ productForm.errors.price }}
                     </p>
                 </div>
+                <div class="flex flex-col gap-1.5">
+                    <label for="product-sale-price" class="text-sm font-medium">Sale price <span class="text-muted-foreground">(optional)</span></label>
+                    <input
+                        id="product-sale-price"
+                        v-model="productForm.sale_price"
+                        type="number"
+                        min="0"
+                        :max="productForm.price || undefined"
+                        step="1000"
+                        inputmode="numeric"
+                        :aria-describedby="productForm.errors.sale_price ? 'product-sale-price-error' : undefined"
+                        :aria-invalid="Boolean(productForm.errors.sale_price)"
+                        :class="[
+                            'min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20',
+                            productForm.errors.sale_price ? 'border-destructive' : '',
+                        ]"
+                        placeholder="300000"
+                    />
+                    <p v-if="productForm.errors.sale_price" id="product-sale-price-error" role="alert" class="text-sm text-destructive-foreground">
+                        {{ productForm.errors.sale_price }}
+                    </p>
+                </div>
+                <div class="flex flex-col gap-1.5 sm:col-span-2">
+                    <label for="product-image" class="text-sm font-medium">Product image <span class="text-muted-foreground">(optional)</span></label>
+                    <input
+                        id="product-image"
+                        ref="productImageInput"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        :aria-describedby="productForm.errors.image ? 'product-image-error' : 'product-image-help'"
+                        :aria-invalid="Boolean(productForm.errors.image)"
+                        :class="[
+                            'min-h-11 w-full rounded-xl border bg-background px-3 py-2 text-sm shadow-xs file:mr-3 file:rounded-lg file:border-0 file:bg-secondary file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-secondary-foreground hover:file:bg-secondary/80 focus:border-ring focus:ring-2 focus:ring-ring/20',
+                            productForm.errors.image ? 'border-destructive' : '',
+                        ]"
+                        @change="selectImage"
+                    />
+                    <p id="product-image-help" class="text-xs leading-5 text-muted-foreground">JPG, PNG, or WebP up to 5 MB.</p>
+                    <p v-if="productForm.errors.image" id="product-image-error" role="alert" class="text-sm text-destructive-foreground">
+                        {{ productForm.errors.image }}
+                    </p>
+                    <div v-if="productImagePreview" class="relative overflow-hidden rounded-xl border bg-muted/30">
+                        <img :src="productImagePreview" alt="Product image preview" class="aspect-[4/3] w-full object-cover" />
+                        <button
+                            v-if="productForm.image"
+                            type="button"
+                            class="absolute right-3 top-3 min-h-11 rounded-lg bg-background/95 px-3 text-sm font-semibold shadow-sm transition-colors hover:bg-background"
+                            @click="clearSelectedImage"
+                        >
+                            Remove image
+                        </button>
+                    </div>
+                    <p v-if="productForm.progress" class="text-sm text-muted-foreground">Uploading {{ productForm.progress.percentage }}%</p>
+                </div>
             </div>
             <footer class="flex flex-col-reverse gap-2 border-t bg-muted/30 px-5 py-4 sm:flex-row sm:justify-end sm:px-6">
                 <button
@@ -264,6 +563,75 @@ function queueFilters(): void {
                 </button>
             </footer>
         </form>
+    </dialog>
+
+    <dialog
+        ref="cropDialog"
+        aria-labelledby="crop-dialog-title"
+        class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-2xl overflow-hidden rounded-2xl border bg-card p-0 text-card-foreground shadow-xl backdrop:bg-foreground/40 backdrop:backdrop-blur-sm"
+        @cancel.prevent="cancelCropDialog"
+        @close="resetCropDialog"
+    >
+        <div class="flex max-h-[calc(100dvh-2rem)] flex-col">
+            <header class="flex shrink-0 items-start justify-between gap-4 border-b px-5 py-4 sm:px-6">
+                <div>
+                    <h2 id="crop-dialog-title" class="text-lg font-semibold tracking-tight">Crop product image</h2>
+                    <p class="mt-1 text-sm text-muted-foreground">Adjust the photo in the 4:3 frame.</p>
+                </div>
+                <button
+                    type="button"
+                    class="grid size-11 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    aria-label="Cancel image crop"
+                    @click="cancelCropDialog"
+                >
+                    <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </header>
+            <div class="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-5 sm:px-6">
+                <canvas
+                    ref="cropCanvas"
+                    :width="cropWidth"
+                    :height="cropHeight"
+                    class="aspect-[4/3] w-full touch-none cursor-grab rounded-xl bg-muted active:cursor-grabbing"
+                    @pointerdown.prevent="startCropDrag"
+                />
+                <div class="grid gap-2">
+                    <div class="flex items-center justify-between text-sm">
+                        <label for="crop-zoom" class="font-medium">Zoom</label>
+                        <span class="text-muted-foreground">{{ Math.round(cropZoom * 100) }}%</span>
+                    </div>
+                    <input
+                        id="crop-zoom"
+                        v-model.number="cropZoom"
+                        type="range"
+                        min="1"
+                        max="3"
+                        step="0.01"
+                        class="h-2 w-full cursor-pointer accent-primary"
+                        @input="updateCropZoom"
+                    />
+                    <p class="text-xs leading-5 text-muted-foreground">Drag to reposition. The saved image will be cropped to 4:3.</p>
+                </div>
+            </div>
+            <footer class="flex shrink-0 flex-col-reverse gap-2 border-t bg-muted/30 px-5 py-4 sm:flex-row sm:justify-end sm:px-6">
+                <button
+                    type="button"
+                    class="min-h-11 rounded-xl px-4 text-sm font-semibold text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground"
+                    @click="cancelCropDialog"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="button"
+                    class="min-h-11 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-colors duration-200 hover:bg-primary/90"
+                    @click="saveCroppedImage"
+                >
+                    Use image
+                </button>
+            </footer>
+        </div>
     </dialog>
 
     <dialog
@@ -362,9 +730,20 @@ function queueFilters(): void {
                 </thead>
                 <tbody>
                     <tr v-for="product in products.data" :key="product.id" class="border-b last:border-0 hover:bg-muted/60">
-                        <td class="break-words px-3 py-3.5 font-semibold sm:px-6">{{ product.name }}</td>
+                        <td class="px-3 py-3.5 sm:px-6">
+                            <div class="flex min-w-0 items-center gap-3">
+                                <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="size-11 shrink-0 rounded-lg object-cover" />
+                                <div class="min-w-0">
+                                    <p class="break-words font-semibold">{{ product.name }}</p>
+                                    <p v-if="product.description" class="mt-0.5 line-clamp-1 text-xs font-normal text-muted-foreground">{{ product.description }}</p>
+                                </div>
+                            </div>
+                        </td>
                         <td class="px-5 py-3 text-muted-foreground">{{ product.category.name }}</td>
-                        <td class="px-5 py-3 text-right font-medium">{{ formatPrice(product.price) }}</td>
+                        <td class="px-5 py-3 text-right font-medium">
+                            <p v-if="product.salePrice" class="text-xs font-normal text-muted-foreground line-through">{{ formatPrice(product.price) }}</p>
+                            <p :class="product.salePrice ? 'text-primary' : ''">{{ formatPrice(product.salePrice ?? product.price) }}</p>
+                        </td>
                         <td class="px-3 py-3 text-right sm:px-6">
                             <div class="flex justify-end gap-2">
                                 <button

@@ -105,15 +105,16 @@ class StorefrontController extends Controller
 
     private function whatsappUrl(Product $product): ?string
     {
-        $phone = StoreSetting::query()->value('phone');
+        $store = StoreSetting::current();
 
-        if (! $phone) {
+        if (! $store->phone) {
             return null;
         }
 
+        $storeName = $store->name ?: 'Otim Florist';
         $price = number_format($product->sale_price ?? $product->price, 0, ',', '.');
-        $message = "Halo Otim Florist, saya ingin memesan {$product->name} (Rp {$price}).";
+        $message = "Halo {$storeName}, saya ingin memesan {$product->name} (Rp {$price}).";
 
-        return 'https://wa.me/'.$phone.'?text='.rawurlencode($message);
+        return 'https://wa.me/'.$store->phone.'?text='.rawurlencode($message);
     }
 }

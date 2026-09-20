@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { StoreInfo } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 
@@ -11,8 +12,17 @@ const mobileNavigationOpen = ref(false);
 const showBackToTop = ref(false);
 const mobileNavigationToggle = ref<HTMLButtonElement | null>(null);
 const mobileNavigationClose = ref<HTMLButtonElement | null>(null);
-const page = usePage<{ navigationCategories: NavigationCategory[] }>();
-const navigationCategories = computed(() => page.props.navigationCategories);
+const page = usePage<{
+    navigationCategories: NavigationCategory[];
+    store: StoreInfo;
+}>();
+const navigationCategories = computed(() => page.props.navigationCategories ?? []);
+const store = computed<StoreInfo>(() => page.props.store ?? {
+    name: 'Otim Florist',
+    phone: '',
+    address: 'Jl. Mawar No. 12, Jakarta',
+    hours: '08:00–20:00 daily',
+});
 
 function openMobileNavigation(): void {
     mobileNavigationOpen.value = true;
@@ -74,7 +84,7 @@ onUnmounted(() => {
                         <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
                         <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".45" />
                     </svg>
-                    <span class="font-semibold tracking-tight">Otim Florist</span>
+                    <span class="font-semibold tracking-tight">{{ store.name }}</span>
                 </Link>
                 <nav class="ml-auto hidden items-center gap-1 lg:flex" aria-label="Navigasi utama">
                     <Link
@@ -176,10 +186,70 @@ onUnmounted(() => {
         </Transition>
 
         <footer class="border-t border-primary/15 bg-primary text-primary-foreground">
-            <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-8 text-sm text-primary-foreground/70 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-                <p>Rangkaian bunga penuh makna, ditata dengan sepenuh hati.</p>
-                <p>© {{ new Date().getFullYear() }} Otim Florist</p>
+            <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+                <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="space-y-3 sm:col-span-2 lg:col-span-1">
+                        <div class="flex items-center gap-2.5">
+                            <svg class="size-7 text-primary-foreground" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                                <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".2" />
+                                <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
+                                <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".45" />
+                            </svg>
+                            <span class="text-lg font-semibold tracking-tight">{{ store.name }}</span>
+                        </div>
+                        <p class="text-sm leading-relaxed text-primary-foreground/75">
+                            Rangkaian bunga segar penuh makna, dirangkai dengan sepenuh hati untuk menyempurnakan setiap momen berharga Anda.
+                        </p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary-foreground/70">Alamat Toko</p>
+                        <div class="flex items-start gap-2.5 text-sm text-primary-foreground/85">
+                            <svg class="mt-0.5 size-4 shrink-0 text-primary-foreground/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <p class="leading-relaxed">{{ store.address }}</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary-foreground/70">Jam Operasional</p>
+                        <div class="flex items-start gap-2.5 text-sm text-primary-foreground/85">
+                            <svg class="mt-0.5 size-4 shrink-0 text-primary-foreground/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            <p class="leading-relaxed">{{ store.hours }}</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary-foreground/70">Kontak & Pemesanan</p>
+                        <div v-if="store.phone" class="space-y-2">
+                            <a
+                                :href="`https://wa.me/${store.phone}`"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex min-h-10 items-center gap-2 rounded-xl bg-primary-foreground/15 px-3.5 py-2 text-sm font-medium text-primary-foreground backdrop-blur-sm transition-colors hover:bg-primary-foreground/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground"
+                            >
+                                <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                </svg>
+                                <span>WhatsApp ({{ store.phone }})</span>
+                            </a>
+                        </div>
+                        <p v-else class="text-sm text-primary-foreground/70">Hubungi kami melalui katalog online.</p>
+                    </div>
+                </div>
+
+                <div class="mt-10 border-t border-primary-foreground/15 pt-6 text-center text-xs text-primary-foreground/70 sm:flex sm:items-center sm:justify-between sm:text-left">
+                    <p>© {{ new Date().getFullYear() }} {{ store.name }}. Semua hak dilindungi.</p>
+                    <p class="mt-2 sm:mt-0">Dibuat dengan cinta untuk keindahan bunga.</p>
+                </div>
             </div>
         </footer>
     </div>
 </template>
+
+

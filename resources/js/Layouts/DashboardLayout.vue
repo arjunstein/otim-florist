@@ -19,7 +19,9 @@ const title = computed(
 );
 const flash = computed(() => page.props.flash as { success?: string; error?: string });
 const auth = computed(() => page.props.auth as { user: { name: string; email: string } | null });
+const store = computed(() => (page.props.store as { name?: string } | undefined) ?? { name: 'Otim Florist' });
 const userInitial = computed(() => auth.value.user?.name.trim().charAt(0).toUpperCase() ?? 'A');
+
 const theme = ref<Theme>(currentTheme());
 const isDark = ref(false);
 const mobileNavigationOpen = ref(false);
@@ -215,7 +217,7 @@ onUnmounted(() => {
                         <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".45" />
                     </svg>
                     <div>
-                        <p class="font-semibold tracking-tight">Otim Florist</p>
+                        <p class="font-semibold tracking-tight">{{ store.name }}</p>
                     </div>
                 </div>
             </div>
@@ -281,7 +283,7 @@ onUnmounted(() => {
                 >
                     <div class="flex items-center justify-between border-b px-5 py-4">
                         <div>
-                            <h2 id="mobile-navigation-title" class="font-semibold tracking-tight">Otim Florist</h2>
+                            <h2 id="mobile-navigation-title" class="font-semibold tracking-tight">{{ store.name }}</h2>
                         </div>
                         <button
                             ref="mobileNavigationClose"

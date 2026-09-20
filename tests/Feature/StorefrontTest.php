@@ -97,4 +97,24 @@ class StorefrontTest extends TestCase
             ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
             ->assertSee('Sitemap: '.route('sitemap'), false);
     }
+
+    public function test_public_storefront_receives_configured_store_settings(): void
+    {
+        StoreSetting::query()->updateOrCreate(['id' => 1], [
+            'name' => 'Florist Indah',
+            'phone' => '6281234567890',
+            'address' => 'Jl. Kenanga No. 5, Bandung',
+            'hours' => '09:00–18:00 WIB',
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Storefront/Catalog')
+                ->where('store.name', 'Florist Indah')
+                ->where('store.address', 'Jl. Kenanga No. 5, Bandung')
+                ->where('store.hours', '09:00–18:00 WIB')
+                ->where('store.phone', '6281234567890')
+            );
+    }
 }

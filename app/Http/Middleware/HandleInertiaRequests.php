@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\StoreSetting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -25,6 +26,7 @@ class HandleInertiaRequests extends Middleware
                 'success' => $request->session()->get('success'),
                 'error' => $request->session()->get('error'),
             ],
+            'store' => fn () => StoreSetting::current()->only(['name', 'phone', 'address', 'hours']),
         ];
     }
 }

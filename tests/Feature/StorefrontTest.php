@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\StoreSetting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -43,6 +44,12 @@ class StorefrontTest extends TestCase
             'category_id' => $category->id,
             'price' => 350000,
         ]);
+        StoreSetting::create([
+            'name' => 'Otim Florist',
+            'phone' => '628120000000',
+            'address' => 'Jakarta',
+            'hours' => '08:00–20:00',
+        ]);
 
         $this->get("/products/{$product->slug}")
             ->assertOk()
@@ -51,6 +58,7 @@ class StorefrontTest extends TestCase
                 ->where('canonicalUrl', route('storefront.products.show', $product))
                 ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('product.slug', $product->slug)
+                ->where('whatsappUrl', 'https://wa.me/628120000000?text=Halo%20Otim%20Florist%2C%20saya%20ingin%20memesan%20Rose%20Bouquet%20M%20%28Rp%20350.000%29.')
             );
 
         $this->assertDatabaseHas('products', [

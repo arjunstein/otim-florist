@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateStoreSettingsRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\StoreSetting;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -67,25 +68,34 @@ class DashboardController extends Controller
 
     public function settings(): Response
     {
+        $store = $this->storeSettings();
+
         return Inertia::render('Dashboard/Settings', [
             'store' => [
-                'name' => 'Otim Florist',
-                'phone' => '+62 812-3456-7890',
-                'address' => 'Jl. Mawar No. 12, Jakarta',
-                'hours' => '08:00–20:00 daily',
+                'name' => $store->name,
+                'phone' => $store->phone,
+                'address' => $store->address,
+                'hours' => $store->hours,
             ],
         ]);
     }
 
-    public function updateSettings(Request $request): RedirectResponse
+    public function updateSettings(UpdateStoreSettingsRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:100'],
-            'phone' => ['required', 'string', 'max:30'],
-            'address' => ['required', 'string', 'max:255'],
-            'hours' => ['required', 'string', 'max:100'],
-        ]);
+        $this->storeSettings()->update($request->validated());
 
-        return back()->with('success', 'Store settings saved (dummy, nothing persisted).');
+        return back()->with('success', 'Store settings saved.');
+    }
+
+    private function storeSettings(): StoreSetting
+    {
+        return StoreSetting::query()->firstOrCreate([
+            'id' => 1,
+        ], [
+            'name' => 'Otim Florist',
+            'phone' => '',
+            'address' => 'Jl. Mawar No. 12, Jakarta',
+            'hours' => '08:00–20:00 daily',
+        ]);
     }
 }

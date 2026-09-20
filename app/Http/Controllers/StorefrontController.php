@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\StoreSetting;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -49,6 +50,7 @@ class StorefrontController extends Controller
             'canonicalUrl' => route('storefront.products.show', $product),
             'navigationCategories' => $this->navigationCategories(),
             'product' => $this->productData($product),
+            'whatsappUrl' => $this->whatsappUrl($product),
         ]);
     }
 
@@ -99,5 +101,19 @@ class StorefrontController extends Controller
                 'slug' => $product->category->slug,
             ],
         ];
+    }
+
+    private function whatsappUrl(Product $product): ?string
+    {
+        $phone = StoreSetting::query()->value('phone');
+
+        if (! $phone) {
+            return null;
+        }
+
+        $price = number_format($product->sale_price ?? $product->price, 0, ',', '.');
+        $message = "Halo Otim Florist, saya ingin memesan {$product->name} (Rp {$price}).";
+
+        return 'https://wa.me/'.$phone.'?text='.rawurlencode($message);
     }
 }

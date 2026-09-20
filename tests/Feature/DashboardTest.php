@@ -69,6 +69,11 @@ class DashboardTest extends TestCase
             ->assertRedirect('/settings')
             ->assertSessionHas('success');
 
+        $this->assertDatabaseHas('store_settings', [
+            'name' => 'Otim Florist',
+            'phone' => '6281200000000',
+        ]);
+
         $this->from('/settings')->put('/settings', [
             'name' => '',
             'phone' => '',

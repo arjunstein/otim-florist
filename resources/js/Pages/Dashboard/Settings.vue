@@ -32,7 +32,7 @@ function updatePassword(): void {
 
 const fields = [
     { key: 'name', label: 'Store name', hint: 'Shown on receipts and the storefront.' },
-    { key: 'phone', label: 'Phone', hint: 'Customer contact number.' },
+    { key: 'phone', label: 'WhatsApp number', hint: 'Use 08… or 628…; this is used by Buy buttons.' },
     { key: 'address', label: 'Address', hint: 'Pickup and delivery origin.' },
     { key: 'hours', label: 'Opening hours', hint: 'E.g. 08:00–20:00 daily.' },
 ] as const;
@@ -43,7 +43,7 @@ const fields = [
 
     <PageHeader title="Settings" subtitle="Store profile and account security." />
 
-    <CardSection title="Store profile" subtitle="Changes are validated, nothing is persisted.">
+    <CardSection title="Store profile" subtitle="Changes are saved and used on the storefront.">
         <form @submit.prevent="submit" class="grid gap-5 md:grid-cols-2">
             <div v-for="field in fields" :key="field.key" class="flex flex-col gap-1.5">
                 <label :for="field.key" class="text-sm font-medium">
@@ -52,6 +52,9 @@ const fields = [
                 <input
                     :id="field.key"
                     v-model="form[field.key]"
+                    :type="field.key === 'phone' ? 'tel' : 'text'"
+                    :inputmode="field.key === 'phone' ? 'tel' : undefined"
+                    :autocomplete="field.key === 'phone' ? 'tel' : undefined"
                     :aria-describedby="`${field.key}-hint`"
                     :aria-invalid="Boolean(form.errors[field.key])"
                     :class="[

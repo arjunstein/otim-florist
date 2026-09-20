@@ -6,7 +6,7 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { showToast } from '@/toast';
 import type { Product, ProductsProps } from '@/types';
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref } from 'vue';
 
 defineOptions({ layout: DashboardLayout });
 
@@ -20,10 +20,21 @@ const deletingProduct = ref<Product | null>(null);
 const isDeleting = ref(false);
 const productDialog = ref<HTMLDialogElement | null>(null);
 const deleteDialog = ref<HTMLDialogElement | null>(null);
+const cropDialog = ref<HTMLDialogElement | null>(null);
 const productNameInput = ref<HTMLInputElement | null>(null);
 const productImageInput = ref<HTMLInputElement | null>(null);
 const cancelDeleteButton = ref<HTMLButtonElement | null>(null);
 const imagePreviewUrl = ref<string | null>(null);
+const cropCanvas = ref<HTMLCanvasElement | null>(null);
+const cropImage = ref<HTMLImageElement | null>(null);
+const cropImageUrl = ref<string | null>(null);
+const cropImageName = ref('product-image');
+const cropZoom = ref(1);
+const cropOffset = ref({ x: 0, y: 0 });
+const cropDragStart = ref<{ x: number; y: number; offsetX: number; offsetY: number } | null>(null);
+
+const cropWidth = 1200;
+const cropHeight = 900;
 const productForm = useForm({
     name: '',
     description: '',
@@ -80,11 +91,13 @@ function resetProductForm(): void {
 }
 
 function selectImage(event: Event): void {
-    releaseImagePreview();
-
     const [image] = (event.target as HTMLInputElement).files ?? [];
-    productForm.image = image ?? null;
-    imagePreviewUrl.value = image ? URL.createObjectURL(image) : null;
+
+    if (!image) {
+        return;
+    }
+
+    openCropDialog(image);
 }
 
 function clearSelectedImage(): void {
@@ -102,6 +115,179 @@ function releaseImagePreview(): void {
         imagePreviewUrl.value = null;
     }
 }
+
+function openCropDialog(file: File): void {
+    resetCropDialog();
+    cropImageName.value = file.name.replace(/\.[^/.]+$/, '') || 'product-image';
+    cropImageUrl.value = URL.createObjectURL(file);
+
+    const image = new Image();
+    image.onload = () => {
+        cropImage.value = image;
+        cropZoom.value = 1;
+        cropOffset.value = centeredCropOffset();
+        drawCrop();
+        cropDialog.value?.showModal();
+    };
+    image.onerror = () => {
+        showToast('error', 'Image could not be opened. Choose another file.');
+        resetCropDialog();
+    };
+    image.src = cropImageUrl.value;
+}
+
+function cropScale(): number {
+    if (!cropImage.value) {
+        return 1;
+    }
+
+    return Math.max(cropWidth / cropImage.value.naturalWidth, cropHeight / cropImage.value.naturalHeight) * cropZoom.value;
+}
+
+function centeredCropOffset(): { x: number; y: number } {
+    if (!cropImage.value) {
+        return { x: 0, y: 0 };
+    }
+
+    const scale = cropScale();
+
+    return {
+        x: (cropWidth - cropImage.value.naturalWidth * scale) / 2,
+        y: (cropHeight - cropImage.value.naturalHeight * scale) / 2,
+    };
+}
+
+function clampCropOffset(offset: { x: number; y: number }): { x: number; y: number } {
+    if (!cropImage.value) {
+        return { x: 0, y: 0 };
+    }
+
+    const scale = cropScale();
+    const renderedWidth = cropImage.value.naturalWidth * scale;
+    const renderedHeight = cropImage.value.naturalHeight * scale;
+
+    return {
+        x: Math.min(0, Math.max(cropWidth - renderedWidth, offset.x)),
+        y: Math.min(0, Math.max(cropHeight - renderedHeight, offset.y)),
+    };
+}
+
+function drawCrop(): void {
+    const canvas = cropCanvas.value;
+    const image = cropImage.value;
+
+    if (!canvas || !image) {
+        return;
+    }
+
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+        return;
+    }
+
+    cropOffset.value = clampCropOffset(cropOffset.value);
+    const scale = cropScale();
+    const width = image.naturalWidth * scale;
+    const height = image.naturalHeight * scale;
+
+    context.clearRect(0, 0, cropWidth, cropHeight);
+    context.drawImage(image, cropOffset.value.x, cropOffset.value.y, width, height);
+}
+
+function updateCropZoom(): void {
+    cropOffset.value = clampCropOffset(cropOffset.value);
+    drawCrop();
+}
+
+function startCropDrag(event: PointerEvent): void {
+    const canvas = cropCanvas.value;
+
+    if (!canvas || !event.isPrimary) {
+        return;
+    }
+
+    cropDragStart.value = {
+        x: event.clientX,
+        y: event.clientY,
+        offsetX: cropOffset.value.x,
+        offsetY: cropOffset.value.y,
+    };
+    window.addEventListener('pointermove', moveCropImage);
+    window.addEventListener('pointerup', endCropDrag, { once: true });
+    window.addEventListener('pointercancel', endCropDrag, { once: true });
+}
+
+function moveCropImage(event: PointerEvent): void {
+    const canvas = cropCanvas.value;
+    const dragStart = cropDragStart.value;
+
+    if (!canvas || !dragStart) {
+        return;
+    }
+
+    const bounds = canvas.getBoundingClientRect();
+    cropOffset.value = clampCropOffset({
+        x: dragStart.offsetX + ((event.clientX - dragStart.x) * cropWidth) / bounds.width,
+        y: dragStart.offsetY + ((event.clientY - dragStart.y) * cropHeight) / bounds.height,
+    });
+    drawCrop();
+}
+
+function endCropDrag(): void {
+    cropDragStart.value = null;
+    window.removeEventListener('pointermove', moveCropImage);
+    window.removeEventListener('pointerup', endCropDrag);
+    window.removeEventListener('pointercancel', endCropDrag);
+}
+
+function saveCroppedImage(): void {
+    const canvas = cropCanvas.value;
+
+    if (!canvas) {
+        return;
+    }
+
+    canvas.toBlob((blob) => {
+        if (!blob) {
+            showToast('error', 'Image could not be cropped. Try another file.');
+
+            return;
+        }
+
+        releaseImagePreview();
+        productForm.image = new File([blob], `${cropImageName.value}.webp`, { type: 'image/webp' });
+        imagePreviewUrl.value = URL.createObjectURL(productForm.image);
+        cropDialog.value?.close();
+    }, 'image/webp', 0.9);
+}
+
+function cancelCropDialog(): void {
+    cropDialog.value?.close();
+}
+
+function resetCropDialog(): void {
+    endCropDrag();
+    cropImage.value = null;
+    cropDragStart.value = null;
+    cropOffset.value = { x: 0, y: 0 };
+    cropZoom.value = 1;
+
+    if (cropImageUrl.value) {
+        URL.revokeObjectURL(cropImageUrl.value);
+        cropImageUrl.value = null;
+    }
+
+    if (productImageInput.value) {
+        productImageInput.value.value = '';
+    }
+}
+
+onBeforeUnmount(() => {
+    window.removeEventListener('pointermove', moveCropImage);
+    window.removeEventListener('pointerup', endCropDrag);
+    window.removeEventListener('pointercancel', endCropDrag);
+});
 
 function saveProduct(): void {
     const options = {
@@ -377,6 +563,75 @@ function queueFilters(): void {
                 </button>
             </footer>
         </form>
+    </dialog>
+
+    <dialog
+        ref="cropDialog"
+        aria-labelledby="crop-dialog-title"
+        class="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-2xl overflow-hidden rounded-2xl border bg-card p-0 text-card-foreground shadow-xl backdrop:bg-foreground/40 backdrop:backdrop-blur-sm"
+        @cancel.prevent="cancelCropDialog"
+        @close="resetCropDialog"
+    >
+        <div class="flex max-h-[calc(100dvh-2rem)] flex-col">
+            <header class="flex shrink-0 items-start justify-between gap-4 border-b px-5 py-4 sm:px-6">
+                <div>
+                    <h2 id="crop-dialog-title" class="text-lg font-semibold tracking-tight">Crop product image</h2>
+                    <p class="mt-1 text-sm text-muted-foreground">Adjust the photo in the 4:3 frame.</p>
+                </div>
+                <button
+                    type="button"
+                    class="grid size-11 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    aria-label="Cancel image crop"
+                    @click="cancelCropDialog"
+                >
+                    <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </header>
+            <div class="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-5 sm:px-6">
+                <canvas
+                    ref="cropCanvas"
+                    :width="cropWidth"
+                    :height="cropHeight"
+                    class="aspect-[4/3] w-full touch-none cursor-grab rounded-xl bg-muted active:cursor-grabbing"
+                    @pointerdown.prevent="startCropDrag"
+                />
+                <div class="grid gap-2">
+                    <div class="flex items-center justify-between text-sm">
+                        <label for="crop-zoom" class="font-medium">Zoom</label>
+                        <span class="text-muted-foreground">{{ Math.round(cropZoom * 100) }}%</span>
+                    </div>
+                    <input
+                        id="crop-zoom"
+                        v-model.number="cropZoom"
+                        type="range"
+                        min="1"
+                        max="3"
+                        step="0.01"
+                        class="h-2 w-full cursor-pointer accent-primary"
+                        @input="updateCropZoom"
+                    />
+                    <p class="text-xs leading-5 text-muted-foreground">Drag to reposition. The saved image will be cropped to 4:3.</p>
+                </div>
+            </div>
+            <footer class="flex shrink-0 flex-col-reverse gap-2 border-t bg-muted/30 px-5 py-4 sm:flex-row sm:justify-end sm:px-6">
+                <button
+                    type="button"
+                    class="min-h-11 rounded-xl px-4 text-sm font-semibold text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground"
+                    @click="cancelCropDialog"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="button"
+                    class="min-h-11 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-colors duration-200 hover:bg-primary/90"
+                    @click="saveCroppedImage"
+                >
+                    Use image
+                </button>
+            </footer>
+        </div>
     </dialog>
 
     <dialog

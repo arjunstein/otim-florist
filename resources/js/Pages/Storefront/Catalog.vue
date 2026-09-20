@@ -3,11 +3,11 @@ import ProductCard from '@/Components/Storefront/ProductCard.vue';
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
 import type { StoreInfo } from '@/types';
 import { Head, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 defineOptions({ layout: StorefrontLayout });
 
-defineProps<{
+const props = defineProps<{
     canonicalUrl: string;
     products: Array<{
         name: string;
@@ -29,6 +29,23 @@ const store = computed<StoreInfo>(() => page.props.store ?? {
     address: 'Jl. Mawar No. 12, Jakarta',
     hours: '08:00–20:00 daily',
 });
+
+const selectedCategory = ref<string | null>(null);
+
+const availableCategories = computed(() => {
+    const map = new Map<string, string>();
+    props.products.forEach((product) => {
+        map.set(product.category.slug, product.category.name);
+    });
+    return Array.from(map.entries()).map(([slug, name]) => ({ slug, name }));
+});
+
+const displayedProducts = computed(() => {
+    if (!selectedCategory.value) {
+        return props.products;
+    }
+    return props.products.filter((product) => product.category.slug === selectedCategory.value);
+});
 </script>
 
 <template>
@@ -41,41 +58,189 @@ const store = computed<StoreInfo>(() => page.props.store ?? {
         <meta property="og:url" :content="canonicalUrl" />
     </Head>
 
-    <section class="relative isolate overflow-hidden border-b bg-primary text-primary-foreground">
-        <div class="absolute -right-20 -top-24 size-80 rounded-full bg-accent/35 blur-3xl" aria-hidden="true" />
-        <div class="absolute -bottom-32 left-1/3 size-96 rounded-full border border-primary-foreground/10" aria-hidden="true" />
-        <div class="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:px-8 lg:py-28">
+    <section class="relative isolate overflow-hidden border-b border-primary/20 bg-primary text-primary-foreground">
+        <div class="absolute -right-24 -top-32 size-96 rounded-full bg-accent/25 blur-3xl" aria-hidden="true" />
+        <div class="absolute -bottom-36 -left-20 size-96 rounded-full bg-primary-foreground/10 blur-3xl" aria-hidden="true" />
+        <div class="absolute right-1/4 top-1/2 size-72 rounded-full border border-primary-foreground/10" aria-hidden="true" />
+
+        <div class="relative mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:px-8 lg:py-28">
             <div class="max-w-2xl">
-                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-primary-foreground/65">{{ store.name }}</p>
-                <h1 class="mt-5 text-5xl leading-[0.94] sm:text-6xl lg:text-7xl">Bunga untuk setiap momen bermakna.</h1>
-                <p class="mt-6 max-w-xl text-base leading-7 text-primary-foreground/70 sm:text-lg">Rangkaian bunga pilihan untuk perayaan, ungkapan terima kasih, dan setiap momen yang layak dikenang.</p>
-                <a href="#collection" class="mt-9 inline-flex min-h-11 items-center rounded-xl bg-primary-foreground px-5 text-sm font-semibold text-primary shadow-sm transition-colors duration-200 hover:bg-primary-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary">
-                    Lihat koleksi
-                </a>
+                <div class="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-3.5 py-1 text-xs font-semibold tracking-wide text-primary-foreground/90 backdrop-blur-xs">
+                    <span class="size-2 rounded-full bg-accent animate-pulse" />
+                    <span>Floral Studio & Boutique</span>
+                </div>
+
+                <h1 class="mt-6 text-4xl leading-[1.08] font-medium tracking-tight sm:text-5xl lg:text-6xl">
+                    Bunga segar untuk setiap momen bermakna.
+                </h1>
+
+                <p class="mt-5 max-w-xl text-base leading-relaxed text-primary-foreground/80 sm:text-lg">
+                    Rangkaian bunga pilihan untuk perayaan, ungkapan kasih, dan setiap detik berharga yang layak dikenang selamanya.
+                </p>
+
+                <div class="mt-8 flex flex-wrap items-center gap-3">
+                    <a
+                        href="#collection"
+                        class="inline-flex min-h-12 items-center justify-center rounded-xl bg-primary-foreground px-6 text-sm font-semibold text-primary shadow-sm transition-all duration-200 hover:bg-primary-foreground/95 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+                    >
+                        Lihat Koleksi Bunga
+                    </a>
+                    <a
+                        v-if="store.phone"
+                        :href="`https://wa.me/${store.phone}?text=${encodeURIComponent('Halo ' + store.name + ', saya ingin bertanya mengenai pemesanan bunga.')}`"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-primary-foreground/25 bg-primary-foreground/10 px-5 text-sm font-semibold text-primary-foreground backdrop-blur-xs transition-colors duration-200 hover:bg-primary-foreground/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground"
+                    >
+                        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                        </svg>
+                        <span>Konsultasi Florist</span>
+                    </a>
+                </div>
+
+                <div class="mt-10 flex flex-wrap items-center gap-6 border-t border-primary-foreground/15 pt-6 text-xs text-primary-foreground/75">
+                    <div class="flex items-center gap-2">
+                        <svg class="size-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20 6 9 17l-5-5" />
+                        </svg>
+                        <span>100% Bunga Segar Pilihan</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="size-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20 6 9 17l-5-5" />
+                        </svg>
+                        <span>Gratis Kartu Ucapan</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="size-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20 6 9 17l-5-5" />
+                        </svg>
+                        <span>Pengiriman Terlindungi</span>
+                    </div>
+                </div>
             </div>
-            <div class="relative mx-auto grid aspect-square w-full max-w-sm place-items-center rounded-[2rem] border border-primary-foreground/15 bg-primary-foreground/10 shadow-2xl backdrop-blur-sm">
-                <svg class="size-52 text-primary-foreground" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-                    <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".14" />
-                    <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
-                    <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".45" />
-                </svg>
+
+            <div class="relative mx-auto flex w-full max-w-sm flex-col items-center">
+                <div class="relative grid aspect-square w-full place-items-center rounded-[2.5rem] border border-primary-foreground/20 bg-gradient-to-b from-primary-foreground/15 to-primary-foreground/5 p-8 shadow-2xl backdrop-blur-md">
+                    <svg class="size-48 text-primary-foreground/90 transition-transform duration-700 hover:rotate-6" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                        <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".2" />
+                        <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
+                        <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".5" />
+                    </svg>
+
+                    <div class="absolute -bottom-5 rounded-full border border-primary-foreground/20 bg-background/95 px-4 py-2 text-xs font-semibold text-foreground shadow-lg backdrop-blur-sm">
+                        <span class="text-primary font-bold">★ 4.9</span> dari pecinta bunga
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="collection" class="border-t border-primary/10">
-        <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-            <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Koleksi pilihan</p>
-                <h2 class="mt-3 text-4xl leading-none sm:text-5xl">Pilihan segar untuk Anda</h2>
+    <section id="collection" class="border-t border-border/70 py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-[0.22em] text-primary">Katalog Eksklusif</p>
+                    <h2 class="mt-2 text-3xl font-semibold sm:text-4xl">Koleksi Bunga Pilihan</h2>
+                </div>
+
+                <div v-if="availableCategories.length > 1" class="flex flex-wrap items-center gap-1.5 pt-2">
+                    <button
+                        type="button"
+                        :class="[
+                            'rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                            selectedCategory === null
+                                ? 'bg-primary text-primary-foreground shadow-xs'
+                                : 'bg-secondary/70 text-muted-foreground hover:bg-secondary hover:text-foreground',
+                        ]"
+                        @click="selectedCategory = null"
+                    >
+                        Semua Koleksi
+                    </button>
+                    <button
+                        v-for="cat in availableCategories"
+                        :key="cat.slug"
+                        type="button"
+                        :class="[
+                            'rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                            selectedCategory === cat.slug
+                                ? 'bg-primary text-primary-foreground shadow-xs'
+                                : 'bg-secondary/70 text-muted-foreground hover:bg-secondary hover:text-foreground',
+                        ]"
+                        @click="selectedCategory = cat.slug"
+                    >
+                        {{ cat.name }}
+                    </button>
+                </div>
             </div>
-            <div v-if="products.length" class="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                <ProductCard v-for="product in products" :key="product.slug" :product="product" />
+
+            <div v-if="displayedProducts.length" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <ProductCard v-for="product in displayedProducts" :key="product.slug" :product="product" />
             </div>
-            <div v-else class="mt-7 rounded-2xl border border-dashed bg-card p-8 text-center">
-                <p class="font-semibold">Koleksi kami segera hadir.</p>
-                <p class="mt-2 text-sm text-muted-foreground">Silakan kembali lagi untuk melihat rangkaian bunga terbaru.</p>
+
+            <div v-else class="mt-10 rounded-3xl border border-dashed border-border bg-card p-12 text-center">
+                <div class="mx-auto grid size-12 place-items-center rounded-2xl bg-secondary text-primary">
+                    <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 22v-7M9 7l3-4 3 4M6 13l6-3 6 3" />
+                    </svg>
+                </div>
+                <p class="mt-4 text-base font-semibold">Koleksi kami segera hadir.</p>
+                <p class="mt-1.5 text-sm text-muted-foreground">Silakan kembali lagi untuk melihat rangkaian bunga segar terbaru.</p>
+            </div>
+        </div>
+    </section>
+
+    <section aria-label="Keunggulan Layanan" class="border-t border-border/70 bg-secondary/30 py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary">Standar Kualitas</p>
+                <h2 class="mt-2 text-3xl font-semibold sm:text-4xl">Mengapa Memilih {{ store.name }}?</h2>
+                <p class="mt-3 text-sm text-muted-foreground max-w-md mx-auto">Kami mendedikasikan ketelitian dan cinta pada setiap tangkai bunga yang Anda pesan.</p>
+            </div>
+
+            <div class="mt-12 grid gap-6 sm:grid-cols-3">
+                <div class="flex flex-col items-center rounded-3xl border border-border/70 bg-card p-7 text-center shadow-xs transition-shadow hover:shadow-md">
+                    <div class="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary">
+                        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <h3 class="mt-4 text-lg font-semibold text-foreground">Bunga Segar Terkurasi</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        Dipasok setiap pagi dan disortir secara manual agar kuncup mekar sempurna dan tahan lebih lama.
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center rounded-3xl border border-border/70 bg-card p-7 text-center shadow-xs transition-shadow hover:shadow-md">
+                    <div class="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary">
+                        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m4.93 4.93 4.24 4.24M14.83 9.17l4.24-4.24M14.83 14.83l4.24 4.24M9.17 14.83l-4.24 4.24" />
+                        </svg>
+                    </div>
+                    <h3 class="mt-4 text-lg font-semibold text-foreground">Sentuhan Florist Ahli</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        Ditata secara artistik dengan komposisi warna harmonis yang memancarkan kehangatan dan kemewahan.
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center rounded-3xl border border-border/70 bg-card p-7 text-center shadow-xs transition-shadow hover:shadow-md">
+                    <div class="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary">
+                        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="1" y="3" width="15" height="13" />
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                            <circle cx="5.5" cy="18.5" r="2.5" />
+                            <circle cx="18.5" cy="18.5" r="2.5" />
+                        </svg>
+                    </div>
+                    <h3 class="mt-4 text-lg font-semibold text-foreground">Pengiriman Terjaga</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        Dilengkapi wadah cadangan air (*water tube*) agar buket tetap segar dan tegak hingga sampai ke tangan penerima.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 </template>
+

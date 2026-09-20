@@ -76,26 +76,45 @@ onUnmounted(() => {
         >
             Langsung ke konten
         </a>
-        <header class="sticky top-0 z-20 border-b bg-background/85 backdrop-blur-xl">
-            <div class="mx-auto flex min-h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
-                <Link href="/" class="flex min-h-11 shrink-0 items-center gap-2.5 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                    <svg class="size-8 text-primary" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-                        <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".14" />
-                        <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
-                        <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".45" />
-                    </svg>
-                    <span class="font-semibold tracking-tight">{{ store.name }}</span>
+        <header class="sticky top-0 z-20 border-b border-border/80 bg-background/80 backdrop-blur-md">
+            <div class="mx-auto flex min-h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+                <Link href="/" class="group flex min-h-11 shrink-0 items-center gap-2.5 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    <div class="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
+                        <svg class="size-6" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                            <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".2" />
+                            <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
+                            <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".5" />
+                        </svg>
+                    </div>
+                    <span class="text-base font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary sm:text-lg">{{ store.name }}</span>
                 </Link>
-                <nav class="ml-auto hidden items-center gap-1 lg:flex" aria-label="Navigasi utama">
+
+                <nav class="ml-auto hidden items-center gap-1.5 lg:flex" aria-label="Navigasi utama">
                     <Link
                         v-for="category in navigationCategories"
                         :key="category.slug"
                         :href="`/categories/${category.slug}`"
-                        class="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        class="inline-flex min-h-10 items-center rounded-full px-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                         {{ category.name }}
                     </Link>
                 </nav>
+
+                <div class="hidden items-center lg:flex">
+                    <a
+                        v-if="store.phone"
+                        :href="`https://wa.me/${store.phone}`"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex min-h-10 items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-1.5 text-xs font-semibold text-primary shadow-2xs transition-all duration-200 hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                        <svg class="size-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                        </svg>
+                        <span>Tanya Florist</span>
+                    </a>
+                </div>
+
                 <button
                     ref="mobileNavigationToggle"
                     type="button"
@@ -127,17 +146,19 @@ onUnmounted(() => {
                 />
                 <nav
                     id="mobile-navigation"
-                    class="absolute right-0 top-0 flex h-dvh w-72 max-w-[calc(100%-2rem)] flex-col border-l bg-card p-4 shadow-xl"
+                    class="absolute right-0 top-0 flex h-dvh w-80 max-w-[calc(100%-2rem)] flex-col border-l bg-card p-5 shadow-2xl"
                     aria-label="Navigasi seluler"
                     aria-modal="true"
                     role="dialog"
                 >
-                    <div class="flex min-h-11 items-center justify-between">
-                        <p class="font-semibold tracking-tight">Navigasi</p>
+                    <div class="flex min-h-11 items-center justify-between border-b pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-semibold tracking-tight">{{ store.name }}</span>
+                        </div>
                         <button
                             ref="mobileNavigationClose"
                             type="button"
-                            class="grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                            class="grid size-10 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                             aria-label="Tutup navigasi"
                             @click="closeMobileNavigation()"
                         >
@@ -146,16 +167,31 @@ onUnmounted(() => {
                             </svg>
                         </button>
                     </div>
-                    <div class="mt-6 flex flex-col gap-1">
+                    <div class="mt-4 flex flex-col gap-1 overflow-y-auto">
+                        <p class="px-3 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Kategori Bunga</p>
                         <Link
                             v-for="category in navigationCategories"
                             :key="category.slug"
                             :href="`/categories/${category.slug}`"
-                            class="flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                            class="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                             @click="closeMobileNavigation(false)"
                         >
                             {{ category.name }}
                         </Link>
+                    </div>
+
+                    <div v-if="store.phone" class="mt-auto border-t pt-4">
+                        <a
+                            :href="`https://wa.me/${store.phone}`"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+                        >
+                            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                            </svg>
+                            <span>Hubungi WhatsApp</span>
+                        </a>
                     </div>
                 </nav>
             </div>

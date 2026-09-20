@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import ProductCard from '@/Components/Storefront/ProductCard.vue';
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import type { StoreInfo } from '@/types';
+import { Head, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 defineOptions({ layout: StorefrontLayout });
 
@@ -19,14 +21,22 @@ defineProps<{
         };
     }>;
 }>();
+
+const page = usePage<{ store?: StoreInfo }>();
+const store = computed<StoreInfo>(() => page.props.store ?? {
+    name: 'Otim Florist',
+    phone: '',
+    address: 'Jl. Mawar No. 12, Jakarta',
+    hours: '08:00–20:00 daily',
+});
 </script>
 
 <template>
-    <Head title="Rangkaian bunga untuk setiap momen | Otim Florist">
-        <meta name="description" content="Jelajahi rangkaian bunga pilihan dari Otim Florist." />
+    <Head :title="`Rangkaian bunga untuk setiap momen | ${store.name}`">
+        <meta name="description" :content="`Jelajahi rangkaian bunga pilihan dari ${store.name}.`" />
         <link rel="canonical" :href="canonicalUrl" />
-        <meta property="og:title" content="Rangkaian bunga untuk setiap momen | Otim Florist" />
-        <meta property="og:description" content="Jelajahi rangkaian bunga pilihan dari Otim Florist." />
+        <meta property="og:title" :content="`Rangkaian bunga untuk setiap momen | ${store.name}`" />
+        <meta property="og:description" :content="`Jelajahi rangkaian bunga pilihan dari ${store.name}.`" />
         <meta property="og:type" content="website" />
         <meta property="og:url" :content="canonicalUrl" />
     </Head>
@@ -36,7 +46,7 @@ defineProps<{
         <div class="absolute -bottom-32 left-1/3 size-96 rounded-full border border-primary-foreground/10" aria-hidden="true" />
         <div class="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:px-8 lg:py-28">
             <div class="max-w-2xl">
-                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-primary-foreground/65">Otim Florist</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-primary-foreground/65">{{ store.name }}</p>
                 <h1 class="mt-5 text-5xl leading-[0.94] sm:text-6xl lg:text-7xl">Bunga untuk setiap momen bermakna.</h1>
                 <p class="mt-6 max-w-xl text-base leading-7 text-primary-foreground/70 sm:text-lg">Rangkaian bunga pilihan untuk perayaan, ungkapan terima kasih, dan setiap momen yang layak dikenang.</p>
                 <a href="#collection" class="mt-9 inline-flex min-h-11 items-center rounded-xl bg-primary-foreground px-5 text-sm font-semibold text-primary shadow-sm transition-colors duration-200 hover:bg-primary-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary">

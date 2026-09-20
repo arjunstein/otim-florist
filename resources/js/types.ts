@@ -85,11 +85,14 @@ export interface CategoriesProps {
     categories: Paginated<Category>;
 }
 
-export interface SettingsProps {
-    store: {
-        name: string;
-        phone: string;
-        address: string;
-        hours: string;
-    };
+export interface StoreInfo {
+    name: string;
+    phone: string;
+    address: string;
+    hours: string;
 }
+
+export interface SettingsProps {
+    store: StoreInfo;
+}
+

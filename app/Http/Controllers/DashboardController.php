@@ -68,7 +68,7 @@ class DashboardController extends Controller
 
     public function settings(): Response
     {
-        $store = $this->storeSettings();
+        $store = StoreSetting::current();
 
         return Inertia::render('Dashboard/Settings', [
             'store' => [
@@ -82,20 +82,8 @@ class DashboardController extends Controller
 
     public function updateSettings(UpdateStoreSettingsRequest $request): RedirectResponse
     {
-        $this->storeSettings()->update($request->validated());
+        StoreSetting::current()->update($request->validated());
 
         return back()->with('success', 'Store settings saved.');
-    }
-
-    private function storeSettings(): StoreSetting
-    {
-        return StoreSetting::query()->firstOrCreate([
-            'id' => 1,
-        ], [
-            'name' => 'Otim Florist',
-            'phone' => '',
-            'address' => 'Jl. Mawar No. 12, Jakarta',
-            'hours' => '08:00–20:00 daily',
-        ]);
     }
 }

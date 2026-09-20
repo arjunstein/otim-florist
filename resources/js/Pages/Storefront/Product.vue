@@ -7,6 +7,7 @@ defineOptions({ layout: StorefrontLayout });
 
 const props = defineProps<{
     canonicalUrl: string;
+    whatsappUrl: string | null;
     product: {
         name: string;
         description: string | null;
@@ -83,9 +84,24 @@ const productSchema = JSON.stringify({
                 <p class="text-2xl font-semibold text-primary">{{ priceFormatter.format(product.salePrice ?? product.price) }}</p>
             </div>
             <p class="mt-7 text-base leading-7 text-muted-foreground">{{ product.description || 'Rangkaian pilihan yang disiapkan dengan perhatian untuk setiap momen bermakna.' }}</p>
-            <Link href="/" class="mt-8 inline-flex min-h-11 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors duration-200 hover:bg-primary/90">
-                Lihat koleksi lainnya
-            </Link>
+            <div class="mt-8 flex flex-wrap gap-3">
+                <a
+                    v-if="whatsappUrl"
+                    :href="whatsappUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex min-h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors duration-200 hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                    <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M20.5 11.7a8.4 8.4 0 0 1-12.4 7.4L4 20l.9-4a8.5 8.5 0 1 1 15.6-4.3Z" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M8.7 8.4c.2-.5.4-.5.7-.5h.5c.2 0 .4.1.5.4l.7 1.7c.1.2.1.4 0 .6l-.5.7c.7 1.3 1.8 2.4 3.1 3.1l.7-.5c.2-.1.4-.1.6 0l1.7.7c.3.1.4.3.4.5v.5c0 .3 0 .5-.5.7-.6.2-1.3.3-2 .1-3.6-1-6.4-3.8-7.4-7.4-.2-.7-.1-1.4.1-2Z" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Beli via WhatsApp
+                </a>
+                <Link href="/" class="inline-flex min-h-11 items-center rounded-xl border bg-background px-5 text-sm font-semibold shadow-sm transition-colors duration-200 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                    Lihat koleksi lainnya
+                </Link>
+            </div>
         </div>
     </section>
 </template>

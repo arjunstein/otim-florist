@@ -57,36 +57,39 @@
 
 .storefront {
     color-scheme: light;
-    --background: oklch(0.975 0.012 80);
-    --foreground: oklch(0.23 0.035 50);
-    --card: oklch(0.995 0.005 80);
-    --card-foreground: oklch(0.23 0.035 50);
-    --primary: oklch(0.27 0.045 45);
-    --primary-foreground: oklch(0.975 0.012 80);
-    --secondary: oklch(0.92 0.025 58);
-    --secondary-foreground: oklch(0.31 0.045 45);
-    --muted: oklch(0.94 0.012 75);
-    --muted-foreground: oklch(0.49 0.028 55);
-    --accent: oklch(0.69 0.09 75);
-    --accent-foreground: oklch(0.25 0.035 50);
-    --border: oklch(0.86 0.02 70);
-    --ring: oklch(0.57 0.09 70);
-    --success: oklch(0.9 0.04 145);
+    --background: oklch(0.988 0.008 145);
+    --foreground: oklch(0.20 0.04 155);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.20 0.04 155);
+    --primary: oklch(0.32 0.09 155);
+    --primary-foreground: oklch(0.99 0.005 140);
+    --secondary: oklch(0.945 0.025 150);
+    --secondary-foreground: oklch(0.26 0.07 155);
+    --muted: oklch(0.96 0.01 150);
+    --muted-foreground: oklch(0.46 0.035 155);
+    --accent: oklch(0.68 0.16 20);
+    --accent-foreground: oklch(0.99 0.005 20);
+    --border: oklch(0.90 0.018 150);
+    --ring: oklch(0.38 0.10 155);
+    --success: oklch(0.90 0.04 145);
     --success-foreground: oklch(0.28 0.06 145);
-    --warning: oklch(0.9 0.05 80);
+    --warning: oklch(0.90 0.05 80);
     --warning-foreground: oklch(0.36 0.07 75);
     --info: oklch(0.91 0.025 235);
-    --info-foreground: oklch(0.3 0.055 245);
-    --destructive: oklch(0.91 0.04 20);
-    --destructive-foreground: oklch(0.38 0.09 25);
-    background-image: radial-gradient(circle at 100% 0%, oklch(0.91 0.035 75 / 0.5), transparent 30rem);
+    --info-foreground: oklch(0.30 0.055 245);
+    --destructive: oklch(0.60 0.20 25);
+    --destructive-foreground: oklch(0.99 0.005 25);
+    background-image:
+        radial-gradient(ellipse 65% 45% at 85% 0%, oklch(0.93 0.04 150 / 0.5), transparent),
+        radial-gradient(ellipse 55% 40% at 5% 35%, oklch(0.95 0.03 25 / 0.3), transparent);
+    background-attachment: fixed;
 }
 
 .storefront h1,
-.storefront h2 {
+.storefront h2,
+.storefront h3 {
     font-family: Iowan Old Style, Baskerville, Georgia, serif;
-    font-weight: 500;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.02em;
 }
 
 @theme inline {

@@ -32,6 +32,9 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
                     <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
                     <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".45" />
                 </svg>
+                <span v-if="props.product.salePrice" class="absolute left-4 top-4 rounded-full bg-primary px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground shadow-sm">
+                    Promo
+                </span>
             </div>
             <div class="p-5">
                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">{{ props.product.category.name }}</p>

@@ -76,6 +76,9 @@ class DashboardController extends Controller
                 'phone' => $store->phone,
                 'address' => $store->address,
                 'hours' => $store->hours,
+                'google_reviews_url' => $store->google_reviews_url ?? '',
+                'google_rating' => $store->google_rating !== null ? (string) $store->google_rating : '',
+                'google_reviews_count' => $store->google_reviews_count !== null ? (string) $store->google_reviews_count : '',
             ],
         ]);
     }

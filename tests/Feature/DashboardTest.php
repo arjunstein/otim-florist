@@ -55,6 +55,8 @@ class DashboardTest extends TestCase
             ->assertInertia(fn ($page) => $page
                 ->component('Dashboard/Settings')
                 ->where('store.name', 'Otim Florist')
+                ->where('store.google_rating', '5')
+                ->where('store.google_reviews_count', '27')
             );
     }
 
@@ -65,6 +67,9 @@ class DashboardTest extends TestCase
             'phone' => '+62 812-0000-0000',
             'address' => 'Jl. Mawar No. 12, Jakarta',
             'hours' => '08:00–20:00 daily',
+            'google_reviews_url' => 'https://share.google/v4xDWRoD4ANg5Ft3K',
+            'google_rating' => 4.9,
+            'google_reviews_count' => 30,
         ])
             ->assertRedirect('/settings')
             ->assertSessionHas('success');
@@ -72,6 +77,9 @@ class DashboardTest extends TestCase
         $this->assertDatabaseHas('store_settings', [
             'name' => 'Otim Florist',
             'phone' => '6281200000000',
+            'google_reviews_url' => 'https://share.google/v4xDWRoD4ANg5Ft3K',
+            'google_rating' => 4.9,
+            'google_reviews_count' => 30,
         ]);
 
         $this->from('/settings')->put('/settings', [
@@ -79,6 +87,8 @@ class DashboardTest extends TestCase
             'phone' => '',
             'address' => '',
             'hours' => '',
-        ])->assertSessionHasErrors(['name', 'phone', 'address', 'hours']);
+            'google_reviews_url' => 'invalid-url',
+            'google_rating' => 6.0,
+        ])->assertSessionHasErrors(['name', 'phone', 'address', 'hours', 'google_reviews_url', 'google_rating']);
     }
 }

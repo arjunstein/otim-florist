@@ -90,6 +90,9 @@ export interface StoreInfo {
     phone: string;
     address: string;
     hours: string;
+    google_reviews_url?: string | null;
+    google_rating?: number | string | null;
+    google_reviews_count?: number | string | null;
 }
 
 export interface SettingsProps {

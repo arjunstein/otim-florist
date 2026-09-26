@@ -26,7 +26,15 @@ class HandleInertiaRequests extends Middleware
                 'success' => $request->session()->get('success'),
                 'error' => $request->session()->get('error'),
             ],
-            'store' => fn () => StoreSetting::current()->only(['name', 'phone', 'address', 'hours']),
+            'store' => fn () => StoreSetting::current()->only([
+                'name',
+                'phone',
+                'address',
+                'hours',
+                'google_reviews_url',
+                'google_rating',
+                'google_reviews_count',
+            ]),
         ];
     }
 }

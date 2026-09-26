@@ -166,7 +166,7 @@ function changePerPage(perPage: number): void {
                     ]"
                     placeholder="E.g. Bouquet"
                 />
-                <p v-if="createForm.errors.name" id="category-name-error" class="text-sm text-destructive-foreground">
+                <p v-if="createForm.errors.name" id="category-name-error" class="text-sm text-destructive">
                     {{ createForm.errors.name }}
                 </p>
             </div>
@@ -278,7 +278,7 @@ function changePerPage(perPage: number): void {
                         editForm.errors.name ? 'border-destructive' : '',
                     ]"
                 />
-                <p v-if="editForm.errors.name" id="edit-category-name-error" class="text-sm text-destructive-foreground">
+                <p v-if="editForm.errors.name" id="edit-category-name-error" class="text-sm text-destructive">
                     {{ editForm.errors.name }}
                 </p>
             </div>
@@ -334,7 +334,7 @@ function changePerPage(perPage: number): void {
                         </button>
                         <button
                             type="button"
-                            class="grid size-11 place-items-center rounded-xl text-destructive-foreground transition-colors duration-200 hover:bg-destructive"
+                            class="grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors duration-200 hover:bg-destructive/10 hover:text-destructive"
                             :aria-label="`Delete ${category.name}`"
                             :title="`Delete ${category.name}`"
                             @click="openDeleteDialog(category)"

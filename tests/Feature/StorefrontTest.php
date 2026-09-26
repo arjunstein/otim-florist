@@ -105,6 +105,9 @@ class StorefrontTest extends TestCase
             'phone' => '6281234567890',
             'address' => 'Jl. Kenanga No. 5, Bandung',
             'hours' => '09:00–18:00 WIB',
+            'google_reviews_url' => 'https://share.google/test-link',
+            'google_rating' => 4.8,
+            'google_reviews_count' => 50,
         ]);
 
         $this->get('/')
@@ -115,6 +118,9 @@ class StorefrontTest extends TestCase
                 ->where('store.address', 'Jl. Kenanga No. 5, Bandung')
                 ->where('store.hours', '09:00–18:00 WIB')
                 ->where('store.phone', '6281234567890')
+                ->where('store.google_reviews_url', 'https://share.google/test-link')
+                ->where('store.google_rating', 4.8)
+                ->where('store.google_reviews_count', 50)
             );
     }
 }

@@ -5,58 +5,6 @@
 
 :root {
     color-scheme: light;
-    --background: oklch(0.985 0.012 142);
-    --foreground: oklch(0.25 0.04 153);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.25 0.04 153);
-    --primary: oklch(0.48 0.12 151);
-    --primary-foreground: oklch(0.99 0.01 142);
-    --secondary: oklch(0.95 0.025 148);
-    --secondary-foreground: oklch(0.31 0.06 151);
-    --muted: oklch(0.95 0.012 153);
-    --muted-foreground: oklch(0.48 0.025 158);
-    --accent: oklch(0.94 0.035 355);
-    --accent-foreground: oklch(0.38 0.09 355);
-    --border: oklch(0.88 0.025 150);
-    --ring: oklch(0.48 0.12 151);
-    --success: oklch(0.93 0.05 151);
-    --success-foreground: oklch(0.31 0.08 151);
-    --warning: oklch(0.94 0.06 88);
-    --warning-foreground: oklch(0.42 0.09 75);
-    --info: oklch(0.93 0.04 235);
-    --info-foreground: oklch(0.35 0.08 245);
-    --destructive: oklch(0.94 0.04 20);
-    --destructive-foreground: oklch(0.43 0.12 25);
-}
-
-:root.dark {
-    color-scheme: dark;
-    --background: oklch(0.19 0.025 153);
-    --foreground: oklch(0.95 0.015 142);
-    --card: oklch(0.23 0.025 153);
-    --card-foreground: oklch(0.95 0.015 142);
-    --primary: oklch(0.72 0.12 151);
-    --primary-foreground: oklch(0.19 0.025 153);
-    --secondary: oklch(0.3 0.04 151);
-    --secondary-foreground: oklch(0.93 0.02 143);
-    --muted: oklch(0.28 0.02 153);
-    --muted-foreground: oklch(0.76 0.025 151);
-    --accent: oklch(0.35 0.07 355);
-    --accent-foreground: oklch(0.95 0.03 355);
-    --border: oklch(0.36 0.025 153);
-    --ring: oklch(0.72 0.12 151);
-    --success: oklch(0.31 0.07 151);
-    --success-foreground: oklch(0.9 0.06 151);
-    --warning: oklch(0.36 0.06 80);
-    --warning-foreground: oklch(0.95 0.07 90);
-    --info: oklch(0.32 0.05 240);
-    --info-foreground: oklch(0.91 0.04 235);
-    --destructive: oklch(0.34 0.08 25);
-    --destructive-foreground: oklch(0.94 0.05 20);
-}
-
-.storefront {
-    color-scheme: light;
     --background: oklch(0.988 0.008 145);
     --foreground: oklch(0.20 0.04 155);
     --card: oklch(1 0 0);
@@ -79,22 +27,38 @@
     --info-foreground: oklch(0.30 0.055 245);
     --destructive: oklch(0.60 0.20 25);
     --destructive-foreground: oklch(0.99 0.005 25);
-    background-image:
-        radial-gradient(ellipse 65% 45% at 85% 0%, oklch(0.93 0.04 150 / 0.5), transparent),
-        radial-gradient(ellipse 55% 40% at 5% 35%, oklch(0.95 0.03 25 / 0.3), transparent);
-    background-attachment: fixed;
 }
 
-.storefront h1,
-.storefront h2,
-.storefront h3 {
-    font-family: Iowan Old Style, Baskerville, Georgia, serif;
-    letter-spacing: -0.02em;
+:root.dark {
+    color-scheme: dark;
+    --background: oklch(0.18 0.025 155);
+    --foreground: oklch(0.96 0.012 145);
+    --card: oklch(0.22 0.028 155);
+    --card-foreground: oklch(0.96 0.012 145);
+    --primary: oklch(0.72 0.13 152);
+    --primary-foreground: oklch(0.18 0.03 155);
+    --secondary: oklch(0.28 0.035 152);
+    --secondary-foreground: oklch(0.94 0.02 145);
+    --muted: oklch(0.26 0.02 155);
+    --muted-foreground: oklch(0.72 0.028 152);
+    --accent: oklch(0.72 0.16 22);
+    --accent-foreground: oklch(0.18 0.03 22);
+    --border: oklch(0.30 0.025 155);
+    --ring: oklch(0.72 0.13 152);
+    --success: oklch(0.30 0.07 145);
+    --success-foreground: oklch(0.92 0.05 145);
+    --warning: oklch(0.36 0.07 80);
+    --warning-foreground: oklch(0.95 0.06 85);
+    --info: oklch(0.32 0.05 240);
+    --info-foreground: oklch(0.92 0.04 235);
+    --destructive: oklch(0.42 0.15 25);
+    --destructive-foreground: oklch(0.98 0.01 25);
 }
 
 @theme inline {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: Iowan Old Style, Baskerville, Georgia, 'Times New Roman', serif;
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --color-card: var(--card);
@@ -126,9 +90,30 @@
 
     body {
         @apply bg-background text-foreground antialiased;
+        background-image:
+            radial-gradient(ellipse 65% 45% at 85% 0%, oklch(0.93 0.04 150 / 0.5), transparent),
+            radial-gradient(ellipse 55% 40% at 5% 35%, oklch(0.95 0.03 25 / 0.3), transparent);
+        background-attachment: fixed;
+    }
+
+    :root.dark body {
+        background-image:
+            radial-gradient(ellipse 65% 45% at 85% 0%, oklch(0.26 0.04 152 / 0.4), transparent),
+            radial-gradient(ellipse 55% 40% at 5% 35%, oklch(0.24 0.04 25 / 0.25), transparent);
+        background-attachment: fixed;
     }
 
     :focus-visible {
         @apply outline-2 outline-offset-2 outline-ring;
+    }
+
+    .storefront h1,
+    .storefront h2,
+    .storefront h3,
+    .dashboard-layout h1,
+    .dashboard-layout h2,
+    .dashboard-layout h3 {
+        font-family: var(--font-serif);
+        letter-spacing: -0.02em;
     }
 }

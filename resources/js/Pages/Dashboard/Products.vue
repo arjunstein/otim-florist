@@ -427,7 +427,7 @@ function queueFilters(): void {
                         ]"
                         placeholder="E.g. Rose Bouquet M"
                     />
-                    <p v-if="productForm.errors.name" id="product-name-error" role="alert" class="text-sm text-destructive-foreground">
+                    <p v-if="productForm.errors.name" id="product-name-error" role="alert" class="text-sm text-destructive">
                         {{ productForm.errors.name }}
                     </p>
                 </div>
@@ -446,7 +446,7 @@ function queueFilters(): void {
                         <option value="" disabled>Select category</option>
                         <option v-for="item in categories" :key="item.id" :value="String(item.id)">{{ item.name }}</option>
                     </select>
-                    <p v-if="productForm.errors.category_id" id="product-category-error" role="alert" class="text-sm text-destructive-foreground">
+                    <p v-if="productForm.errors.category_id" id="product-category-error" role="alert" class="text-sm text-destructive">
                         {{ productForm.errors.category_id }}
                     </p>
                 </div>
@@ -465,7 +465,7 @@ function queueFilters(): void {
                         ]"
                         placeholder="Describe the arrangement, flowers, and occasion."
                     />
-                    <p v-if="productForm.errors.description" id="product-description-error" role="alert" class="text-sm text-destructive-foreground">
+                    <p v-if="productForm.errors.description" id="product-description-error" role="alert" class="text-sm text-destructive">
                         {{ productForm.errors.description }}
                     </p>
                 </div>
@@ -487,7 +487,7 @@ function queueFilters(): void {
                         ]"
                         placeholder="350000"
                     />
-                    <p v-if="productForm.errors.price" id="product-price-error" role="alert" class="text-sm text-destructive-foreground">
+                    <p v-if="productForm.errors.price" id="product-price-error" role="alert" class="text-sm text-destructive">
                         {{ productForm.errors.price }}
                     </p>
                 </div>
@@ -509,7 +509,7 @@ function queueFilters(): void {
                         ]"
                         placeholder="300000"
                     />
-                    <p v-if="productForm.errors.sale_price" id="product-sale-price-error" role="alert" class="text-sm text-destructive-foreground">
+                    <p v-if="productForm.errors.sale_price" id="product-sale-price-error" role="alert" class="text-sm text-destructive">
                         {{ productForm.errors.sale_price }}
                     </p>
                 </div>
@@ -529,7 +529,7 @@ function queueFilters(): void {
                         @change="selectImage"
                     />
                     <p id="product-image-help" class="text-xs leading-5 text-muted-foreground">JPG, PNG, or WebP up to 5 MB.</p>
-                    <p v-if="productForm.errors.image" id="product-image-error" role="alert" class="text-sm text-destructive-foreground">
+                    <p v-if="productForm.errors.image" id="product-image-error" role="alert" class="text-sm text-destructive">
                         {{ productForm.errors.image }}
                     </p>
                     <div v-if="productImagePreview" class="relative overflow-hidden rounded-xl border bg-muted/30">
@@ -742,7 +742,7 @@ function queueFilters(): void {
                         <td class="px-5 py-3 text-muted-foreground">{{ product.category.name }}</td>
                         <td class="px-5 py-3 text-right font-medium">
                             <p v-if="product.salePrice" class="text-xs font-normal text-muted-foreground line-through">{{ formatPrice(product.price) }}</p>
-                            <p :class="product.salePrice ? 'text-primary' : ''">{{ formatPrice(product.salePrice ?? product.price) }}</p>
+                            <p :class="product.salePrice ? 'text-accent font-semibold' : ''">{{ formatPrice(product.salePrice ?? product.price) }}</p>
                         </td>
                         <td class="px-3 py-3 text-right sm:px-6">
                             <div class="flex justify-end gap-2">
@@ -759,7 +759,7 @@ function queueFilters(): void {
                                 </button>
                                 <button
                                     type="button"
-                                    class="grid size-11 place-items-center rounded-xl text-destructive-foreground transition-colors duration-200 hover:bg-destructive"
+                                    class="grid size-11 place-items-center rounded-xl text-muted-foreground transition-colors duration-200 hover:bg-destructive/10 hover:text-destructive"
                                     :aria-label="`Delete ${product.name}`"
                                     :title="`Delete ${product.name}`"
                                     @click="openDeleteDialog(product)"

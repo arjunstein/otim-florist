@@ -62,7 +62,7 @@ const fields = [
                         form.errors[field.key] ? 'border-destructive' : '',
                     ]"
                 />
-                <p v-if="form.errors[field.key]" :id="`${field.key}-hint`" class="text-sm text-destructive-foreground">
+                <p v-if="form.errors[field.key]" :id="`${field.key}-hint`" class="text-sm text-destructive">
                     {{ form.errors[field.key] }}
                 </p>
                 <p v-else :id="`${field.key}-hint`" class="text-sm text-muted-foreground">{{ field.hint }}</p>
@@ -114,7 +114,7 @@ const fields = [
                         </svg>
                     </button>
                 </div>
-                <p v-if="passwordForm.errors.current_password" id="current-password-error" role="alert" class="text-sm text-destructive-foreground">
+                <p v-if="passwordForm.errors.current_password" id="current-password-error" role="alert" class="text-sm text-destructive">
                     {{ passwordForm.errors.current_password }}
                 </p>
             </div>
@@ -167,7 +167,7 @@ const fields = [
                     />
                 </div>
             </div>
-            <p v-if="passwordForm.errors.password" id="password-error" role="alert" class="text-sm text-destructive-foreground">
+            <p v-if="passwordForm.errors.password" id="password-error" role="alert" class="text-sm text-destructive">
                 {{ passwordForm.errors.password }}
             </p>
 

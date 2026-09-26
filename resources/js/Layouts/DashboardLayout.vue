@@ -134,7 +134,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="min-h-dvh bg-background text-foreground">
+    <div class="dashboard-layout min-h-dvh text-foreground">
         <a
             href="#main-content"
             class="sr-only fixed left-4 top-4 z-50 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground focus:not-sr-only"
@@ -152,10 +152,10 @@ onUnmounted(() => {
                 :role="activeToast.type === 'error' ? 'alert' : 'status'"
                 aria-live="polite"
                 :class="[
-                    'fixed right-4 top-4 z-[60] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-2xl border p-4 shadow-lg',
+                    'fixed right-4 top-4 z-[60] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-2xl border p-4 shadow-lg backdrop-blur-md',
                     activeToast.type === 'success'
-                        ? 'bg-success text-success-foreground'
-                        : 'bg-destructive text-destructive-foreground',
+                        ? 'bg-success text-success-foreground border-success/30'
+                        : 'bg-destructive text-destructive-foreground border-destructive/30',
                 ]"
             >
                 <p class="flex-1 text-sm font-semibold">{{ activeToast.message }}</p>
@@ -207,19 +207,22 @@ onUnmounted(() => {
             </footer>
         </dialog>
         <aside
-            class="fixed inset-y-0 left-0 hidden w-72 flex-col border-r bg-card md:flex"
+            class="fixed inset-y-0 left-0 hidden w-72 flex-col border-r border-border/80 bg-card/85 backdrop-blur-md md:flex"
         >
-            <div class="border-b px-6 py-5">
-                <div class="flex items-center gap-3">
-                    <svg class="size-10 text-primary" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-                        <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".14" />
-                        <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
-                        <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".45" />
-                    </svg>
-                    <div>
-                        <p class="font-semibold tracking-tight">{{ store.name }}</p>
+            <div class="border-b border-border/80 px-6 py-5">
+                <Link href="/dashboard" class="group flex items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    <div class="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
+                        <svg class="size-6" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                            <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".2" />
+                            <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
+                            <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".5" />
+                        </svg>
                     </div>
-                </div>
+                    <div class="min-w-0">
+                        <p class="truncate font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary">{{ store.name }}</p>
+                        <p class="text-xs text-muted-foreground">Florist Management</p>
+                    </div>
+                </Link>
             </div>
             <nav class="flex flex-1 flex-col gap-1 overflow-y-auto p-4" aria-label="Dashboard navigation">
                 <Link
@@ -228,27 +231,44 @@ onUnmounted(() => {
                     :href="item.href"
                     :aria-current="current === item.component ? 'page' : undefined"
                     :class="[
-                        'flex min-h-11 items-center rounded-xl px-3 text-sm font-medium transition-colors duration-200',
+                        'flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors duration-200',
                         current === item.component
-                            ? 'bg-primary text-primary-foreground shadow-sm'
-                            : 'text-muted-foreground hover:bg-secondary hover:text-secondary-foreground',
+                            ? 'bg-primary text-primary-foreground shadow-xs font-semibold'
+                            : 'text-muted-foreground hover:bg-secondary hover:text-foreground',
                     ]"
                 >
-                    {{ item.label }}
+                    <svg v-if="item.component === 'Dashboard/Overview'" class="size-4 shrink-0 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                    </svg>
+                    <svg v-else-if="item.component === 'Dashboard/Products'" class="size-4 shrink-0 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2a4 4 0 0 1 4 4c0 1.9-1.3 3.5-3 3.9V13h3.5A3.5 3.5 0 0 1 20 16.5c0 1.6-1.1 3-2.6 3.4L17 22H7l-.4-2.1A3.5 3.5 0 0 1 4 16.5 3.5 3.5 0 0 1 7.5 13H11V9.9A4 4 0 0 1 8 6a4 4 0 0 1 4-4Z" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <svg v-else-if="item.component === 'Dashboard/Categories'" class="size-4 shrink-0 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke-linecap="round" stroke-linejoin="round" />
+                        <line x1="7" y1="7" x2="7.01" y2="7" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <svg v-else class="size-4 shrink-0 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span>{{ item.label }}</span>
                 </Link>
             </nav>
-            <div class="border-t p-4">
-                <div class="flex items-center gap-3 rounded-xl bg-secondary/70 p-2">
-                    <span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+            <div class="border-t border-border/80 p-4">
+                <div class="flex items-center gap-3 rounded-xl bg-secondary/60 p-2.5">
+                    <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-2xs">
                         {{ userInitial }}
                     </span>
                     <div class="min-w-0 flex-1">
-                        <p class="truncate text-sm font-semibold">{{ auth.user?.name }}</p>
+                        <p class="truncate text-sm font-semibold text-foreground">{{ auth.user?.name }}</p>
                         <p class="truncate text-xs text-muted-foreground">{{ auth.user?.email }}</p>
                     </div>
                     <button
                         type="button"
-                        class="grid size-11 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors duration-200 hover:bg-card hover:text-secondary-foreground"
+                        class="grid size-10 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors duration-200 hover:bg-destructive/10 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         aria-label="Sign out"
                         title="Sign out"
                         @click="openLogoutDialog"
@@ -279,11 +299,18 @@ onUnmounted(() => {
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="mobile-navigation-title"
-                    class="relative flex h-dvh w-72 max-w-[calc(100%-2rem)] flex-col border-r bg-card shadow-xl"
+                    class="relative flex h-dvh w-72 max-w-[calc(100%-2rem)] flex-col border-r border-border/80 bg-card/95 backdrop-blur-md shadow-xl"
                 >
-                    <div class="flex items-center justify-between border-b px-5 py-4">
-                        <div>
-                            <h2 id="mobile-navigation-title" class="font-semibold tracking-tight">{{ store.name }}</h2>
+                    <div class="flex items-center justify-between border-b border-border/80 px-5 py-4">
+                        <div class="flex items-center gap-2.5">
+                            <div class="grid size-8 place-items-center rounded-lg bg-primary/10 text-primary">
+                                <svg class="size-5" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                                    <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".2" />
+                                    <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
+                                    <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".5" />
+                                </svg>
+                            </div>
+                            <h2 id="mobile-navigation-title" class="font-semibold tracking-tight text-foreground">{{ store.name }}</h2>
                         </div>
                         <button
                             ref="mobileNavigationClose"
@@ -304,28 +331,28 @@ onUnmounted(() => {
                             :href="item.href"
                             :aria-current="current === item.component ? 'page' : undefined"
                             :class="[
-                                'flex min-h-11 items-center rounded-xl px-3 text-sm font-medium transition-colors duration-200',
+                                'flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors duration-200',
                                 current === item.component
-                                    ? 'bg-primary text-primary-foreground shadow-sm'
+                                    ? 'bg-primary text-primary-foreground shadow-xs font-semibold'
                                     : 'text-muted-foreground hover:bg-secondary hover:text-secondary-foreground',
                             ]"
                             @click="closeMobileNavigation(false)"
                         >
-                            {{ item.label }}
+                            <span>{{ item.label }}</span>
                         </Link>
                     </nav>
-                    <div class="border-t p-4">
-                        <div class="flex items-center gap-3 rounded-xl bg-secondary/70 p-2">
-                            <span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                    <div class="border-t border-border/80 p-4">
+                        <div class="flex items-center gap-3 rounded-xl bg-secondary/60 p-2.5">
+                            <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-2xs">
                                 {{ userInitial }}
                             </span>
                             <div class="min-w-0 flex-1">
-                                <p class="truncate text-sm font-semibold">{{ auth.user?.name }}</p>
+                                <p class="truncate text-sm font-semibold text-foreground">{{ auth.user?.name }}</p>
                                 <p class="truncate text-xs text-muted-foreground">{{ auth.user?.email }}</p>
                             </div>
                             <button
                                 type="button"
-                                class="grid size-11 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors duration-200 hover:bg-card hover:text-secondary-foreground"
+                                class="grid size-10 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors duration-200 hover:bg-destructive/10 hover:text-destructive"
                                 aria-label="Sign out"
                                 title="Sign out"
                                 @click="openLogoutDialog"
@@ -341,7 +368,7 @@ onUnmounted(() => {
         </Transition>
 
         <div class="md:pl-72">
-            <header class="sticky top-0 z-10 border-b bg-card/95 backdrop-blur">
+            <header class="sticky top-0 z-10 border-b border-border/80 bg-card/85 backdrop-blur-md">
                 <div class="flex min-h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
                     <button
                         ref="mobileNavigationToggle"
@@ -356,11 +383,23 @@ onUnmounted(() => {
                             <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
                         </svg>
                     </button>
-                    <p class="hidden text-sm text-muted-foreground md:block">{{ title }}</p>
+                    <div class="flex items-center gap-2">
+                        <span class="hidden font-serif text-lg font-semibold tracking-tight text-foreground md:inline">{{ title }}</span>
+                    </div>
                     <div class="ml-auto flex items-center gap-2">
+                        <Link
+                            href="/"
+                            class="group inline-flex min-h-10 items-center gap-1.5 rounded-full border border-border/80 bg-background/60 px-3.5 text-xs font-semibold text-foreground/80 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-primary/40 hover:bg-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                            title="Buka halaman public toko"
+                        >
+                            <svg class="size-3.5 text-muted-foreground transition-colors group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span>Lihat Toko</span>
+                        </Link>
                         <button
                             type="button"
-                            class="grid size-11 place-items-center rounded-full bg-secondary text-secondary-foreground transition-colors duration-200 hover:bg-muted"
+                            class="grid size-10 place-items-center rounded-full border border-border/80 bg-background/60 text-secondary-foreground shadow-2xs backdrop-blur-xs transition-colors duration-200 hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                             aria-label="Toggle dark mode"
                             :aria-pressed="isDark"
                             :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"

@@ -57,7 +57,7 @@ function submit(): void {
                         ]"
                         placeholder="you@example.com"
                     />
-                    <p v-if="form.errors.email" id="email-error" role="alert" class="text-sm text-destructive-foreground">
+                    <p v-if="form.errors.email" id="email-error" role="alert" class="text-sm text-destructive">
                         {{ form.errors.email }}
                     </p>
                 </div>
@@ -92,7 +92,7 @@ function submit(): void {
                             </svg>
                         </button>
                     </div>
-                    <p v-if="form.errors.password" id="password-error" role="alert" class="text-sm text-destructive-foreground">
+                    <p v-if="form.errors.password" id="password-error" role="alert" class="text-sm text-destructive">
                         {{ form.errors.password }}
                     </p>
                 </div>

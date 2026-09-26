@@ -49,7 +49,7 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
                         </div>
                         <div class="shrink-0 text-right">
                             <p v-if="product.salePrice" class="text-xs text-muted-foreground line-through">{{ priceFormatter.format(product.price) }}</p>
-                            <p :class="['text-sm font-semibold', product.salePrice ? 'text-primary' : '']">{{ priceFormatter.format(product.salePrice ?? product.price) }}</p>
+                            <p :class="['text-sm font-semibold', product.salePrice ? 'text-accent' : 'text-foreground']">{{ priceFormatter.format(product.salePrice ?? product.price) }}</p>
                         </div>
                     </Link>
                 </li>

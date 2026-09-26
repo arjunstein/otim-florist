@@ -150,6 +150,26 @@ class ProductTest extends TestCase
         ])->assertSessionHasErrors(['name', 'category_id', 'price']);
     }
 
+    public function test_product_image_must_not_exceed_two_megabytes(): void
+    {
+        Storage::fake('public');
+        $category = Category::create(['name' => 'Bouquet']);
+
+        $this->post('/products', [
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'price' => 350000,
+            'image' => UploadedFile::fake()->create('huge-rose.jpg', 2049, 'image/jpeg'),
+        ])->assertSessionHasErrors('image');
+
+        $this->post('/products', [
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'price' => 350000,
+            'image' => UploadedFile::fake()->create('valid-rose.jpg', 2048, 'image/jpeg'),
+        ])->assertSessionDoesntHaveErrors('image');
+    }
+
     public function test_sale_price_must_be_lower_than_regular_price(): void
     {
         $category = Category::create(['name' => 'Bouquet']);

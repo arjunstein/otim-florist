@@ -97,6 +97,15 @@ function selectImage(event: Event): void {
         return;
     }
 
+    if (image.size > 2 * 1024 * 1024) {
+        showToast('error', 'Image size must not exceed 2 MB.');
+        if (productImageInput.value) {
+            productImageInput.value.value = '';
+        }
+
+        return;
+    }
+
     openCropDialog(image);
 }
 
@@ -528,7 +537,7 @@ function queueFilters(): void {
                         ]"
                         @change="selectImage"
                     />
-                    <p id="product-image-help" class="text-xs leading-5 text-muted-foreground">JPG, PNG, or WebP up to 5 MB.</p>
+                    <p id="product-image-help" class="text-xs leading-5 text-muted-foreground">JPG, PNG, or WebP up to 2 MB.</p>
                     <p v-if="productForm.errors.image" id="product-image-error" role="alert" class="text-sm text-destructive">
                         {{ productForm.errors.image }}
                     </p>

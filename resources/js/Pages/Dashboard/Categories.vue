@@ -44,7 +44,10 @@ function createCategory(): void {
     createForm.post('/categories', {
         preserveScroll: true,
         onSuccess: closeCreateDialog,
-        onError: () => showToast('error', 'Category could not be created. Check the form.'),
+        onError: (errors: Record<string, string>) => {
+            const firstError = Object.values(errors)[0];
+            showToast('error', firstError || 'Category could not be created. Check the form.');
+        },
     });
 }
 
@@ -74,7 +77,10 @@ function updateCategory(): void {
     editForm.put(`/categories/${editingCategory.value.id}`, {
         preserveScroll: true,
         onSuccess: closeEditDialog,
-        onError: () => showToast('error', 'Category could not be updated. Check the form.'),
+        onError: (errors: Record<string, string>) => {
+            const firstError = Object.values(errors)[0];
+            showToast('error', firstError || 'Category could not be updated. Check the form.');
+        },
     });
 }
 
@@ -158,7 +164,6 @@ function changePerPage(perPage: number): void {
                     id="category-name"
                     ref="createCategoryInput"
                     v-model="createForm.name"
-                    :aria-describedby="createForm.errors.name ? 'category-name-error' : undefined"
                     :aria-invalid="Boolean(createForm.errors.name)"
                     :class="[
                         'min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20',
@@ -166,9 +171,6 @@ function changePerPage(perPage: number): void {
                     ]"
                     placeholder="E.g. Bouquet"
                 />
-                <p v-if="createForm.errors.name" id="category-name-error" class="text-sm text-destructive">
-                    {{ createForm.errors.name }}
-                </p>
             </div>
             <footer class="flex flex-col-reverse gap-2 border-t bg-muted/30 px-5 py-4 sm:flex-row sm:justify-end sm:px-6">
                 <button
@@ -271,16 +273,12 @@ function changePerPage(perPage: number): void {
                     id="edit-category-name"
                     ref="editCategoryInput"
                     v-model="editForm.name"
-                    :aria-describedby="editForm.errors.name ? 'edit-category-name-error' : undefined"
                     :aria-invalid="Boolean(editForm.errors.name)"
                     :class="[
                         'min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20',
                         editForm.errors.name ? 'border-destructive' : '',
                     ]"
                 />
-                <p v-if="editForm.errors.name" id="edit-category-name-error" class="text-sm text-destructive">
-                    {{ editForm.errors.name }}
-                </p>
             </div>
             <footer class="flex flex-col-reverse gap-2 border-t bg-muted/30 px-5 py-4 sm:flex-row sm:justify-end sm:px-6">
                 <button

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\GenerateProductName;
 use App\Http\Requests\ProductIndexRequest;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
@@ -62,9 +63,13 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(ProductRequest $request): RedirectResponse
+    public function store(ProductRequest $request, GenerateProductName $generateProductName): RedirectResponse
     {
-        Product::create($this->productAttributes($request));
+        $attributes = $this->productAttributes($request);
+        $category = Category::findOrFail($attributes['category_id']);
+        $attributes['name'] = $generateProductName($attributes['name'], $category);
+
+        Product::create($attributes);
 
         return to_route('products.index')->with('success', 'Product created.');
     }

@@ -24,6 +24,15 @@ class CategoryRequest extends FormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Category name is required.',
+            'name.unique' => 'A category with this name already exists.',
+            'name.max' => 'Category name may not exceed :max characters.',
+        ];
+    }
+
     protected function prepareForValidation(): void
     {
         $this->merge([

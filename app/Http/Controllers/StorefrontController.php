@@ -17,6 +17,7 @@ class StorefrontController extends Controller
             'canonicalUrl' => route('storefront.home'),
             'navigationCategories' => $this->navigationCategories(),
             'products' => Product::query()
+                ->select(['id', 'category_id', 'name', 'slug', 'description', 'image_path', 'price', 'sale_price'])
                 ->with('category:id,name,slug')
                 ->orderBy('name')
                 ->get()
@@ -28,6 +29,7 @@ class StorefrontController extends Controller
     {
         $category->loadCount('products');
         $products = $category->products()
+            ->select(['products.id', 'products.category_id', 'products.name', 'products.slug', 'products.description', 'products.image_path', 'products.price', 'products.sale_price'])
             ->with('category:id,name,slug')
             ->orderBy('name')
             ->get();

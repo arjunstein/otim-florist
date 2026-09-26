@@ -10,9 +10,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::query()->firstOrCreate(
-            ['email' => 'test@example.com'],
+            ['email' => 'otimfloristjakarta@gmail.com'],
             [
-                'name' => 'Test User',
+                'name' => 'Admin',
                 'password' => 'password',
             ],
         );

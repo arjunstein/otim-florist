@@ -88,11 +88,53 @@ class ProductTest extends TestCase
             ->assertSessionHas('success');
 
         $this->assertDatabaseHas('products', [
-            'name' => 'Rose Bouquet M',
+            'name' => 'Rose Bouquet M B-01',
             'category_id' => $category->id,
             'price' => 350000,
             'sale_price' => 300000,
-            'slug' => 'rose-bouquet-m',
+            'slug' => 'rose-bouquet-m-b-01',
+        ]);
+    }
+
+    public function test_created_product_name_gets_incrementing_category_code(): void
+    {
+        $board = Category::create(['name' => 'Bunga Papan']);
+        $bouquet = Category::create(['name' => 'Bouquet']);
+
+        $this->post('/products', [
+            'name' => 'Bunga Papan Selamat Ulang Tahun',
+            'category_id' => $board->id,
+            'price' => 500000,
+        ])->assertRedirect('/products');
+
+        $this->post('/products', [
+            'name' => 'Bunga Papan Selamat Ulang Tahun',
+            'category_id' => $board->id,
+            'price' => 550000,
+        ])->assertRedirect('/products');
+
+        $this->post('/products', [
+            'name' => 'Bunga Papan Selamat Ulang Tahun',
+            'category_id' => $bouquet->id,
+            'price' => 600000,
+        ])->assertRedirect('/products');
+
+        $this->post('/products', [
+            'name' => 'Bunga Papan Selamat Ulang Tahun BP-02',
+            'category_id' => $board->id,
+            'price' => 580000,
+        ])->assertRedirect('/products');
+
+        $this->assertEqualsCanonicalizing([
+            'Bunga Papan Selamat Ulang Tahun BP-01',
+            'Bunga Papan Selamat Ulang Tahun BP-02',
+            'Bunga Papan Selamat Ulang Tahun BP-03',
+            'Bunga Papan Selamat Ulang Tahun B-01',
+        ], Product::query()->pluck('name')->all());
+
+        $this->assertDatabaseHas('products', [
+            'name' => 'Bunga Papan Selamat Ulang Tahun BP-01',
+            'slug' => 'bunga-papan-selamat-ulang-tahun-bp-01',
         ]);
     }
 
@@ -150,7 +192,7 @@ class ProductTest extends TestCase
         ])->assertSessionHasErrors(['name', 'category_id', 'price']);
     }
 
-    public function test_product_image_must_not_exceed_two_megabytes(): void
+    public function test_product_image_must_not_exceed_three_megabytes(): void
     {
         Storage::fake('public');
         $category = Category::create(['name' => 'Bouquet']);
@@ -159,14 +201,14 @@ class ProductTest extends TestCase
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
             'price' => 350000,
-            'image' => UploadedFile::fake()->create('huge-rose.jpg', 2049, 'image/jpeg'),
+            'image' => UploadedFile::fake()->create('huge-rose.jpg', 3073, 'image/jpeg'),
         ])->assertSessionHasErrors('image');
 
         $this->post('/products', [
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
             'price' => 350000,
-            'image' => UploadedFile::fake()->create('valid-rose.jpg', 2048, 'image/jpeg'),
+            'image' => UploadedFile::fake()->create('valid-rose.jpg', 3072, 'image/jpeg'),
         ])->assertSessionDoesntHaveErrors('image');
     }
 

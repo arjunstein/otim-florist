@@ -115,6 +115,23 @@ watch(
     { immediate: true },
 );
 
+const toastElement = ref<HTMLElement | null>(null);
+
+watch(activeToast, async (toast) => {
+    if (toast) {
+        await nextTick();
+        if (toastElement.value && typeof toastElement.value.showPopover === 'function') {
+            try {
+                if (!toastElement.value.matches(':popover-open')) {
+                    toastElement.value.showPopover();
+                }
+            } catch {
+                // Ignore popover state errors
+            }
+        }
+    }
+});
+
 onMounted(() => {
     isDark.value = document.documentElement.classList.contains('dark');
     systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
@@ -149,10 +166,12 @@ onUnmounted(() => {
         >
             <div
                 v-if="activeToast"
+                ref="toastElement"
+                popover="manual"
                 :role="activeToast.type === 'error' ? 'alert' : 'status'"
                 aria-live="polite"
                 :class="[
-                    'fixed right-4 top-4 z-[60] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-2xl border p-4 shadow-lg backdrop-blur-md',
+                    'fixed right-4 top-4 m-0 inset-auto z-[9999] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-2xl border p-4 shadow-xl backdrop-blur-md',
                     activeToast.type === 'success'
                         ? 'bg-success text-success-foreground border-success/30'
                         : 'bg-destructive text-destructive-foreground border-destructive/30',

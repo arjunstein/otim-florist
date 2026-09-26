@@ -97,8 +97,8 @@ function selectImage(event: Event): void {
         return;
     }
 
-    if (image.size > 2 * 1024 * 1024) {
-        showToast('error', 'Image size must not exceed 2 MB.');
+    if (image.size > 3 * 1024 * 1024) {
+        showToast('error', 'Image size must not exceed 3 MB.');
         if (productImageInput.value) {
             productImageInput.value.value = '';
         }
@@ -299,11 +299,23 @@ onBeforeUnmount(() => {
 });
 
 function saveProduct(): void {
+    const isEdit = Boolean(editingProduct.value);
     const options = {
         forceFormData: true,
         preserveScroll: true,
         onSuccess: closeProductDialog,
-        onError: () => showToast('error', 'Product could not be saved. Check the form.'),
+        onError: (errors: Record<string, string>) => {
+            const firstError = Object.values(errors)[0];
+            showToast(
+                'error',
+                firstError || (isEdit ? 'Failed to update product. Please check the form.' : 'Failed to create product. Please check the form.'),
+            );
+            nextTick(() => {
+                const firstInvalid = productDialog.value?.querySelector('[aria-invalid="true"]') as HTMLElement | null;
+                firstInvalid?.focus();
+                firstInvalid?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        },
     };
 
     if (editingProduct.value) {
@@ -428,7 +440,6 @@ function queueFilters(): void {
                         id="product-name"
                         ref="productNameInput"
                         v-model="productForm.name"
-                        :aria-describedby="productForm.errors.name ? 'product-name-error' : undefined"
                         :aria-invalid="Boolean(productForm.errors.name)"
                         :class="[
                             'min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20',
@@ -436,16 +447,12 @@ function queueFilters(): void {
                         ]"
                         placeholder="E.g. Rose Bouquet M"
                     />
-                    <p v-if="productForm.errors.name" id="product-name-error" role="alert" class="text-sm text-destructive">
-                        {{ productForm.errors.name }}
-                    </p>
                 </div>
                 <div class="flex flex-col gap-1.5 sm:col-span-2">
                     <label for="product-category" class="text-sm font-medium">Category</label>
                     <select
                         id="product-category"
                         v-model="productForm.category_id"
-                        :aria-describedby="productForm.errors.category_id ? 'product-category-error' : undefined"
                         :aria-invalid="Boolean(productForm.errors.category_id)"
                         :class="[
                             'min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20',
@@ -455,9 +462,6 @@ function queueFilters(): void {
                         <option value="" disabled>Select category</option>
                         <option v-for="item in categories" :key="item.id" :value="String(item.id)">{{ item.name }}</option>
                     </select>
-                    <p v-if="productForm.errors.category_id" id="product-category-error" role="alert" class="text-sm text-destructive">
-                        {{ productForm.errors.category_id }}
-                    </p>
                 </div>
                 <div class="flex flex-col gap-1.5 sm:col-span-2">
                     <label for="product-description" class="text-sm font-medium">Description <span class="text-muted-foreground">(optional)</span></label>
@@ -466,7 +470,6 @@ function queueFilters(): void {
                         v-model="productForm.description"
                         rows="4"
                         maxlength="2000"
-                        :aria-describedby="productForm.errors.description ? 'product-description-error' : undefined"
                         :aria-invalid="Boolean(productForm.errors.description)"
                         :class="[
                             'w-full resize-y rounded-xl border bg-background px-3 py-2.5 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus:border-ring focus:ring-2 focus:ring-ring/20',
@@ -474,9 +477,6 @@ function queueFilters(): void {
                         ]"
                         placeholder="Describe the arrangement, flowers, and occasion."
                     />
-                    <p v-if="productForm.errors.description" id="product-description-error" role="alert" class="text-sm text-destructive">
-                        {{ productForm.errors.description }}
-                    </p>
                 </div>
                 <div class="flex flex-col gap-1.5">
                     <label for="product-price" class="text-sm font-medium">Price (Rp)</label>
@@ -488,7 +488,6 @@ function queueFilters(): void {
                         max="999999999"
                         step="1000"
                         inputmode="numeric"
-                        :aria-describedby="productForm.errors.price ? 'product-price-error' : undefined"
                         :aria-invalid="Boolean(productForm.errors.price)"
                         :class="[
                             'min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20',
@@ -496,9 +495,6 @@ function queueFilters(): void {
                         ]"
                         placeholder="350000"
                     />
-                    <p v-if="productForm.errors.price" id="product-price-error" role="alert" class="text-sm text-destructive">
-                        {{ productForm.errors.price }}
-                    </p>
                 </div>
                 <div class="flex flex-col gap-1.5">
                     <label for="product-sale-price" class="text-sm font-medium">Sale price <span class="text-muted-foreground">(optional)</span></label>
@@ -510,7 +506,6 @@ function queueFilters(): void {
                         :max="productForm.price || undefined"
                         step="1000"
                         inputmode="numeric"
-                        :aria-describedby="productForm.errors.sale_price ? 'product-sale-price-error' : undefined"
                         :aria-invalid="Boolean(productForm.errors.sale_price)"
                         :class="[
                             'min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20',
@@ -518,9 +513,6 @@ function queueFilters(): void {
                         ]"
                         placeholder="300000"
                     />
-                    <p v-if="productForm.errors.sale_price" id="product-sale-price-error" role="alert" class="text-sm text-destructive">
-                        {{ productForm.errors.sale_price }}
-                    </p>
                 </div>
                 <div class="flex flex-col gap-1.5 sm:col-span-2">
                     <label for="product-image" class="text-sm font-medium">Product image <span class="text-muted-foreground">(optional)</span></label>
@@ -529,7 +521,7 @@ function queueFilters(): void {
                         ref="productImageInput"
                         type="file"
                         accept="image/jpeg,image/png,image/webp"
-                        :aria-describedby="productForm.errors.image ? 'product-image-error' : 'product-image-help'"
+                        aria-describedby="product-image-help"
                         :aria-invalid="Boolean(productForm.errors.image)"
                         :class="[
                             'min-h-11 w-full rounded-xl border bg-background px-3 py-2 text-sm shadow-xs file:mr-3 file:rounded-lg file:border-0 file:bg-secondary file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-secondary-foreground hover:file:bg-secondary/80 focus:border-ring focus:ring-2 focus:ring-ring/20',
@@ -537,10 +529,7 @@ function queueFilters(): void {
                         ]"
                         @change="selectImage"
                     />
-                    <p id="product-image-help" class="text-xs leading-5 text-muted-foreground">JPG, PNG, or WebP up to 2 MB.</p>
-                    <p v-if="productForm.errors.image" id="product-image-error" role="alert" class="text-sm text-destructive">
-                        {{ productForm.errors.image }}
-                    </p>
+                    <p id="product-image-help" class="text-xs leading-5 text-muted-foreground">JPG, PNG, or WebP up to 3 MB.</p>
                     <div v-if="productImagePreview" class="relative overflow-hidden rounded-xl border bg-muted/30">
                         <img :src="productImagePreview" alt="Product image preview" class="aspect-[4/3] w-full object-cover" />
                         <button

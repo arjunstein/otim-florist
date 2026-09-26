@@ -57,6 +57,8 @@ function scrollToTop(): void {
 watch(mobileNavigationOpen, (isOpen) => document.body.classList.toggle('overflow-hidden', isOpen));
 
 onMounted(() => {
+    document.documentElement.dataset.theme = 'light';
+    document.documentElement.classList.remove('dark');
     window.addEventListener('keydown', handleKeydown);
     window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
     updateBackToTopVisibility();

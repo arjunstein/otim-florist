@@ -7,12 +7,24 @@
     <script>
         (() => {
             try {
-                const theme = localStorage.getItem('otim-florist-theme') || 'system';
-                const isDark = theme === 'dark' || (theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
-                document.documentElement.dataset.theme = theme;
-                document.documentElement.classList.toggle('dark', isDark);
+                const pathname = window.location.pathname;
+                const isDashboard = pathname.startsWith('/dashboard') ||
+                                    pathname.startsWith('/settings') ||
+                                    pathname === '/categories' ||
+                                    pathname === '/products';
+
+                if (isDashboard) {
+                    const theme = localStorage.getItem('otim-florist-theme') || 'system';
+                    const isDark = theme === 'dark' || (theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+                    document.documentElement.dataset.theme = theme;
+                    document.documentElement.classList.toggle('dark', isDark);
+                } else {
+                    document.documentElement.dataset.theme = 'light';
+                    document.documentElement.classList.remove('dark');
+                }
             } catch {
-                document.documentElement.dataset.theme = 'system';
+                document.documentElement.dataset.theme = 'light';
+                document.documentElement.classList.remove('dark');
             }
         })();
     </script>

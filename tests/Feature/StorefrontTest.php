@@ -58,7 +58,7 @@ class StorefrontTest extends TestCase
                 ->where('canonicalUrl', route('storefront.products.show', $product))
                 ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('product.slug', $product->slug)
-                ->where('whatsappUrl', 'https://wa.me/628120000000?text=Halo%20Otim%20Florist%2C%20saya%20ingin%20memesan%20Rose%20Bouquet%20M%20%28Rp%20350.000%29.')
+                ->where('whatsappUrl', 'https://wa.me/628120000000?text='.rawurlencode("Halo Otim Florist, saya ingin memesan Rose Bouquet M (Rp 350.000).\n\nLink produk: ".route('storefront.products.show', $product)))
             );
 
         $this->assertDatabaseHas('products', [

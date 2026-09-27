@@ -108,7 +108,7 @@ function loadMore(): void {
             <div class="max-w-2xl">
                 <div class="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-3.5 py-1 text-xs font-semibold tracking-wide text-primary-foreground/90 backdrop-blur-xs">
                     <span class="size-2 rounded-full bg-accent animate-pulse" />
-                    <span>Floral Studio & Boutique</span>
+                    <span>Toko Bunga &amp; Karangan Bunga Terpercaya</span>
                 </div>
 
                 <h1 class="mt-6 text-4xl leading-[1.08] font-medium tracking-tight sm:text-5xl lg:text-6xl">
@@ -119,7 +119,7 @@ function loadMore(): void {
                     Rangkaian bunga pilihan untuk perayaan, ungkapan kasih, dan setiap detik berharga yang layak dikenang selamanya.
                 </p>
 
-                <div class="mt-8 flex flex-wrap items-center gap-3">
+                <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
                     <a
                         href="#collection"
                         class="inline-flex min-h-12 items-center justify-center rounded-xl bg-primary-foreground px-6 text-sm font-semibold text-primary shadow-sm transition-all duration-200 hover:bg-primary-foreground/95 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary"

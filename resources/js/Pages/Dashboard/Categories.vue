@@ -25,8 +25,7 @@ const editCategoryInput = ref<HTMLInputElement | null>(null);
 const cancelDeleteButton = ref<HTMLButtonElement | null>(null);
 
 function openCreateDialog(): void {
-    createForm.reset();
-    createForm.clearErrors();
+    resetCreateForm();
     createDialog.value?.showModal();
     nextTick(() => createCategoryInput.value?.focus());
 }
@@ -36,6 +35,7 @@ function closeCreateDialog(): void {
 }
 
 function resetCreateForm(): void {
+    createForm.defaults({ name: '' });
     createForm.reset();
     createForm.clearErrors();
 }
@@ -43,7 +43,10 @@ function resetCreateForm(): void {
 function createCategory(): void {
     createForm.post('/categories', {
         preserveScroll: true,
-        onSuccess: closeCreateDialog,
+        onSuccess: () => {
+            closeCreateDialog();
+            resetCreateForm();
+        },
         onError: (errors: Record<string, string>) => {
             const firstError = Object.values(errors)[0];
             showToast('error', firstError || 'Category could not be created. Check the form.');
@@ -52,9 +55,10 @@ function createCategory(): void {
 }
 
 function startEditing(category: Category): void {
-    editForm.name = category.name;
-    editForm.clearErrors();
     editingCategory.value = category;
+    editForm.defaults({ name: category.name });
+    editForm.reset();
+    editForm.clearErrors();
     editDialog.value?.showModal();
     nextTick(() => editCategoryInput.value?.focus());
 }
@@ -65,6 +69,7 @@ function closeEditDialog(): void {
 
 function resetEditForm(): void {
     editingCategory.value = null;
+    editForm.defaults({ name: '' });
     editForm.reset();
     editForm.clearErrors();
 }
@@ -76,7 +81,10 @@ function updateCategory(): void {
 
     editForm.put(`/categories/${editingCategory.value.id}`, {
         preserveScroll: true,
-        onSuccess: closeEditDialog,
+        onSuccess: () => {
+            closeEditDialog();
+            resetEditForm();
+        },
         onError: (errors: Record<string, string>) => {
             const firstError = Object.values(errors)[0];
             showToast('error', firstError || 'Category could not be updated. Check the form.');

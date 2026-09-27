@@ -3,9 +3,12 @@ import ProductCard from '@/Components/Storefront/ProductCard.vue';
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
 import type { StoreInfo } from '@/types';
 import { Head, usePage } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 defineOptions({ layout: StorefrontLayout });
+
+const INITIAL_BATCH_SIZE = 12;
+const BATCH_INCREMENT = 12;
 
 const props = defineProps<{
     canonicalUrl: string;
@@ -48,6 +51,11 @@ const googleReviewsUrl = computed(() => {
 });
 
 const selectedCategory = ref<string | null>(null);
+const visibleCount = ref(INITIAL_BATCH_SIZE);
+
+watch(selectedCategory, () => {
+    visibleCount.value = INITIAL_BATCH_SIZE;
+});
 
 const availableCategories = computed(() => {
     const map = new Map<string, string>();
@@ -57,12 +65,28 @@ const availableCategories = computed(() => {
     return Array.from(map.entries()).map(([slug, name]) => ({ slug, name }));
 });
 
-const displayedProducts = computed(() => {
+const filteredProducts = computed(() => {
     if (!selectedCategory.value) {
         return props.products;
     }
     return props.products.filter((product) => product.category.slug === selectedCategory.value);
 });
+
+const displayedProducts = computed(() => {
+    return filteredProducts.value.slice(0, visibleCount.value);
+});
+
+const hasMoreProducts = computed(() => {
+    return visibleCount.value < filteredProducts.value.length;
+});
+
+const remainingCount = computed(() => {
+    return Math.max(0, filteredProducts.value.length - visibleCount.value);
+});
+
+function loadMore(): void {
+    visibleCount.value += BATCH_INCREMENT;
+}
 </script>
 
 <template>
@@ -84,7 +108,7 @@ const displayedProducts = computed(() => {
             <div class="max-w-2xl">
                 <div class="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-3.5 py-1 text-xs font-semibold tracking-wide text-primary-foreground/90 backdrop-blur-xs">
                     <span class="size-2 rounded-full bg-accent animate-pulse" />
-                    <span>Floral Studio & Boutique</span>
+                    <span>Toko Bunga &amp; Karangan Bunga Terpercaya</span>
                 </div>
 
                 <h1 class="mt-6 text-4xl leading-[1.08] font-medium tracking-tight sm:text-5xl lg:text-6xl">
@@ -95,7 +119,7 @@ const displayedProducts = computed(() => {
                     Rangkaian bunga pilihan untuk perayaan, ungkapan kasih, dan setiap detik berharga yang layak dikenang selamanya.
                 </p>
 
-                <div class="mt-8 flex flex-wrap items-center gap-3">
+                <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
                     <a
                         href="#collection"
                         class="inline-flex min-h-12 items-center justify-center rounded-xl bg-primary-foreground px-6 text-sm font-semibold text-primary shadow-sm transition-all duration-200 hover:bg-primary-foreground/95 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
@@ -216,7 +240,32 @@ const displayedProducts = computed(() => {
                 <ProductCard v-for="product in displayedProducts" :key="product.slug" :product="product" />
             </div>
 
-            <div v-else class="mt-10 rounded-3xl border border-dashed border-border bg-card p-12 text-center">
+            <div v-if="hasMoreProducts" class="mt-12 flex flex-col items-center gap-3 text-center">
+                <p class="text-xs font-medium text-muted-foreground">
+                    Menampilkan {{ displayedProducts.length }} dari {{ filteredProducts.length }} rangkaian bunga
+                </p>
+                <div class="h-1.5 w-48 overflow-hidden rounded-full bg-secondary">
+                    <div
+                        class="h-full rounded-full bg-primary transition-all duration-300"
+                        :style="{ width: `${(displayedProducts.length / filteredProducts.length) * 100}%` }"
+                    />
+                </div>
+                <button
+                    type="button"
+                    class="group inline-flex min-h-11 items-center gap-2 rounded-2xl bg-secondary px-6 py-2.5 text-sm font-semibold text-foreground shadow-2xs transition-all duration-200 hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    @click="loadMore"
+                >
+                    <span>Muat Lebih Banyak</span>
+                    <span class="rounded-full bg-foreground/10 px-2 py-0.5 text-xs group-hover:bg-primary-foreground/20">
+                        +{{ Math.min(BATCH_INCREMENT, remainingCount) }}
+                    </span>
+                    <svg class="size-4 transition-transform duration-200 group-hover:translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m6 9 6 6 6-6" />
+                    </svg>
+                </button>
+            </div>
+
+            <div v-else-if="!filteredProducts.length" class="mt-10 rounded-3xl border border-dashed border-border bg-card p-12 text-center">
                 <div class="mx-auto grid size-12 place-items-center rounded-2xl bg-secondary text-primary">
                     <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M12 22v-7M9 7l3-4 3 4M6 13l6-3 6 3" />

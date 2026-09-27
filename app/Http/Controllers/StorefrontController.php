@@ -115,7 +115,8 @@ class StorefrontController extends Controller
 
         $storeName = $store->name ?: 'Otim Florist';
         $price = number_format($product->sale_price ?? $product->price, 0, ',', '.');
-        $message = "Halo {$storeName}, saya ingin memesan {$product->name} (Rp {$price}).";
+        $productUrl = route('storefront.products.show', $product);
+        $message = "Halo {$storeName}, saya ingin memesan {$product->name} (Rp {$price}).\n\nLink produk: {$productUrl}";
 
         return 'https://wa.me/'.$store->phone.'?text='.rawurlencode($message);
     }

@@ -35,7 +35,7 @@ const cropDragStart = ref<{ x: number; y: number; offsetX: number; offsetY: numb
 
 const cropWidth = 1200;
 const cropHeight = 900;
-const productForm = useForm({
+const initialProductFormData = {
     name: '',
     description: '',
     category_id: '',
@@ -43,7 +43,9 @@ const productForm = useForm({
     sale_price: '',
     image: null as File | null,
     _method: '',
-});
+};
+
+const productForm = useForm({ ...initialProductFormData });
 
 const isEditing = computed(() => editingProduct.value !== null);
 const productImagePreview = computed(() => imagePreviewUrl.value ?? editingProduct.value?.imageUrl ?? null);
@@ -63,14 +65,21 @@ function openCreateDialog(): void {
 }
 
 function openEditDialog(product: Product): void {
+    releaseImagePreview();
+    if (productImageInput.value) {
+        productImageInput.value.value = '';
+    }
     editingProduct.value = product;
-    productForm.name = product.name;
-    productForm.description = product.description ?? '';
-    productForm.category_id = String(product.category.id);
-    productForm.price = String(product.price);
-    productForm.sale_price = product.salePrice ? String(product.salePrice) : '';
-    productForm.image = null;
-    productForm._method = '';
+    productForm.defaults({
+        name: product.name,
+        description: product.description ?? '',
+        category_id: String(product.category.id),
+        price: String(product.price),
+        sale_price: product.salePrice ? String(product.salePrice) : '',
+        image: null,
+        _method: '',
+    });
+    productForm.reset();
     productForm.clearErrors();
     productDialog.value?.showModal();
     nextTick(() => productNameInput.value?.focus());
@@ -83,6 +92,7 @@ function closeProductDialog(): void {
 function resetProductForm(): void {
     releaseImagePreview();
     editingProduct.value = null;
+    productForm.defaults({ ...initialProductFormData });
     productForm.reset();
     productForm.clearErrors();
     if (productImageInput.value) {
@@ -303,7 +313,10 @@ function saveProduct(): void {
     const options = {
         forceFormData: true,
         preserveScroll: true,
-        onSuccess: closeProductDialog,
+        onSuccess: () => {
+            closeProductDialog();
+            resetProductForm();
+        },
         onError: (errors: Record<string, string>) => {
             const firstError = Object.values(errors)[0];
             showToast(

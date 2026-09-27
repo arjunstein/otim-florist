@@ -206,11 +206,11 @@ function loadMore(): void {
                     <h2 class="mt-2 text-3xl font-semibold sm:text-4xl">Koleksi Bunga Pilihan</h2>
                 </div>
 
-                <div v-if="availableCategories.length > 1" class="flex flex-wrap items-center gap-1.5 pt-2">
+                <div v-if="availableCategories.length > 1" class="flex items-center gap-1.5 overflow-x-auto pb-1 pt-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     <button
                         type="button"
                         :class="[
-                            'rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                            'shrink-0 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                             selectedCategory === null
                                 ? 'bg-primary text-primary-foreground shadow-xs'
                                 : 'bg-secondary/70 text-muted-foreground hover:bg-secondary hover:text-foreground',
@@ -224,7 +224,7 @@ function loadMore(): void {
                         :key="cat.slug"
                         type="button"
                         :class="[
-                            'rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                            'shrink-0 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                             selectedCategory === cat.slug
                                 ? 'bg-primary text-primary-foreground shadow-xs'
                                 : 'bg-secondary/70 text-muted-foreground hover:bg-secondary hover:text-foreground',

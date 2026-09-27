@@ -34,7 +34,14 @@ function submit(): void {
 function updatePassword(): void {
     passwordForm.put('/settings/password', {
         preserveScroll: true,
-        onSuccess: () => passwordForm.reset(),
+        onSuccess: () => {
+            passwordForm.defaults({
+                current_password: '',
+                password: '',
+                password_confirmation: '',
+            });
+            passwordForm.reset();
+        },
     });
 }
 

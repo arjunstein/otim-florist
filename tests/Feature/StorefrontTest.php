@@ -123,4 +123,18 @@ class StorefrontTest extends TestCase
                 ->where('store.google_reviews_count', 50)
             );
     }
+
+    public function test_public_storefront_renders_open_graph_and_preview_meta_tags(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertOk()
+            ->assertSee('property="og:image"', false)
+            ->assertSee('property="og:title"', false)
+            ->assertSee('name="twitter:card"', false)
+            ->assertSee('name="twitter:image"', false)
+            ->assertInertia(fn ($page) => $page
+                ->where('defaultOgImage', asset('images/og-image.jpg'))
+            );
+    }
 }

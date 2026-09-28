@@ -29,7 +29,8 @@ const props = defineProps<{
     }>;
 }>();
 
-const page = usePage<{ store?: StoreInfo }>();
+const page = usePage<{ store?: StoreInfo; defaultOgImage?: string }>();
+const defaultOgImage = computed(() => page.props.defaultOgImage || '/images/og-image.jpg');
 const store = computed<StoreInfo>(() => page.props.store ?? {
     name: 'Otim Florist',
     phone: '',
@@ -64,6 +65,11 @@ function loadMore(): void {
         <meta property="og:description" :content="`Jelajahi koleksi ${category.name.toLowerCase()} pilihan dari ${store.name}.`" />
         <meta property="og:type" content="website" />
         <meta property="og:url" :content="canonicalUrl" />
+        <meta property="og:image" :content="defaultOgImage" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" :content="`Koleksi ${category.name} | ${store.name}`" />
+        <meta name="twitter:description" :content="`Jelajahi koleksi ${category.name.toLowerCase()} pilihan dari ${store.name}.`" />
+        <meta name="twitter:image" :content="defaultOgImage" />
     </Head>
 
     <section class="border-b border-border/80 bg-gradient-to-b from-secondary/50 to-secondary/20">

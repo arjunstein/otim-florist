@@ -35,6 +35,7 @@ class HandleInertiaRequests extends Middleware
                 'google_rating',
                 'google_reviews_count',
             ]),
+            'defaultOgImage' => fn () => asset('images/og-image.jpg'),
         ];
     }
 }

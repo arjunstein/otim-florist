@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
 import SeoJsonLd from '@/Components/SeoJsonLd.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 defineOptions({ layout: StorefrontLayout });
 
@@ -21,6 +22,10 @@ const props = defineProps<{
     };
 }>();
 
+const page = usePage<{ defaultOgImage?: string }>();
+const defaultOgImage = computed(() => page.props.defaultOgImage || '/images/og-image.jpg');
+const ogImageUrl = computed(() => props.product.imageUrl || defaultOgImage.value);
+
 const priceFormatter = new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
@@ -35,7 +40,7 @@ const productSchema = JSON.stringify({
     name: props.product.name,
     description: pageDescription,
     url: props.canonicalUrl,
-    image: props.product.imageUrl ? [props.product.imageUrl] : undefined,
+    image: props.product.imageUrl ? [props.product.imageUrl] : [defaultOgImage.value],
     brand: {
         '@type': 'Brand',
         name: 'Otim Florist',
@@ -51,7 +56,11 @@ const productSchema = JSON.stringify({
         <meta property="og:description" :content="pageDescription" />
         <meta property="og:type" content="product" />
         <meta property="og:url" :content="canonicalUrl" />
-        <meta v-if="product.imageUrl" property="og:image" :content="product.imageUrl" />
+        <meta property="og:image" :content="ogImageUrl" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" :content="pageTitle" />
+        <meta name="twitter:description" :content="pageDescription" />
+        <meta name="twitter:image" :content="ogImageUrl" />
     </Head>
 
     <SeoJsonLd :content="productSchema" />

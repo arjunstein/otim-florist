@@ -137,4 +137,22 @@ class StorefrontTest extends TestCase
                 ->where('defaultOgImage', asset('images/og-image.jpg'))
             );
     }
+
+    public function test_not_found_public_pages_redirect_to_homepage(): void
+    {
+        $this->get('/halaman-yang-tidak-ada')
+            ->assertRedirect(route('storefront.home'));
+
+        $this->get('/products/produk-tidak-ditemukan')
+            ->assertRedirect(route('storefront.home'));
+
+        $this->get('/categories/kategori-tidak-ditemukan')
+            ->assertRedirect(route('storefront.home'));
+    }
+
+    public function test_not_found_json_requests_remain_not_found(): void
+    {
+        $this->getJson('/api/non-existent-endpoint')
+            ->assertNotFound();
+    }
 }

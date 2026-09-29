@@ -91,4 +91,15 @@ class DashboardTest extends TestCase
             'google_rating' => 6.0,
         ])->assertSessionHasErrors(['name', 'phone', 'address', 'hours', 'google_reviews_url', 'google_rating']);
     }
+
+    public function test_not_found_in_dashboard_returns_not_found_page(): void
+    {
+        $this->get('/dashboard/nonexistent')
+            ->assertNotFound()
+            ->assertSee('404', false)
+            ->assertSee('Halaman Tidak Ditemukan', false);
+
+        $this->get('/settings/nonexistent')
+            ->assertNotFound();
+    }
 }

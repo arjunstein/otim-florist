@@ -138,16 +138,22 @@ class StorefrontTest extends TestCase
             );
     }
 
-    public function test_not_found_public_pages_redirect_to_homepage(): void
+    public function test_not_found_public_pages_render_not_found_page(): void
     {
         $this->get('/halaman-yang-tidak-ada')
-            ->assertRedirect(route('storefront.home'));
+            ->assertNotFound()
+            ->assertSee('404', false)
+            ->assertSee('Halaman Tidak Ditemukan', false);
 
         $this->get('/products/produk-tidak-ditemukan')
-            ->assertRedirect(route('storefront.home'));
+            ->assertNotFound()
+            ->assertSee('404', false)
+            ->assertSee('Halaman Tidak Ditemukan', false);
 
         $this->get('/categories/kategori-tidak-ditemukan')
-            ->assertRedirect(route('storefront.home'));
+            ->assertNotFound()
+            ->assertSee('404', false)
+            ->assertSee('Halaman Tidak Ditemukan', false);
     }
 
     public function test_not_found_json_requests_remain_not_found(): void

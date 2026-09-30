@@ -66,6 +66,10 @@ function loadMore(): void {
         <meta property="og:type" content="website" />
         <meta property="og:url" :content="canonicalUrl" />
         <meta property="og:image" :content="defaultOgImage" />
+        <meta property="og:image:secure_url" :content="defaultOgImage" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/jpeg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" :content="`Koleksi ${category.name} | ${store.name}`" />
         <meta name="twitter:description" :content="`Jelajahi koleksi ${category.name.toLowerCase()} pilihan dari ${store.name}.`" />

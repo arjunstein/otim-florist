@@ -57,6 +57,7 @@ const productSchema = JSON.stringify({
         <meta property="og:type" content="product" />
         <meta property="og:url" :content="canonicalUrl" />
         <meta property="og:image" :content="ogImageUrl" />
+        <meta property="og:image:secure_url" :content="ogImageUrl" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" :content="pageTitle" />
         <meta name="twitter:description" :content="pageDescription" />

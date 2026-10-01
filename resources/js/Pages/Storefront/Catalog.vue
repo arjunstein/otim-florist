@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ProductCard from '@/Components/Storefront/ProductCard.vue';
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
+import SeoJsonLd from '@/Components/SeoJsonLd.vue';
 import type { StoreInfo } from '@/types';
 import { Head, usePage } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
@@ -88,6 +89,40 @@ const remainingCount = computed(() => {
 function loadMore(): void {
     visibleCount.value += BATCH_INCREMENT;
 }
+
+const floristSchema = computed(() => {
+    const schema: Record<string, unknown> = {
+        '@context': 'https://schema.org',
+        '@type': 'Florist',
+        name: store.value.name || 'Otim Florist',
+        description: 'Toko bunga & karangan bunga terpercaya untuk buket bunga, bunga papan, standing flowers, dan dekorasi bunga segar.',
+        url: props.canonicalUrl,
+        image: defaultOgImage.value ? [defaultOgImage.value] : undefined,
+        telephone: store.value.phone || undefined,
+        address: {
+            '@type': 'PostalAddress',
+            streetAddress: store.value.address || 'Jakarta',
+            addressCountry: 'ID',
+        },
+        priceRange: '$$',
+    };
+
+    if (store.value.hours) {
+        schema.openingHours = store.value.hours;
+    }
+
+    if (googleReviewsCount.value > 0) {
+        schema.aggregateRating = {
+            '@type': 'AggregateRating',
+            ratingValue: googleRating.value,
+            reviewCount: googleReviewsCount.value,
+            bestRating: '5',
+            worstRating: '1',
+        };
+    }
+
+    return JSON.stringify(schema).replace(/</g, '\\u003c');
+});
 </script>
 
 <template>
@@ -108,6 +143,8 @@ function loadMore(): void {
         <meta name="twitter:description" :content="`Jelajahi rangkaian bunga pilihan dari ${store.name}.`" />
         <meta name="twitter:image" :content="defaultOgImage" />
     </Head>
+
+    <SeoJsonLd :content="floristSchema" />
 
     <section class="relative isolate overflow-hidden border-b border-primary/20 bg-primary text-primary-foreground">
         <div class="absolute -right-24 -top-32 size-96 rounded-full bg-accent/25 blur-3xl" aria-hidden="true" />

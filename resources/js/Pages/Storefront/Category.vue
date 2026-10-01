@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ProductCard from '@/Components/Storefront/ProductCard.vue';
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
+import SeoJsonLd from '@/Components/SeoJsonLd.vue';
 import type { StoreInfo } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
@@ -37,6 +38,33 @@ const store = computed<StoreInfo>(() => page.props.store ?? {
     address: 'Jl. Mawar No. 12, Jakarta',
     hours: '08:00–20:00 daily',
 });
+
+const origin = computed(() => {
+    try {
+        return new URL(props.canonicalUrl).origin;
+    } catch {
+        return '';
+    }
+});
+
+const breadcrumbSchema = computed(() => JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Beranda',
+            item: origin.value || '/',
+        },
+        {
+            '@type': 'ListItem',
+            position: 2,
+            name: props.category.name,
+            item: props.canonicalUrl,
+        },
+    ],
+}).replace(/</g, '\\u003c'));
 
 const visibleCount = ref(INITIAL_BATCH_SIZE);
 
@@ -75,6 +103,8 @@ function loadMore(): void {
         <meta name="twitter:description" :content="`Jelajahi koleksi ${category.name.toLowerCase()} pilihan dari ${store.name}.`" />
         <meta name="twitter:image" :content="defaultOgImage" />
     </Head>
+
+    <SeoJsonLd :content="breadcrumbSchema" />
 
     <section class="border-b border-border/80 bg-gradient-to-b from-secondary/50 to-secondary/20">
         <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">

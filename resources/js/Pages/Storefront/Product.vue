@@ -34,7 +34,16 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
 
 const pageTitle = `${props.product.name} | ${props.product.category.name} | Otim Florist`;
 const pageDescription = (props.product.description || `${props.product.name} dari Otim Florist.`).slice(0, 160);
-const productSchema = JSON.stringify({
+
+const origin = computed(() => {
+    try {
+        return new URL(props.canonicalUrl).origin;
+    } catch {
+        return '';
+    }
+});
+
+const productSchema = computed(() => JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: props.product.name,
@@ -45,7 +54,39 @@ const productSchema = JSON.stringify({
         '@type': 'Brand',
         name: 'Otim Florist',
     },
-}).replace(/</g, '\\u003c');
+    offers: {
+        '@type': 'Offer',
+        priceCurrency: 'IDR',
+        price: props.product.salePrice ?? props.product.price,
+        availability: 'https://schema.org/InStock',
+        url: props.canonicalUrl,
+    },
+}).replace(/</g, '\\u003c'));
+
+const breadcrumbSchema = computed(() => JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Beranda',
+            item: origin.value || '/',
+        },
+        {
+            '@type': 'ListItem',
+            position: 2,
+            name: props.product.category.name,
+            item: `${origin.value}/categories/${props.product.category.slug}`,
+        },
+        {
+            '@type': 'ListItem',
+            position: 3,
+            name: props.product.name,
+            item: props.canonicalUrl,
+        },
+    ],
+}).replace(/</g, '\\u003c'));
 </script>
 
 <template>
@@ -65,6 +106,7 @@ const productSchema = JSON.stringify({
     </Head>
 
     <SeoJsonLd :content="productSchema" />
+    <SeoJsonLd :content="breadcrumbSchema" />
 
     <section class="mx-auto grid max-w-7xl gap-12 px-4 py-10 sm:px-6 sm:py-16 lg:grid-cols-2 lg:items-start lg:gap-16 lg:px-8 lg:py-20">
         <div>

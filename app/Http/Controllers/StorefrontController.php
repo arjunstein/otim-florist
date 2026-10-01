@@ -13,8 +13,19 @@ class StorefrontController extends Controller
 {
     public function index(): Response
     {
+        $latestProductWithImage = Product::query()
+            ->whereNotNull('image_path')
+            ->where('image_path', '!=', '')
+            ->latest('id')
+            ->first();
+
+        $ogImage = $latestProductWithImage?->image_path
+            ? url(Storage::disk('public')->url($latestProductWithImage->image_path))
+            : asset('images/og-image.jpg');
+
         return Inertia::render('Storefront/Catalog', [
             'canonicalUrl' => route('storefront.home'),
+            'ogImage' => $ogImage,
             'navigationCategories' => $this->navigationCategories(),
             'products' => Product::query()
                 ->select(['id', 'category_id', 'name', 'slug', 'description', 'image_path', 'price', 'sale_price'])
@@ -34,8 +45,23 @@ class StorefrontController extends Controller
             ->orderBy('name')
             ->get();
 
+        $latestProductWithImage = $category->products()
+            ->whereNotNull('image_path')
+            ->where('image_path', '!=', '')
+            ->latest('id')
+            ->first();
+
+        $ogImage = $latestProductWithImage?->image_path
+            ? url(Storage::disk('public')->url($latestProductWithImage->image_path))
+            : asset('images/og-image.jpg');
+
+        $storeName = StoreSetting::current()->name ?: 'Otim Florist';
+
         return Inertia::render('Storefront/Category', [
             'canonicalUrl' => route('storefront.categories.show', $category),
+            'ogImage' => $ogImage,
+            'ogTitle' => "Koleksi {$category->name} | {$storeName}",
+            'ogDescription' => "Jelajahi koleksi {$category->name} pilihan dari {$storeName}.",
             'navigationCategories' => $this->navigationCategories(),
             'category' => $this->categoryData($category),
             'products' => $products->map(fn (Product $product) => $this->productData($product)),
@@ -48,8 +74,17 @@ class StorefrontController extends Controller
         $product->refresh();
         $product->load('category:id,name,slug');
 
+        $ogImage = $product->image_path
+            ? url(Storage::disk('public')->url($product->image_path))
+            : asset('images/og-image.jpg');
+
+        $storeName = StoreSetting::current()->name ?: 'Otim Florist';
+
         return Inertia::render('Storefront/Product', [
             'canonicalUrl' => route('storefront.products.show', $product),
+            'ogImage' => $ogImage,
+            'ogTitle' => "{$product->name} | {$storeName}",
+            'ogDescription' => $product->description ?: "Pesan {$product->name} di {$storeName}. Rangkaian bunga segar untuk buket, bunga papan, dan kebutuhan dekorasi bunga Anda.",
             'navigationCategories' => $this->navigationCategories(),
             'product' => $this->productData($product),
             'whatsappUrl' => $this->whatsappUrl($product),

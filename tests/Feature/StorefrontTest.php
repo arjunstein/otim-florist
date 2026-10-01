@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\StoreSetting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class StorefrontTest extends TestCase
@@ -135,6 +136,35 @@ class StorefrontTest extends TestCase
             ->assertSee('name="twitter:image"', false)
             ->assertInertia(fn ($page) => $page
                 ->where('defaultOgImage', asset('images/og-image.jpg'))
+                ->where('ogImage', asset('images/og-image.jpg'))
+            );
+    }
+
+    public function test_public_storefront_uses_latest_product_image_for_open_graph(): void
+    {
+        Storage::fake('public');
+        $category = Category::create(['name' => 'Bouquet']);
+        Product::create([
+            'name' => 'First Product',
+            'category_id' => $category->id,
+            'price' => 100000,
+            'image_path' => 'products/first.jpg',
+        ]);
+        Product::create([
+            'name' => 'Latest Product',
+            'category_id' => $category->id,
+            'price' => 200000,
+            'image_path' => 'products/latest.jpg',
+        ]);
+
+        $latestUrl = url(Storage::disk('public')->url('products/latest.jpg'));
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('property="og:image" content="'.$latestUrl.'"', false)
+            ->assertSee('name="twitter:image" content="'.$latestUrl.'"', false)
+            ->assertInertia(fn ($page) => $page
+                ->where('ogImage', $latestUrl)
             );
     }
 

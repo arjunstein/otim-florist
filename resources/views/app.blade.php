@@ -6,23 +6,32 @@
     <title inertia>Otim Florist</title>
     <meta name="description" content="Toko bunga terpercaya untuk buket bunga, bunga papan, standing flowers, dan dekorasi bunga segar untuk setiap momen bermakna.">
 
+    @php
+        $pageProps = $page['props'] ?? [];
+        $currentOgImage = $pageProps['ogImage'] ?? asset('images/og-image.jpg');
+        $currentOgTitle = $pageProps['ogTitle'] ?? 'Otim Florist — Toko Bunga & Karangan Bunga Terpercaya';
+        $currentOgDescription = $pageProps['ogDescription'] ?? 'Toko bunga terpercaya untuk buket bunga, bunga papan, standing flowers, dan dekorasi bunga segar untuk setiap momen bermakna.';
+    @endphp
+
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Otim Florist">
-    <meta property="og:title" content="Otim Florist — Toko Bunga &amp; Karangan Bunga Terpercaya">
-    <meta property="og:description" content="Toko bunga terpercaya untuk buket bunga, bunga papan, standing flowers, dan dekorasi bunga segar untuk setiap momen bermakna.">
+    <meta property="og:title" content="{{ $currentOgTitle }}">
+    <meta property="og:description" content="{{ $currentOgDescription }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset('images/og-image.jpg') }}">
-    <meta property="og:image:secure_url" content="{{ asset('images/og-image.jpg') }}">
+    <meta property="og:image" content="{{ $currentOgImage }}">
+    <meta property="og:image:secure_url" content="{{ $currentOgImage }}">
+    @if ($currentOgImage === asset('images/og-image.jpg'))
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/jpeg">
+    @endif
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Otim Florist — Toko Bunga &amp; Karangan Bunga Terpercaya">
-    <meta name="twitter:description" content="Toko bunga terpercaya untuk buket bunga, bunga papan, standing flowers, dan dekorasi bunga segar untuk setiap momen bermakna.">
-    <meta name="twitter:image" content="{{ asset('images/og-image.jpg') }}">
+    <meta name="twitter:title" content="{{ $currentOgTitle }}">
+    <meta name="twitter:description" content="{{ $currentOgDescription }}">
+    <meta name="twitter:image" content="{{ $currentOgImage }}">
     <script>
         (() => {
             try {

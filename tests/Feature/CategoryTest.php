@@ -22,7 +22,7 @@ class CategoryTest extends TestCase
     {
         Category::create(['name' => 'Bouquet']);
 
-        $this->get('/categories')
+        $this->get('/admin/categories')
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Dashboard/Categories')
@@ -37,7 +37,7 @@ class CategoryTest extends TestCase
             Category::create(['name' => "Category {$number}"]);
         }
 
-        $this->get('/categories?per_page=10')
+        $this->get('/admin/categories?per_page=10')
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->has('categories.data', 10)
@@ -47,7 +47,7 @@ class CategoryTest extends TestCase
                 ->where('categories.pagination.total', 11)
             );
 
-        $this->get('/categories?per_page=10&page=2')
+        $this->get('/admin/categories?per_page=10&page=2')
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->has('categories.data', 1)
@@ -57,8 +57,8 @@ class CategoryTest extends TestCase
 
     public function test_category_can_be_created(): void
     {
-        $this->post('/categories', ['name' => 'Basket'])
-            ->assertRedirect('/categories')
+        $this->post('/admin/categories', ['name' => 'Basket'])
+            ->assertRedirect('/admin/categories')
             ->assertSessionHas('success');
 
         $this->assertDatabaseHas('categories', ['name' => 'Basket', 'slug' => 'basket']);
@@ -68,7 +68,7 @@ class CategoryTest extends TestCase
     {
         Category::create(['name' => 'Bouquet']);
 
-        $this->post('/categories', ['name' => 'Bouquet'])
+        $this->post('/admin/categories', ['name' => 'Bouquet'])
             ->assertSessionHasErrors('name');
     }
 
@@ -85,13 +85,13 @@ class CategoryTest extends TestCase
     {
         $category = Category::create(['name' => 'Bouquet']);
 
-        $this->put("/categories/{$category->id}", ['name' => 'Premium Bouquet'])
-            ->assertRedirect('/categories');
+        $this->put("/admin/categories/{$category->id}", ['name' => 'Premium Bouquet'])
+            ->assertRedirect('/admin/categories');
 
         $this->assertDatabaseHas('categories', ['name' => 'Premium Bouquet', 'slug' => 'premium-bouquet']);
 
-        $this->delete("/categories/{$category->id}")
-            ->assertRedirect('/categories');
+        $this->delete("/admin/categories/{$category->id}")
+            ->assertRedirect('/admin/categories');
 
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
     }

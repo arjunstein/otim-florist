@@ -20,7 +20,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:login');
 });
 
-Route::middleware(['auth', 'auth.session'])->group(function () {
+Route::redirect('/dashboard', '/admin/dashboard');
+
+Route::middleware(['auth', 'auth.session'])->prefix('admin')->group(function () {
+    Route::redirect('/', '/admin/dashboard');
     Route::get('/dashboard', [DashboardController::class, 'overview'])->name('dashboard.overview');
     Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
     Route::put('/settings', [DashboardController::class, 'updateSettings']);

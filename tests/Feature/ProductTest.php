@@ -31,7 +31,7 @@ class ProductTest extends TestCase
             'sale_price' => 300000,
         ]);
 
-        $this->get('/products')
+        $this->get('/admin/products')
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Dashboard/Products')
@@ -56,7 +56,7 @@ class ProductTest extends TestCase
             ]);
         }
 
-        $this->get('/products?per_page=10')
+        $this->get('/admin/products?per_page=10')
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->has('products.data', 10)
@@ -66,7 +66,7 @@ class ProductTest extends TestCase
                 ->where('products.pagination.total', 11)
             );
 
-        $this->get('/products?per_page=10&page=2')
+        $this->get('/admin/products?per_page=10&page=2')
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->has('products.data', 1)
@@ -78,13 +78,13 @@ class ProductTest extends TestCase
     {
         $category = Category::create(['name' => 'Bouquet']);
 
-        $this->post('/products', [
+        $this->post('/admin/products', [
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
             'price' => 350000,
             'sale_price' => 300000,
         ])
-            ->assertRedirect('/products')
+            ->assertRedirect('/admin/products')
             ->assertSessionHas('success');
 
         $this->assertDatabaseHas('products', [
@@ -101,29 +101,29 @@ class ProductTest extends TestCase
         $board = Category::create(['name' => 'Bunga Papan']);
         $bouquet = Category::create(['name' => 'Bouquet']);
 
-        $this->post('/products', [
+        $this->post('/admin/products', [
             'name' => 'Bunga Papan Selamat Ulang Tahun',
             'category_id' => $board->id,
             'price' => 500000,
-        ])->assertRedirect('/products');
+        ])->assertRedirect('/admin/products');
 
-        $this->post('/products', [
+        $this->post('/admin/products', [
             'name' => 'Bunga Papan Selamat Ulang Tahun',
             'category_id' => $board->id,
             'price' => 550000,
-        ])->assertRedirect('/products');
+        ])->assertRedirect('/admin/products');
 
-        $this->post('/products', [
+        $this->post('/admin/products', [
             'name' => 'Bunga Papan Selamat Ulang Tahun',
             'category_id' => $bouquet->id,
             'price' => 600000,
-        ])->assertRedirect('/products');
+        ])->assertRedirect('/admin/products');
 
-        $this->post('/products', [
+        $this->post('/admin/products', [
             'name' => 'Bunga Papan Selamat Ulang Tahun BP-02',
             'category_id' => $board->id,
             'price' => 580000,
-        ])->assertRedirect('/products');
+        ])->assertRedirect('/admin/products');
 
         $this->assertEqualsCanonicalizing([
             'Bunga Papan Selamat Ulang Tahun BP-01',
@@ -143,13 +143,13 @@ class ProductTest extends TestCase
         Storage::fake('public');
         $category = Category::create(['name' => 'Bouquet']);
 
-        $this->post('/products', [
+        $this->post('/admin/products', [
             'name' => 'Rose Bouquet M',
             'description' => 'A soft pink rose arrangement.',
             'category_id' => $category->id,
             'price' => 350000,
             'image' => UploadedFile::fake()->image('rose.jpg'),
-        ])->assertRedirect('/products');
+        ])->assertRedirect('/admin/products');
 
         $product = Product::firstOrFail();
         $firstImagePath = $product->image_path;
@@ -160,13 +160,13 @@ class ProductTest extends TestCase
         ]);
         Storage::disk('public')->assertExists($firstImagePath);
 
-        $this->put("/products/{$product->id}", [
+        $this->put("/admin/products/{$product->id}", [
             'name' => 'Rose Bouquet L',
             'description' => 'A larger pink rose arrangement.',
             'category_id' => $category->id,
             'price' => 450000,
             'image' => UploadedFile::fake()->image('rose-large.jpg'),
-        ])->assertRedirect('/products');
+        ])->assertRedirect('/admin/products');
 
         $product->refresh();
 
@@ -178,14 +178,14 @@ class ProductTest extends TestCase
         Storage::disk('public')->assertExists($product->image_path);
 
         $imagePath = $product->image_path;
-        $this->delete("/products/{$product->id}")->assertRedirect('/products');
+        $this->delete("/admin/products/{$product->id}")->assertRedirect('/admin/products');
 
         Storage::disk('public')->assertMissing($imagePath);
     }
 
     public function test_product_fields_must_be_valid(): void
     {
-        $this->post('/products', [
+        $this->post('/admin/products', [
             'name' => '',
             'category_id' => 999,
             'price' => -1,
@@ -197,14 +197,14 @@ class ProductTest extends TestCase
         Storage::fake('public');
         $category = Category::create(['name' => 'Bouquet']);
 
-        $this->post('/products', [
+        $this->post('/admin/products', [
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
             'price' => 350000,
             'image' => UploadedFile::fake()->create('huge-rose.jpg', 3073, 'image/jpeg'),
         ])->assertSessionHasErrors('image');
 
-        $this->post('/products', [
+        $this->post('/admin/products', [
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
             'price' => 350000,
@@ -216,7 +216,7 @@ class ProductTest extends TestCase
     {
         $category = Category::create(['name' => 'Bouquet']);
 
-        $this->post('/products', [
+        $this->post('/admin/products', [
             'name' => 'Rose Bouquet M',
             'category_id' => $category->id,
             'price' => 350000,
@@ -233,11 +233,11 @@ class ProductTest extends TestCase
             'price' => 350000,
         ]);
 
-        $this->put("/products/{$product->id}", [
+        $this->put("/admin/products/{$product->id}", [
             'name' => 'Rose Bouquet L',
             'category_id' => $category->id,
             'price' => 450000,
-        ])->assertRedirect('/products');
+        ])->assertRedirect('/admin/products');
 
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
@@ -246,7 +246,7 @@ class ProductTest extends TestCase
             'slug' => 'rose-bouquet-l',
         ]);
 
-        $this->delete("/products/{$product->id}")->assertRedirect('/products');
+        $this->delete("/admin/products/{$product->id}")->assertRedirect('/admin/products');
 
         $this->assertDatabaseMissing('products', ['id' => $product->id]);
     }
@@ -260,8 +260,8 @@ class ProductTest extends TestCase
             'price' => 350000,
         ]);
 
-        $this->delete("/categories/{$category->id}")
-            ->assertRedirect('/categories')
+        $this->delete("/admin/categories/{$category->id}")
+            ->assertRedirect('/admin/categories')
             ->assertSessionHas('error');
 
         $this->assertDatabaseHas('categories', ['id' => $category->id]);

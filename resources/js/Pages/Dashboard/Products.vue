@@ -333,13 +333,13 @@ function saveProduct(): void {
 
     if (editingProduct.value) {
         productForm._method = 'put';
-        productForm.post(`/products/${editingProduct.value.id}`, options);
+        productForm.post(`/admin/products/${editingProduct.value.id}`, options);
 
         return;
     }
 
     productForm._method = '';
-    productForm.post('/products', options);
+    productForm.post('/admin/products', options);
 }
 
 function openDeleteDialog(product: Product): void {
@@ -363,7 +363,7 @@ function deleteProduct(): void {
     }
 
     isDeleting.value = true;
-    router.delete(`/products/${deletingProduct.value.id}`, {
+    router.delete(`/admin/products/${deletingProduct.value.id}`, {
         preserveScroll: true,
         onSuccess: closeDeleteDialog,
         onError: () => {
@@ -378,7 +378,7 @@ function applyFilters(perPage = props.products.pagination.perPage): void {
     filterTimer = undefined;
 
     router.get(
-        '/products',
+        '/admin/products',
         {
             search: query.value || undefined,
             category_id: category.value === 'All' ? undefined : category.value,

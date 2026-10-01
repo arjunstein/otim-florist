@@ -7,10 +7,10 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 const page = usePage();
 
 const nav = [
-    { label: 'Dashboard', href: '/dashboard', component: 'Dashboard/Overview' },
-    { label: 'Products', href: '/products', component: 'Dashboard/Products' },
-    { label: 'Categories', href: '/categories', component: 'Dashboard/Categories' },
-    { label: 'Settings', href: '/settings', component: 'Dashboard/Settings' },
+    { label: 'Dashboard', href: '/admin/dashboard', component: 'Dashboard/Overview' },
+    { label: 'Products', href: '/admin/products', component: 'Dashboard/Products' },
+    { label: 'Categories', href: '/admin/categories', component: 'Dashboard/Categories' },
+    { label: 'Settings', href: '/admin/settings', component: 'Dashboard/Settings' },
 ] as const;
 
 const current = computed(() => page.component as string);
@@ -41,7 +41,7 @@ function toggleTheme(): void {
 }
 
 function logout(): void {
-    router.post('/logout');
+    router.post('/admin/logout');
 }
 
 function openLogoutDialog(): void {
@@ -229,7 +229,7 @@ onUnmounted(() => {
             class="fixed inset-y-0 left-0 hidden w-72 flex-col border-r border-border/80 bg-card/85 backdrop-blur-md md:flex"
         >
             <div class="border-b border-border/80 px-6 py-5">
-                <Link href="/dashboard" class="group flex items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                <Link href="/admin/dashboard" class="group flex items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                     <div class="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
                         <svg class="size-6" viewBox="0 0 40 40" fill="none" aria-hidden="true">
                             <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".2" />

@@ -32,7 +32,7 @@ class DashboardTest extends TestCase
         ]);
         Product::query()->whereKey($product->getKey())->update(['click_count' => 12]);
 
-        $this->get('/dashboard')
+        $this->get('/admin/dashboard')
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Dashboard/Overview')
@@ -48,9 +48,15 @@ class DashboardTest extends TestCase
             );
     }
 
+    public function test_legacy_dashboard_redirects_to_admin_dashboard(): void
+    {
+        $this->get('/dashboard')
+            ->assertRedirect('/admin/dashboard');
+    }
+
     public function test_settings_renders_with_store_prop(): void
     {
-        $this->get('/settings')
+        $this->get('/admin/settings')
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->component('Dashboard/Settings')
@@ -62,7 +68,7 @@ class DashboardTest extends TestCase
 
     public function test_settings_update_validates_and_redirects_with_flash(): void
     {
-        $this->from('/settings')->put('/settings', [
+        $this->from('/admin/settings')->put('/admin/settings', [
             'name' => 'Otim Florist',
             'phone' => '+62 812-0000-0000',
             'address' => 'Jl. Mawar No. 12, Jakarta',
@@ -71,7 +77,7 @@ class DashboardTest extends TestCase
             'google_rating' => 4.9,
             'google_reviews_count' => 30,
         ])
-            ->assertRedirect('/settings')
+            ->assertRedirect('/admin/settings')
             ->assertSessionHas('success');
 
         $this->assertDatabaseHas('store_settings', [
@@ -82,7 +88,7 @@ class DashboardTest extends TestCase
             'google_reviews_count' => 30,
         ]);
 
-        $this->from('/settings')->put('/settings', [
+        $this->from('/admin/settings')->put('/admin/settings', [
             'name' => '',
             'phone' => '',
             'address' => '',
@@ -94,12 +100,12 @@ class DashboardTest extends TestCase
 
     public function test_not_found_in_dashboard_returns_not_found_page(): void
     {
-        $this->get('/dashboard/nonexistent')
+        $this->get('/admin/dashboard/nonexistent')
             ->assertNotFound()
             ->assertSee('404', false)
             ->assertSee('Halaman Tidak Ditemukan', false);
 
-        $this->get('/settings/nonexistent')
+        $this->get('/admin/settings/nonexistent')
             ->assertNotFound();
     }
 }

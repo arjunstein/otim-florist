@@ -41,7 +41,7 @@ function resetCreateForm(): void {
 }
 
 function createCategory(): void {
-    createForm.post('/categories', {
+    createForm.post('/admin/categories', {
         preserveScroll: true,
         onSuccess: () => {
             closeCreateDialog();
@@ -79,7 +79,7 @@ function updateCategory(): void {
         return;
     }
 
-    editForm.put(`/categories/${editingCategory.value.id}`, {
+    editForm.put(`/admin/categories/${editingCategory.value.id}`, {
         preserveScroll: true,
         onSuccess: () => {
             closeEditDialog();
@@ -113,7 +113,7 @@ function deleteCategory(): void {
     }
 
     isDeleting.value = true;
-    router.delete(`/categories/${deletingCategory.value.id}`, {
+    router.delete(`/admin/categories/${deletingCategory.value.id}`, {
         preserveScroll: true,
         onSuccess: closeDeleteDialog,
         onError: () => {
@@ -124,7 +124,7 @@ function deleteCategory(): void {
 }
 
 function changePerPage(perPage: number): void {
-    router.get('/categories', { per_page: perPage }, { preserveScroll: true, preserveState: true, replace: true });
+    router.get('/admin/categories', { per_page: perPage }, { preserveScroll: true, preserveState: true, replace: true });
 }
 </script>
 

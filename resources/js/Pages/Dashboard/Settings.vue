@@ -28,11 +28,11 @@ const showCurrentPassword = ref(false);
 const showNewPasswords = ref(false);
 
 function submit(): void {
-    form.put('/settings', { preserveScroll: true });
+    form.put('/admin/settings', { preserveScroll: true });
 }
 
 function updatePassword(): void {
-    passwordForm.put('/settings/password', {
+    passwordForm.put('/admin/settings/password', {
         preserveScroll: true,
         onSuccess: () => {
             passwordForm.defaults({

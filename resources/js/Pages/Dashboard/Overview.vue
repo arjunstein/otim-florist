@@ -29,13 +29,13 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
     <section class="grid gap-4 xl:grid-cols-5">
         <CardSection title="Recently added" subtitle="Latest products in your catalog." class="xl:col-span-3">
             <template #actions>
-                <Link href="/products" class="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-primary transition-colors hover:bg-secondary">
+                <Link href="/admin/products" class="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-primary transition-colors hover:bg-secondary">
                     View all
                 </Link>
             </template>
             <ul v-if="recentProducts.length" class="-mx-5 divide-y sm:-mx-6">
                 <li v-for="product in recentProducts" :key="product.id">
-                    <Link :href="`/products?search=${encodeURIComponent(product.name)}`" class="flex min-h-16 items-center gap-3 px-5 py-3 transition-colors hover:bg-muted/60 sm:px-6">
+                    <Link :href="`/admin/products?search=${encodeURIComponent(product.name)}`" class="flex min-h-16 items-center gap-3 px-5 py-3 transition-colors hover:bg-muted/60 sm:px-6">
                         <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="size-11 shrink-0 rounded-lg object-cover" />
                         <div v-else class="grid size-11 shrink-0 place-items-center rounded-lg bg-secondary text-primary" aria-hidden="true">
                             <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -57,19 +57,19 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
             <div v-else class="rounded-xl border border-dashed bg-muted/30 p-8 text-center">
                 <p class="font-semibold">No products yet</p>
                 <p class="mt-1 text-sm text-muted-foreground">Add your first product to start building catalog.</p>
-                <Link href="/products" class="mt-4 inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90">Add product</Link>
+                <Link href="/admin/products" class="mt-4 inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90">Add product</Link>
             </div>
         </CardSection>
 
         <CardSection title="Category overview" subtitle="Products in each category." class="xl:col-span-2">
             <template #actions>
-                <Link href="/categories" class="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-primary transition-colors hover:bg-secondary">
+                <Link href="/admin/categories" class="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-primary transition-colors hover:bg-secondary">
                     View all
                 </Link>
             </template>
             <ul v-if="categorySummary.length" class="flex flex-col gap-2">
                 <li v-for="category in categorySummary" :key="category.id">
-                    <Link href="/categories" class="flex min-h-12 items-center justify-between rounded-xl bg-muted/60 px-3 text-sm transition-colors hover:bg-secondary">
+                    <Link href="/admin/categories" class="flex min-h-12 items-center justify-between rounded-xl bg-muted/60 px-3 text-sm transition-colors hover:bg-secondary">
                         <span class="font-medium">{{ category.name }}</span>
                         <span class="rounded-full bg-background px-2.5 py-1 text-xs font-semibold text-muted-foreground">{{ category.productCount }} {{ category.productCount === 1 ? 'product' : 'products' }}</span>
                     </Link>
@@ -77,7 +77,7 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
             </ul>
             <div v-else class="rounded-xl border border-dashed bg-muted/30 p-8 text-center">
                 <p class="font-semibold">No categories yet</p>
-                <Link href="/categories" class="mt-4 inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90">Add category</Link>
+                <Link href="/admin/categories" class="mt-4 inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90">Add category</Link>
             </div>
         </CardSection>
     </section>
@@ -88,7 +88,7 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
         </template>
         <ol v-if="mostClickedProducts.length" class="-mx-5 divide-y sm:-mx-6">
             <li v-for="(product, index) in mostClickedProducts" :key="product.id">
-                <Link :href="`/products?search=${encodeURIComponent(product.name)}`" class="grid min-h-16 grid-cols-[2.5rem_2.75rem_minmax(0,1fr)_auto] items-center gap-3 px-5 py-3 transition-colors hover:bg-muted/60 sm:px-6">
+                <Link :href="`/admin/products?search=${encodeURIComponent(product.name)}`" class="grid min-h-16 grid-cols-[2.5rem_2.75rem_minmax(0,1fr)_auto] items-center gap-3 px-5 py-3 transition-colors hover:bg-muted/60 sm:px-6">
                     <span :class="['grid size-9 place-items-center rounded-full text-sm font-semibold', index === 0 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground']">{{ index + 1 }}</span>
                     <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="size-11 rounded-lg object-cover" loading="lazy" />
                     <span v-else class="grid size-11 place-items-center rounded-lg bg-secondary text-sm font-semibold text-primary" aria-hidden="true">{{ product.name.charAt(0) }}</span>

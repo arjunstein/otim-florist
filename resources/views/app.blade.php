@@ -27,7 +27,8 @@
         (() => {
             try {
                 const pathname = window.location.pathname;
-                const isDashboard = pathname.startsWith('/dashboard') ||
+                const isDashboard = pathname.startsWith('/admin') ||
+                                    pathname.startsWith('/dashboard') ||
                                     pathname.startsWith('/settings') ||
                                     pathname === '/categories' ||
                                     pathname === '/products';

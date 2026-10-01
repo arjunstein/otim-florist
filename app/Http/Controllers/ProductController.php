@@ -18,7 +18,11 @@ class ProductController extends Controller
     {
         $products = Product::query()
             ->with('category:id,name')
-            ->when($request->search(), fn ($query, string $search) => $query->where('name', 'like', "%{$search}%"))
+            ->when($request->search(), function ($query, string $search) {
+                $escaped = str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $search);
+
+                return $query->where('name', 'like', "%{$escaped}%");
+            })
             ->when($request->categoryId(), fn ($query, int $categoryId) => $query->where('category_id', $categoryId))
             ->orderBy('name')
             ->paginate($request->perPage())

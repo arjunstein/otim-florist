@@ -74,6 +74,20 @@ class ProductTest extends TestCase
             );
     }
 
+    public function test_products_can_be_searched_by_name(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+        Product::create(['name' => 'Special Rose 100%', 'category_id' => $category->id, 'price' => 50000]);
+        Product::create(['name' => 'Tulip Arrangement', 'category_id' => $category->id, 'price' => 60000]);
+
+        $this->get('/admin/products?search=Rose')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->has('products.data', 1)
+                ->where('products.data.0.name', 'Special Rose 100%')
+            );
+    }
+
     public function test_product_can_be_created(): void
     {
         $category = Category::create(['name' => 'Bouquet']);

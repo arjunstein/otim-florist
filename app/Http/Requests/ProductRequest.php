@@ -28,7 +28,7 @@ class ProductRequest extends FormRequest
             'price' => ['required', 'integer', 'min:0', 'max:999999999'],
             'sale_price' => ['nullable', 'integer', 'min:0', 'lt:price'],
             'description' => ['nullable', 'string', 'max:2000'],
-            'image' => ['nullable', 'image', 'max:3072'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
         ];
     }
 
@@ -60,6 +60,7 @@ class ProductRequest extends FormRequest
             'sale_price.lt' => 'Sale price must be lower than the regular price.',
             'description.max' => 'Description may not exceed :max characters.',
             'image.image' => 'The uploaded file must be an image (JPG, PNG, or WebP).',
+            'image.mimes' => 'The product image must be a file of type: JPG, JPEG, PNG, or WebP.',
             'image.max' => 'Product image size must not exceed 3 MB.',
         ];
     }

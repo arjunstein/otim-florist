@@ -212,6 +212,40 @@ class ProductTest extends TestCase
         ])->assertSessionDoesntHaveErrors('image');
     }
 
+    public function test_product_image_must_be_safe_raster_format(): void
+    {
+        Storage::fake('public');
+        $category = Category::create(['name' => 'Bouquet']);
+
+        $this->post('/admin/products', [
+            'name' => 'Rose Bouquet SVG',
+            'category_id' => $category->id,
+            'price' => 350000,
+            'image' => UploadedFile::fake()->create('exploit.svg', 100, 'image/svg+xml'),
+        ])->assertSessionHasErrors('image');
+
+        $this->post('/admin/products', [
+            'name' => 'Rose Bouquet PDF',
+            'category_id' => $category->id,
+            'price' => 350000,
+            'image' => UploadedFile::fake()->create('document.pdf', 100, 'application/pdf'),
+        ])->assertSessionHasErrors('image');
+
+        $this->post('/admin/products', [
+            'name' => 'Rose Bouquet PNG',
+            'category_id' => $category->id,
+            'price' => 350000,
+            'image' => UploadedFile::fake()->image('valid-rose.png'),
+        ])->assertSessionDoesntHaveErrors('image');
+
+        $this->post('/admin/products', [
+            'name' => 'Rose Bouquet WebP',
+            'category_id' => $category->id,
+            'price' => 350000,
+            'image' => UploadedFile::fake()->create('valid-rose.webp', 100, 'image/webp'),
+        ])->assertSessionDoesntHaveErrors('image');
+    }
+
     public function test_sale_price_must_be_lower_than_regular_price(): void
     {
         $category = Category::create(['name' => 'Bouquet']);

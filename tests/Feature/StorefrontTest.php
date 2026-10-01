@@ -140,6 +140,15 @@ class StorefrontTest extends TestCase
             );
     }
 
+    public function test_public_storefront_renders_favicon_links(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('rel="icon" type="image/x-icon" href="'.asset('favicon.ico').'"', false)
+            ->assertSee('rel="icon" type="image/svg+xml" href="'.asset('favicon.svg').'"', false)
+            ->assertSee('rel="apple-touch-icon" sizes="180x180" href="'.asset('apple-touch-icon.png').'"', false);
+    }
+
     public function test_public_storefront_uses_latest_product_image_for_open_graph(): void
     {
         Storage::fake('public');

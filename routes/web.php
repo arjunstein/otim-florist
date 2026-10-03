@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [SitemapController::class, 'sitemap'])->name('sitemap');
 Route::get('/', [StorefrontController::class, 'index'])->name('storefront.home');
+Route::get('/tentang', [StorefrontController::class, 'about'])->name('storefront.about');
+Route::get('/kontak', [StorefrontController::class, 'contact'])->name('storefront.contact');
 Route::get('/categories/{category:slug}', [StorefrontController::class, 'showCategory'])->name('storefront.categories.show');
 Route::get('/products/{product:slug}', [StorefrontController::class, 'showProduct'])->name('storefront.products.show');
 

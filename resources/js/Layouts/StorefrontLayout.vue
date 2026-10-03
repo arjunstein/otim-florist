@@ -241,6 +241,24 @@ onUnmounted(() => {
                     </div>
 
                     <div class="space-y-3">
+                        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary-foreground/70">Informasi</p>
+                        <nav aria-label="Tautan informasi toko">
+                            <ul class="space-y-2">
+                                <li>
+                                    <Link href="/tentang" class="text-sm text-primary-foreground/85 transition-colors hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary">
+                                        Tentang Kami
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/kontak" class="text-sm text-primary-foreground/85 transition-colors hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary">
+                                        Kontak & Pemesanan
+                                    </Link>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="space-y-3">
                         <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary-foreground/70">Alamat Toko</p>
                         <div class="flex items-start gap-2.5 text-sm text-primary-foreground/85">
                             <svg class="mt-0.5 size-4 shrink-0 text-primary-foreground/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -260,10 +278,6 @@ onUnmounted(() => {
                             </svg>
                             <p class="leading-relaxed">{{ store.hours }}</p>
                         </div>
-                    </div>
-
-                    <div class="space-y-3">
-                        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary-foreground/70">Kontak & Pemesanan</p>
                         <div v-if="store.phone" class="space-y-2">
                             <a
                                 :href="`https://wa.me/${store.phone}`"

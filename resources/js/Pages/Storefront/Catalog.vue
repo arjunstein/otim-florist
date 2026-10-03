@@ -104,6 +104,8 @@ const floristSchema = computed(() => {
         address: {
             '@type': 'PostalAddress',
             streetAddress: store.value.address || 'Jakarta',
+            addressLocality: 'Jakarta',
+            addressRegion: 'DKI Jakarta',
             addressCountry: 'ID',
         },
         priceRange: '$$',
@@ -128,11 +130,11 @@ const floristSchema = computed(() => {
 </script>
 
 <template>
-    <Head :title="`Rangkaian bunga untuk setiap momen | ${store.name}`">
-        <meta name="description" :content="`Jelajahi rangkaian bunga pilihan dari ${store.name}.`" />
+    <Head :title="`Toko Bunga Jakarta — Buket, Bunga Papan & Standing Flower | ${store.name}`">
+        <meta name="description" content="Toko bunga Jakarta terpercaya. Pesan buket bunga segar, bunga papan, dan standing flower untuk pernikahan, wisuda, duka cita & perayaan. Gratis ongkir Jakbar & Jakpus." />
         <link rel="canonical" :href="canonicalUrl" />
-        <meta property="og:title" :content="`Rangkaian bunga untuk setiap momen | ${store.name}`" />
-        <meta property="og:description" :content="`Jelajahi rangkaian bunga pilihan dari ${store.name}.`" />
+        <meta property="og:title" :content="`Toko Bunga Jakarta — Buket, Bunga Papan & Standing Flower | ${store.name}`" />
+        <meta property="og:description" content="Toko bunga Jakarta terpercaya. Pesan buket bunga segar, bunga papan, dan standing flower untuk pernikahan, wisuda, duka cita & perayaan. Gratis ongkir Jakbar & Jakpus." />
         <meta property="og:type" content="website" />
         <meta property="og:url" :content="canonicalUrl" />
         <meta property="og:image" :content="ogImageUrl" />
@@ -141,8 +143,8 @@ const floristSchema = computed(() => {
         <meta v-if="ogImageUrl === defaultOgImage" property="og:image:height" content="630" />
         <meta v-if="ogImageUrl === defaultOgImage" property="og:image:type" content="image/jpeg" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" :content="`Rangkaian bunga untuk setiap momen | ${store.name}`" />
-        <meta name="twitter:description" :content="`Jelajahi rangkaian bunga pilihan dari ${store.name}.`" />
+        <meta name="twitter:title" :content="`Toko Bunga Jakarta — Buket, Bunga Papan & Standing Flower | ${store.name}`" />
+        <meta name="twitter:description" content="Toko bunga Jakarta terpercaya. Pesan buket bunga segar, bunga papan, dan standing flower untuk pernikahan, wisuda, duka cita & perayaan." />
         <meta name="twitter:image" :content="ogImageUrl" />
     </Head>
 
@@ -161,7 +163,7 @@ const floristSchema = computed(() => {
                 </div>
 
                 <h1 class="mt-6 text-4xl leading-[1.08] font-medium tracking-tight sm:text-5xl lg:text-6xl">
-                    Bunga segar untuk setiap momen bermakna.
+                    Toko Bunga Jakarta — Rangkaian Segar untuk Setiap Momen Bermakna
                 </h1>
 
                 <p class="mt-5 max-w-xl text-base leading-relaxed text-primary-foreground/80 sm:text-lg">

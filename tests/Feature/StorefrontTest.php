@@ -90,13 +90,39 @@ class StorefrontTest extends TestCase
             ->assertOk()
             ->assertHeader('Content-Type', 'application/xml; charset=UTF-8')
             ->assertSee(route('storefront.home'), false)
+            ->assertSee('<priority>1.0</priority>', false)
+            ->assertSee('<changefreq>daily</changefreq>', false)
             ->assertSee(route('storefront.categories.show', $category), false)
-            ->assertSee(route('storefront.products.show', $product), false);
+            ->assertSee('<priority>0.8</priority>', false)
+            ->assertSee(route('storefront.products.show', $product), false)
+            ->assertSee('<priority>0.6</priority>', false)
+            ->assertSee(route('storefront.about'), false)
+            ->assertSee(route('storefront.contact'), false);
 
         $this->get('/robots.txt')
             ->assertOk()
             ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
             ->assertSee('Sitemap: '.route('sitemap'), false);
+    }
+
+    public function test_about_page_renders_correctly(): void
+    {
+        $this->get('/tentang')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Storefront/About')
+                ->where('canonicalUrl', route('storefront.about'))
+            );
+    }
+
+    public function test_contact_page_renders_correctly(): void
+    {
+        $this->get('/kontak')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->component('Storefront/Contact')
+                ->where('canonicalUrl', route('storefront.contact'))
+            );
     }
 
     public function test_public_storefront_receives_configured_store_settings(): void
@@ -137,6 +163,34 @@ class StorefrontTest extends TestCase
             ->assertInertia(fn ($page) => $page
                 ->where('defaultOgImage', asset('images/og-image.jpg'))
                 ->where('ogImage', asset('images/og-image.jpg'))
+            );
+    }
+
+    public function test_category_og_title_and_description_contain_jakarta(): void
+    {
+        $category = Category::create(['name' => 'Bunga Papan']);
+
+        $this->get("/categories/{$category->slug}")
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->where('ogTitle', 'Jual Bunga Papan Jakarta | Otim Florist')
+                ->where('ogDescription', 'Beli Bunga Papan Jakarta murah berkualitas dari Otim Florist. Gratis ongkir Jakbar & Jakpus. Pesan sekarang via WhatsApp.')
+            );
+    }
+
+    public function test_product_og_title_contains_jakarta(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+        $product = Product::create([
+            'name' => 'Rose Bouquet M',
+            'category_id' => $category->id,
+            'price' => 350000,
+        ]);
+
+        $this->get("/products/{$product->slug}")
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->where('ogTitle', 'Rose Bouquet M | Otim Florist Jakarta')
             );
     }
 

@@ -86,11 +86,11 @@ function loadMore(): void {
 </script>
 
 <template>
-    <Head :title="`Koleksi ${category.name} | ${store.name}`">
-        <meta name="description" :content="`Jelajahi koleksi ${category.name.toLowerCase()} pilihan dari ${store.name}.`" />
+    <Head :title="`${category.name} Jakarta — Beli Online | ${store.name}`">
+        <meta name="description" :content="`Beli ${category.name.toLowerCase()} Jakarta di ${store.name}. Rangkaian segar untuk pernikahan, wisuda & perayaan. Gratis ongkir Jakbar & Jakpus. Pesan via WhatsApp.`" />
         <link rel="canonical" :href="canonicalUrl" />
-        <meta property="og:title" :content="`Koleksi ${category.name} | ${store.name}`" />
-        <meta property="og:description" :content="`Jelajahi koleksi ${category.name.toLowerCase()} pilihan dari ${store.name}.`" />
+        <meta property="og:title" :content="`${category.name} Jakarta — Beli Online | ${store.name}`" />
+        <meta property="og:description" :content="`Beli ${category.name.toLowerCase()} Jakarta di ${store.name}. Rangkaian segar untuk pernikahan, wisuda & perayaan.`" />
         <meta property="og:type" content="website" />
         <meta property="og:url" :content="canonicalUrl" />
         <meta property="og:image" :content="defaultOgImage" />
@@ -99,8 +99,8 @@ function loadMore(): void {
         <meta property="og:image:height" content="630" />
         <meta property="og:image:type" content="image/jpeg" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" :content="`Koleksi ${category.name} | ${store.name}`" />
-        <meta name="twitter:description" :content="`Jelajahi koleksi ${category.name.toLowerCase()} pilihan dari ${store.name}.`" />
+        <meta name="twitter:title" :content="`${category.name} Jakarta — Beli Online | ${store.name}`" />
+        <meta name="twitter:description" :content="`Beli ${category.name.toLowerCase()} Jakarta di ${store.name}. Rangkaian segar untuk pernikahan, wisuda & perayaan.`" />
         <meta name="twitter:image" :content="defaultOgImage" />
     </Head>
 

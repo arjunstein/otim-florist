@@ -60,8 +60,8 @@ class StorefrontController extends Controller
         return Inertia::render('Storefront/Category', [
             'canonicalUrl' => route('storefront.categories.show', $category),
             'ogImage' => $ogImage,
-            'ogTitle' => "Koleksi {$category->name} | {$storeName}",
-            'ogDescription' => "Jelajahi koleksi {$category->name} pilihan dari {$storeName}.",
+            'ogTitle' => "Jual {$category->name} Jakarta | {$storeName}",
+            'ogDescription' => "Beli {$category->name} Jakarta murah berkualitas dari {$storeName}. Gratis ongkir Jakbar & Jakpus. Pesan sekarang via WhatsApp.",
             'navigationCategories' => $this->navigationCategories(),
             'category' => $this->categoryData($category),
             'products' => $products->map(fn (Product $product) => $this->productData($product)),
@@ -83,11 +83,27 @@ class StorefrontController extends Controller
         return Inertia::render('Storefront/Product', [
             'canonicalUrl' => route('storefront.products.show', $product),
             'ogImage' => $ogImage,
-            'ogTitle' => "{$product->name} | {$storeName}",
-            'ogDescription' => $product->description ?: "Pesan {$product->name} di {$storeName}. Rangkaian bunga segar untuk buket, bunga papan, dan kebutuhan dekorasi bunga Anda.",
+            'ogTitle' => "{$product->name} | {$storeName} Jakarta",
+            'ogDescription' => $product->description ?: "Pesan {$product->name} di {$storeName} Jakarta. Rangkaian bunga segar untuk buket, bunga papan, dan dekorasi. Gratis ongkir Jakbar & Jakpus.",
             'navigationCategories' => $this->navigationCategories(),
             'product' => $this->productData($product),
             'whatsappUrl' => $this->whatsappUrl($product),
+        ]);
+    }
+
+    public function about(): Response
+    {
+        return Inertia::render('Storefront/About', [
+            'canonicalUrl' => route('storefront.about'),
+            'navigationCategories' => $this->navigationCategories(),
+        ]);
+    }
+
+    public function contact(): Response
+    {
+        return Inertia::render('Storefront/Contact', [
+            'canonicalUrl' => route('storefront.contact'),
+            'navigationCategories' => $this->navigationCategories(),
         ]);
     }
 

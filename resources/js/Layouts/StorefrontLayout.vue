@@ -182,6 +182,24 @@ onUnmounted(() => {
                         </Link>
                     </div>
 
+                    <div class="mt-4 flex flex-col gap-1 border-t pt-3">
+                        <p class="px-3 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Informasi</p>
+                        <Link
+                            href="/tentang"
+                            class="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                            @click="closeMobileNavigation(false)"
+                        >
+                            Tentang Kami
+                        </Link>
+                        <Link
+                            href="/kontak"
+                            class="flex min-h-11 items-center rounded-xl px-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                            @click="closeMobileNavigation(false)"
+                        >
+                            Kontak & Area Pengiriman
+                        </Link>
+                    </div>
+
                     <div v-if="store.phone" class="mt-auto border-t pt-4">
                         <a
                             :href="`https://wa.me/${store.phone}`"
@@ -251,7 +269,7 @@ onUnmounted(() => {
                                 </li>
                                 <li>
                                     <Link href="/kontak" class="text-sm text-primary-foreground/85 transition-colors hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-primary">
-                                        Kontak & Pemesanan
+                                        Kontak & Area Pengiriman
                                     </Link>
                                 </li>
                             </ul>

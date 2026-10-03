@@ -24,33 +24,62 @@ const origin = computed(() => {
     try { return new URL(props.canonicalUrl).origin; } catch { return ''; }
 });
 
-const breadcrumbSchema = computed(() => JSON.stringify({
+const pageSchema = computed(() => JSON.stringify({
     '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Beranda', item: origin.value || '/' },
-        { '@type': 'ListItem', position: 2, name: 'Kontak', item: props.canonicalUrl },
+    '@graph': [
+        {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Beranda', item: origin.value || '/' },
+                { '@type': 'ListItem', position: 2, name: 'Kontak & Pengiriman', item: props.canonicalUrl },
+            ],
+        },
+        {
+            '@type': 'Florist',
+            name: store.value.name,
+            telephone: store.value.phone ? `+${store.value.phone}` : undefined,
+            address: {
+                '@type': 'PostalAddress',
+                streetAddress: store.value.address,
+                addressLocality: 'Jakarta',
+                addressRegion: 'DKI Jakarta',
+                addressCountry: 'ID',
+            },
+            areaServed: [
+                'DKI Jakarta',
+                'Jakarta Barat',
+                'Jakarta Pusat',
+                'Jakarta Selatan',
+                'Jakarta Timur',
+                'Jakarta Utara',
+                'Bogor',
+                'Depok',
+                'Tangerang',
+                'Tangerang Selatan',
+                'Bekasi',
+            ],
+        },
     ],
 }).replace(/</g, '\\u003c'));
 
 const whatsappUrl = computed(() => {
     if (!store.value.phone) return null;
-    return `https://wa.me/${store.value.phone}?text=${encodeURIComponent('Halo ' + store.value.name + ', saya ingin bertanya mengenai pemesanan bunga.')}`;
+    return `https://wa.me/${store.value.phone}?text=${encodeURIComponent('Halo ' + store.value.name + ', saya ingin bertanya mengenai pemesanan & pengiriman bunga.')}`;
 });
 </script>
 
 <template>
-    <Head :title="`Kontak — Hubungi Toko Bunga Jakarta | ${store.name}`">
-        <meta name="description" :content="`Hubungi ${store.name}, toko bunga Jakarta. Pesan buket, bunga papan & standing flower via WhatsApp. Alamat: ${store.address}. Jam buka: ${store.hours}.`" />
+    <Head :title="`Kontak & Area Pengiriman Jabodetabek | ${store.name}`">
+        <meta name="description" :content="`Hubungi ${store.name}, toko bunga Jakarta. Layanan pengiriman bunga papan, buket & standing flower ke seluruh area Jabodetabek (Jakarta, Bogor, Depok, Tangerang, Bekasi). Pesan via WhatsApp.`" />
         <link rel="canonical" :href="canonicalUrl" />
-        <meta property="og:title" :content="`Kontak — Hubungi Toko Bunga Jakarta | ${store.name}`" />
-        <meta property="og:description" :content="`Hubungi ${store.name} toko bunga Jakarta. Pesan via WhatsApp atau kunjungi toko kami.`" />
+        <meta property="og:title" :content="`Kontak & Area Pengiriman Jabodetabek | ${store.name}`" />
+        <meta property="og:description" :content="`Hubungi ${store.name}, toko bunga Jakarta. Pengiriman cepat untuk area Jakarta, Bogor, Depok, Tangerang, dan Bekasi.`" />
         <meta property="og:type" content="website" />
         <meta property="og:url" :content="canonicalUrl" />
         <meta property="og:image" :content="defaultOgImage" />
     </Head>
 
-    <SeoJsonLd :content="breadcrumbSchema" />
+    <SeoJsonLd :content="pageSchema" />
 
     <section class="border-b border-border/80 bg-gradient-to-b from-secondary/50 to-secondary/20">
         <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
@@ -62,18 +91,18 @@ const whatsappUrl = computed(() => {
                         </Link>
                     </li>
                     <li aria-hidden="true" class="text-border">/</li>
-                    <li aria-current="page" class="font-bold text-foreground">Kontak</li>
+                    <li aria-current="page" class="font-bold text-foreground">Kontak & Area Pengiriman</li>
                 </ol>
             </nav>
             <div class="mt-4">
                 <span class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
-                    Hubungi Kami
+                    Hubungi Kami & Layanan Antar
                 </span>
                 <h1 class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-                    Kontak {{ store.name }}
+                    Kontak & Jangkauan Pengiriman
                 </h1>
                 <p class="mt-3 max-w-2xl text-base text-muted-foreground">
-                    Toko bunga Jakarta — siap membantu Anda merangkai momen berharga.
+                    Toko bunga Jakarta dengan jangkauan pengiriman cepat bunga segar dan bunga papan ke seluruh wilayah Jabodetabek.
                 </p>
             </div>
         </div>
@@ -91,7 +120,7 @@ const whatsappUrl = computed(() => {
                             Cara Menghubungi Kami
                         </h2>
                         <p class="mt-3 text-base leading-relaxed text-muted-foreground">
-                            Kami siap membantu Anda memilih rangkaian bunga yang tepat untuk setiap momen. Hubungi kami melalui WhatsApp untuk konsultasi langsung dengan florist kami.
+                            Kami siap membantu Anda memilih rangkaian bunga yang tepat untuk setiap momen. Hubungi kami melalui WhatsApp untuk konsultasi cepat dengan florist kami.
                         </p>
                     </div>
 
@@ -104,7 +133,7 @@ const whatsappUrl = computed(() => {
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-xs font-bold uppercase tracking-wider text-muted-foreground">WhatsApp</p>
+                                <p class="text-xs font-bold uppercase tracking-wider text-muted-foreground">WhatsApp Resmi</p>
                                 <p class="mt-0.5 text-base font-semibold text-foreground">+{{ store.phone }}</p>
                                 <a
                                     :href="whatsappUrl!"
@@ -146,64 +175,146 @@ const whatsappUrl = computed(() => {
                             <div>
                                 <p class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Jam Operasional</p>
                                 <p class="mt-0.5 text-base font-semibold text-foreground">{{ store.hours }}</p>
-                                <p class="mt-1 text-xs text-muted-foreground">Termasuk hari libur nasional</p>
+                                <p class="mt-1 text-xs text-muted-foreground">Buka setiap hari (termasuk tanggal merah / hari libur)</p>
                             </div>
+                        </div>
+
+                        <!-- Layanan Same Day -->
+                        <div class="rounded-2xl border border-primary/20 bg-primary/5 p-5">
+                            <h3 class="flex items-center gap-2 text-sm font-semibold text-foreground">
+                                <span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+                                Layanan Pengiriman Same Day
+                            </h3>
+                            <p class="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                                Butuh karangan bunga atau buket hari ini? Kami menyediakan opsi <em>Same Day Delivery</em> untuk area Jakarta dan Bodetabek dengan konfirmasi pesanan lebih awal melalui WhatsApp.
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Area Pengiriman -->
+                <!-- Area Pengiriman Jabodetabek -->
                 <div>
-                    <div class="rounded-3xl border border-border/70 bg-card p-8 shadow-xs">
-                        <p class="text-xs font-bold uppercase tracking-[0.22em] text-primary">Jangkauan Pengiriman</p>
-                        <h2 class="mt-2 text-2xl font-semibold tracking-tight">
-                            Area Pengiriman Bunga Jakarta
+                    <div class="rounded-3xl border border-border/70 bg-card p-6 shadow-xs sm:p-8">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+                                Jangkauan Pengiriman
+                            </span>
+                            <span class="text-xs font-semibold text-muted-foreground">
+                                Pengiriman Tiap Hari
+                            </span>
+                        </div>
+                        <h2 class="mt-3 text-2xl font-semibold tracking-tight">
+                            Area Pengiriman Jabodetabek
                         </h2>
-                        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            Kami melayani pengiriman bunga ke seluruh wilayah Jakarta dan sekitarnya. Gratis ongkir untuk beberapa area.
+                        <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+                            Kami melayani pengiriman bunga segar, buket, standing flower, dan bunga papan ke seluruh wilayah Jakarta, Bogor, Depok, Tangerang, dan Bekasi.
                         </p>
 
-                        <div class="mt-6 space-y-3">
-                            <div class="flex items-center gap-3 rounded-xl bg-primary/5 px-4 py-3">
-                                <span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">✓</span>
-                                <div>
-                                    <p class="text-sm font-semibold text-foreground">Jakarta Barat</p>
-                                    <p class="text-xs text-primary font-medium">Gratis Ongkir</p>
+                        <!-- Group: DKI Jakarta -->
+                        <div class="mt-6">
+                            <h3 class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-foreground">
+                                <span class="size-2 rounded-full bg-primary"></span>
+                                DKI Jakarta
+                            </h3>
+                            <div class="mt-3 grid gap-2.5 sm:grid-cols-2">
+                                <div class="flex items-start gap-3 rounded-xl bg-primary/5 p-3">
+                                    <span class="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground">✓</span>
+                                    <div>
+                                        <p class="text-xs font-bold text-foreground">Jakarta Barat</p>
+                                        <p class="text-[11px] font-semibold text-primary">Gratis Ongkir</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex items-center gap-3 rounded-xl bg-primary/5 px-4 py-3">
-                                <span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">✓</span>
-                                <div>
-                                    <p class="text-sm font-semibold text-foreground">Jakarta Pusat</p>
-                                    <p class="text-xs text-primary font-medium">Gratis Ongkir</p>
+                                <div class="flex items-start gap-3 rounded-xl bg-primary/5 p-3">
+                                    <span class="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground">✓</span>
+                                    <div>
+                                        <p class="text-xs font-bold text-foreground">Jakarta Pusat</p>
+                                        <p class="text-[11px] font-semibold text-primary">Gratis Ongkir</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex items-center gap-3 rounded-xl border border-border/70 px-4 py-3">
-                                <span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-foreground">✓</span>
-                                <div>
-                                    <p class="text-sm font-semibold text-foreground">Jakarta Selatan</p>
-                                    <p class="text-xs text-muted-foreground">Ongkir berdasarkan jarak</p>
+                                <div class="flex items-start gap-3 rounded-xl border border-border/70 bg-background/50 p-3">
+                                    <span class="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-secondary text-[9px] font-bold text-foreground">✓</span>
+                                    <div>
+                                        <p class="text-xs font-semibold text-foreground">Jakarta Selatan</p>
+                                        <p class="text-[11px] text-muted-foreground">Tersedia (ongkir terjangkau)</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex items-center gap-3 rounded-xl border border-border/70 px-4 py-3">
-                                <span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-foreground">✓</span>
-                                <div>
-                                    <p class="text-sm font-semibold text-foreground">Jakarta Timur</p>
-                                    <p class="text-xs text-muted-foreground">Ongkir berdasarkan jarak</p>
+                                <div class="flex items-start gap-3 rounded-xl border border-border/70 bg-background/50 p-3">
+                                    <span class="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-secondary text-[9px] font-bold text-foreground">✓</span>
+                                    <div>
+                                        <p class="text-xs font-semibold text-foreground">Jakarta Timur</p>
+                                        <p class="text-[11px] text-muted-foreground">Tersedia (ongkir terjangkau)</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex items-center gap-3 rounded-xl border border-border/70 px-4 py-3">
-                                <span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-foreground">✓</span>
-                                <div>
-                                    <p class="text-sm font-semibold text-foreground">Jakarta Utara</p>
-                                    <p class="text-xs text-muted-foreground">Ongkir berdasarkan jarak</p>
+                                <div class="flex items-start gap-3 rounded-xl border border-border/70 bg-background/50 p-3 sm:col-span-2">
+                                    <span class="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-secondary text-[9px] font-bold text-foreground">✓</span>
+                                    <div>
+                                        <p class="text-xs font-semibold text-foreground">Jakarta Utara</p>
+                                        <p class="text-[11px] text-muted-foreground">Tersedia (ongkir terjangkau)</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Group: Bodetabek -->
+                        <div class="mt-6 border-t border-border/70 pt-5">
+                            <h3 class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-foreground">
+                                <span class="size-2 rounded-full bg-emerald-500"></span>
+                                Bodetabek (Bogor, Depok, Tangerang, Bekasi)
+                            </h3>
+                            <div class="mt-3 grid gap-2.5 sm:grid-cols-2">
+                                <div class="rounded-xl border border-border/70 bg-background/50 p-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="flex size-4 shrink-0 items-center justify-center rounded-full bg-secondary text-[9px] font-bold text-foreground">✓</span>
+                                        <p class="text-xs font-bold text-foreground">Tangerang & Tangsel</p>
+                                    </div>
+                                    <p class="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                                        BSD, Serpong, Karawaci, Ciputat, Bintaro, Ciledug, Alam Sutera, Gading Serpong
+                                    </p>
+                                </div>
+                                <div class="rounded-xl border border-border/70 bg-background/50 p-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="flex size-4 shrink-0 items-center justify-center rounded-full bg-secondary text-[9px] font-bold text-foreground">✓</span>
+                                        <p class="text-xs font-bold text-foreground">Kota & Kab. Bekasi</p>
+                                    </div>
+                                    <p class="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                                        Bekasi Barat, Bekasi Timur, Tambun, Cikarang, Harapan Indah, Summarecon
+                                    </p>
+                                </div>
+                                <div class="rounded-xl border border-border/70 bg-background/50 p-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="flex size-4 shrink-0 items-center justify-center rounded-full bg-secondary text-[9px] font-bold text-foreground">✓</span>
+                                        <p class="text-xs font-bold text-foreground">Kota Depok</p>
+                                    </div>
+                                    <p class="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                                        Margonda, Cinere, Sawangan, Cimanggis, Beji, Sukmajaya, Pancoran Mas
+                                    </p>
+                                </div>
+                                <div class="rounded-xl border border-border/70 bg-background/50 p-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="flex size-4 shrink-0 items-center justify-center rounded-full bg-secondary text-[9px] font-bold text-foreground">✓</span>
+                                        <p class="text-xs font-bold text-foreground">Kota & Kab. Bogor</p>
+                                    </div>
+                                    <p class="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                                        Kota Bogor, Sentul City, Cibinong, Bojonggede, Cileungsi
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Keunggulan Pengiriman -->
+                        <div class="mt-5 rounded-2xl bg-secondary/40 p-4">
+                            <div class="flex items-start gap-3">
+                                <span class="text-base" aria-hidden="true">🚚</span>
+                                <div class="text-xs leading-relaxed text-muted-foreground">
+                                    <strong class="text-foreground">Kurir Khusus Bunga:</strong> Rangkaian bunga papan diantar dengan kendaraan bak tertutup/khusus sehingga aman dari panas dan hujan, tiba tegak dan rapi di lokasi tujuan.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTA -->
                         <div class="mt-6 border-t border-border/70 pt-5">
                             <p class="text-xs text-muted-foreground">
-                                Butuh pengiriman ke luar Jakarta? Hubungi kami untuk informasi lebih lanjut mengenai ongkir dan ketersediaan pengiriman ke area Anda.
+                                Butuh informasi tarif ongkir atau jadwal pengiriman ke lokasi Anda di Jabodetabek? Hubungi kami langsung via WhatsApp.
                             </p>
                             <a
                                 v-if="whatsappUrl"
@@ -215,7 +326,7 @@ const whatsappUrl = computed(() => {
                                 <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.19 14.91 19.79 19.79 0 0 1 1.12 6.24 2 2 0 0 1 3.1 4h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                                 </svg>
-                                <span>Tanya via WhatsApp</span>
+                                <span>Cek Ongkir & Jadwal via WhatsApp</span>
                             </a>
                         </div>
                     </div>

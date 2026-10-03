@@ -54,7 +54,7 @@ class DashboardController extends Controller
                 ->where('click_count', '>', 0)
                 ->orderByDesc('click_count')
                 ->orderBy('name')
-                ->take(5)
+                ->take(10)
                 ->get()
                 ->map(fn (Product $product) => [
                     'id' => $product->id,

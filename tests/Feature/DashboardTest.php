@@ -48,6 +48,30 @@ class DashboardTest extends TestCase
             );
     }
 
+    public function test_overview_limits_most_clicked_products_to_top_ten(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+
+        for ($i = 1; $i <= 12; $i++) {
+            $product = Product::create([
+                'name' => sprintf('Product %02d', $i),
+                'category_id' => $category->id,
+                'price' => 100000,
+            ]);
+            $product->forceFill(['click_count' => $i])->save();
+        }
+
+        $this->get('/admin/dashboard')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->has('mostClickedProducts', 10)
+                ->where('mostClickedProducts.0.name', 'Product 12')
+                ->where('mostClickedProducts.0.clickCount', 12)
+                ->where('mostClickedProducts.9.name', 'Product 03')
+                ->where('mostClickedProducts.9.clickCount', 3)
+            );
+    }
+
     public function test_legacy_dashboard_redirects_to_admin_dashboard(): void
     {
         $this->get('/dashboard')

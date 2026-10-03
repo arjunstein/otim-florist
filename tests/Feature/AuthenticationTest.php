@@ -14,22 +14,30 @@ class AuthenticationTest extends TestCase
     public function test_guests_are_redirected_to_login(): void
     {
         foreach (['/admin/dashboard', '/admin/categories', '/admin/products', '/admin/settings'] as $path) {
-            $this->get($path)->assertRedirect('/login');
+            $this->get($path)->assertRedirect(route('login'));
         }
+    }
+
+    public function test_standard_login_path_returns_not_found(): void
+    {
+        $this->get('/login')->assertNotFound();
     }
 
     public function test_login_page_renders_for_guests(): void
     {
-        $this->get('/login')
+        $this->get(route('login'))
             ->assertOk()
-            ->assertInertia(fn ($page) => $page->component('Auth/Login'));
+            ->assertInertia(fn ($page) => $page
+                ->component('Auth/Login')
+                ->where('submitUrl', route('login', absolute: false))
+            );
     }
 
     public function test_user_can_log_in(): void
     {
         $user = User::factory()->create();
 
-        $this->post('/login', [
+        $this->post(route('login'), [
             'email' => $user->email,
             'password' => 'password',
         ])
@@ -42,7 +50,7 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->post('/login', [
+        $this->post(route('login'), [
             'email' => $user->email,
             'password' => 'incorrect-password',
         ])->assertSessionHasErrors('email');
@@ -53,7 +61,7 @@ class AuthenticationTest extends TestCase
     public function test_authenticated_user_is_redirected_away_from_login(): void
     {
         $this->actingAs(User::factory()->create())
-            ->get('/login')
+            ->get(route('login'))
             ->assertRedirect('/admin/dashboard');
     }
 
@@ -61,7 +69,7 @@ class AuthenticationTest extends TestCase
     {
         $this->actingAs(User::factory()->create())
             ->post('/admin/logout')
-            ->assertRedirect('/login');
+            ->assertRedirect(route('login'));
 
         $this->assertGuest();
     }

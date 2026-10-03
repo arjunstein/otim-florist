@@ -17,9 +17,12 @@ Route::get('/kontak', [StorefrontController::class, 'contact'])->name('storefron
 Route::get('/categories/{category:slug}', [StorefrontController::class, 'showCategory'])->name('storefront.categories.show');
 Route::get('/products/{product:slug}', [StorefrontController::class, 'showProduct'])->name('storefront.products.show');
 
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:login');
+$loginPath = trim((string) config('auth.login_path', 'portal-pengelola'), '/');
+$loginPath = $loginPath !== '' ? $loginPath : 'portal-pengelola';
+
+Route::middleware('guest')->group(function () use ($loginPath) {
+    Route::get('/'.$loginPath, [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/'.$loginPath, [AuthenticatedSessionController::class, 'store'])->middleware('throttle:login');
 });
 
 Route::redirect('/dashboard', '/admin/dashboard');

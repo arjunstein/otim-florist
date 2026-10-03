@@ -2,6 +2,10 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
+const props = defineProps<{
+    submitUrl?: string;
+}>();
+
 const form = useForm({
     email: '',
     password: '',
@@ -10,7 +14,7 @@ const form = useForm({
 const showPassword = ref(false);
 
 function submit(): void {
-    form.post('/login', {
+    form.post(props.submitUrl || window.location.pathname, {
         onFinish: () => form.reset('password'),
     });
 }

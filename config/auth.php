@@ -114,4 +114,16 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Login Path
+    |--------------------------------------------------------------------------
+    |
+    | Obfuscated login path to prevent automated brute-force attempts on
+    | the standard /login endpoint. Configurable via environment variable.
+    |
+    */
+
+    'login_path' => env('ADMIN_LOGIN_PATH', 'portal-pengelola'),
+
 ];

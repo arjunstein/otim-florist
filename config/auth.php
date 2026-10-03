@@ -124,6 +124,6 @@ return [
     |
     */
 
-    'login_path' => env('ADMIN_LOGIN_PATH', 'portal-pengelola'),
+    'login_path' => env('ADMIN_LOGIN_PATH', 'management-portal'),
 
 ];

@@ -17,8 +17,8 @@ Route::get('/kontak', [StorefrontController::class, 'contact'])->name('storefron
 Route::get('/categories/{category:slug}', [StorefrontController::class, 'showCategory'])->name('storefront.categories.show');
 Route::get('/products/{product:slug}', [StorefrontController::class, 'showProduct'])->name('storefront.products.show');
 
-$loginPath = trim((string) config('auth.login_path', 'portal-pengelola'), '/');
-$loginPath = $loginPath !== '' ? $loginPath : 'portal-pengelola';
+$loginPath = trim((string) config('auth.login_path', 'management-portal'), '/');
+$loginPath = $loginPath !== '' ? $loginPath : 'management-portal';
 
 Route::middleware('guest')->group(function () use ($loginPath) {
     Route::get('/'.$loginPath, [AuthenticatedSessionController::class, 'create'])->name('login');

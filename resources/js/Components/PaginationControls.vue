@@ -36,7 +36,7 @@ function changePerPage(event: Event): void {
             <select
                 id="rows-per-page"
                 :value="pagination.perPage"
-                class="min-h-11 rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20"
+                class="min-h-11 rounded-xl border bg-background pl-3 pr-8 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20"
                 @change="changePerPage"
             >
                 <option :value="10">10</option>

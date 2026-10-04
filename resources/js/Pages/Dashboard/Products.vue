@@ -468,7 +468,7 @@ function queueFilters(): void {
                         v-model="productForm.category_id"
                         :aria-invalid="Boolean(productForm.errors.category_id)"
                         :class="[
-                            'min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20',
+                            'min-h-11 w-full rounded-xl border bg-background pl-3.5 pr-10 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20',
                             productForm.errors.category_id ? 'border-destructive' : '',
                         ]"
                     >
@@ -714,7 +714,7 @@ function queueFilters(): void {
                 <select
                     id="catalog-category"
                     v-model="category"
-                    class="min-h-11 w-full rounded-xl border bg-background px-3 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20 sm:w-auto"
+                    class="min-h-11 w-full rounded-xl border bg-background pl-3.5 pr-10 text-sm shadow-xs transition-colors focus:border-ring focus:ring-2 focus:ring-ring/20 sm:w-auto"
                     @change="applyFilters()"
                 >
                     <option value="All">All categories</option>

@@ -7,6 +7,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\StorefrontController;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
@@ -16,6 +18,21 @@ Route::get('/tentang', [StorefrontController::class, 'about'])->name('storefront
 Route::get('/kontak', [StorefrontController::class, 'contact'])->name('storefront.contact');
 Route::get('/categories/{category:slug}', [StorefrontController::class, 'showCategory'])->name('storefront.categories.show');
 Route::get('/products/{product:slug}', [StorefrontController::class, 'showProduct'])->name('storefront.products.show');
+
+// Legacy URLs (masih terindeks Google) — wajib balas 301.
+Route::redirect('/tentang-kami', '/tentang', 301);
+Route::get('/kategori/{slug}', fn (string $slug) => redirect('/categories/'.$slug, 301));
+Route::get('/produk/{kategori}/{slug}/{id}', function (string $kategori, string $slug, string $id) {
+    // 1) id masih ada -> slug terkini; 2) slug lama masih ada; 3) petakan ke kategori terkini; 4) fallback beranda.
+    $product = Product::find($id) ?? Product::where('slug', $slug)->first();
+    if ($product) {
+        return redirect('/products/'.$product->slug, 301);
+    }
+    $kat = Category::where('slug', $kategori)->first()
+        ?? Category::where('slug', implode('-', array_slice(explode('-', $kategori), 0, 2)))->first();
+
+    return redirect($kat ? '/categories/'.$kat->slug : '/', 301);
+});
 
 $loginPath = trim((string) config('auth.login_path', 'management-portal'), '/');
 $loginPath = $loginPath !== '' ? $loginPath : 'management-portal';

@@ -79,12 +79,14 @@ class StorefrontController extends Controller
             : asset('images/og-image.jpg');
 
         $storeName = StoreSetting::current()->name ?: 'Otim Florist';
+        $price = number_format($product->sale_price ?? $product->price, 0, ',', '.');
+        $productDescription = "{$product->name} mulai Rp{$price} — kirim Jakarta. Pesan cepat via WA.";
 
         return Inertia::render('Storefront/Product', [
             'canonicalUrl' => route('storefront.products.show', $product),
             'ogImage' => $ogImage,
             'ogTitle' => "{$product->name} | {$storeName} Jakarta",
-            'ogDescription' => $product->description ?: "Pesan {$product->name} di {$storeName} Jakarta. Rangkaian bunga segar untuk buket, bunga papan, dan dekorasi. Gratis ongkir Jakbar & Jakpus.",
+            'ogDescription' => $productDescription,
             'navigationCategories' => $this->navigationCategories(),
             'product' => $this->productData($product),
             'whatsappUrl' => $this->whatsappUrl($product),

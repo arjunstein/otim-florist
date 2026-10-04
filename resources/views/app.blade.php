@@ -3,8 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title inertia>Otim Florist</title>
-    <meta name="description" content="Toko bunga terpercaya untuk buket bunga, bunga papan, standing flowers, dan dekorasi bunga segar untuk setiap momen bermakna.">
 
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">

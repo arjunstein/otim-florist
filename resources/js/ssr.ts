@@ -8,6 +8,7 @@ createServer((page) =>
     createInertiaApp({
         page,
         render: renderToString,
+        title: (title) => (title ? `${title}` : 'Otim Florist'),
         resolve: (name) => {
             const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue');
             const resolvePage = pages[`./Pages/${name}.vue`];

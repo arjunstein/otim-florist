@@ -32,8 +32,10 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
     maximumFractionDigits: 0,
 });
 
+const effectivePrice = props.product.salePrice ?? props.product.price;
+const formattedPrice = new Intl.NumberFormat('id-ID').format(effectivePrice);
 const pageTitle = `${props.product.name} | ${props.product.category.name} | Otim Florist`;
-const pageDescription = (props.product.description || `${props.product.name} dari Otim Florist.`).slice(0, 160);
+const pageDescription = `${props.product.name} mulai Rp${formattedPrice} — kirim Jakarta. Pesan cepat via WA.`;
 
 const origin = computed(() => {
     try {

@@ -178,7 +178,7 @@ class StorefrontTest extends TestCase
             );
     }
 
-    public function test_product_og_title_contains_jakarta(): void
+    public function test_product_og_title_and_description_contain_custom_format(): void
     {
         $category = Category::create(['name' => 'Bouquet']);
         $product = Product::create([
@@ -191,6 +191,24 @@ class StorefrontTest extends TestCase
             ->assertOk()
             ->assertInertia(fn ($page) => $page
                 ->where('ogTitle', 'Rose Bouquet M | Otim Florist Jakarta')
+                ->where('ogDescription', 'Rose Bouquet M mulai Rp350.000 — kirim Jakarta. Pesan cepat via WA.')
+            );
+    }
+
+    public function test_product_description_uses_sale_price_when_available(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+        $product = Product::create([
+            'name' => 'Tulip Premium',
+            'category_id' => $category->id,
+            'price' => 450000,
+            'sale_price' => 399000,
+        ]);
+
+        $this->get("/products/{$product->slug}")
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->where('ogDescription', 'Tulip Premium mulai Rp399.000 — kirim Jakarta. Pesan cepat via WA.')
             );
     }
 
@@ -201,6 +219,15 @@ class StorefrontTest extends TestCase
             ->assertSee('rel="icon" type="image/x-icon" href="'.asset('favicon.ico').'"', false)
             ->assertSee('rel="icon" type="image/svg+xml" href="'.asset('favicon.svg').'"', false)
             ->assertSee('rel="apple-touch-icon" sizes="180x180" href="'.asset('apple-touch-icon.png').'"', false);
+    }
+
+    public function test_public_storefront_does_not_contain_duplicate_static_title_or_description(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertOk()
+            ->assertDontSee('<title inertia>Otim Florist</title>', false)
+            ->assertDontSee('<meta name="description" content="Toko bunga terpercaya', false);
     }
 
     public function test_public_storefront_uses_latest_product_image_for_open_graph(): void

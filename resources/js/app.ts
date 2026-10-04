@@ -4,6 +4,7 @@ import { createApp, h } from 'vue';
 import '../css/app.css';
 
 createInertiaApp({
+    title: (title) => (title ? `${title}` : 'Otim Florist'),
     resolve: (name) => {
         const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue', { eager: true });
 

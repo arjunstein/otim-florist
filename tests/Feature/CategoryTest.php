@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
@@ -94,5 +95,48 @@ class CategoryTest extends TestCase
             ->assertRedirect('/admin/categories');
 
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
+    }
+
+    public function test_navigation_categories_are_cached_and_invalidated_on_mutations(): void
+    {
+        $this->assertFalse(Cache::has(Category::CACHE_KEY_NAVIGATION));
+
+        Category::create(['name' => 'Standing Flower']);
+
+        $navigation = Category::navigation();
+        $this->assertCount(1, $navigation);
+        $this->assertSame('Standing Flower', $navigation[0]['name']);
+        $this->assertTrue(Cache::has(Category::CACHE_KEY_NAVIGATION));
+
+        // Create another category -> cache should be invalidated
+        $this->post('/admin/categories', ['name' => 'Buket Mawar'])
+            ->assertRedirect('/admin/categories');
+
+        $this->assertFalse(Cache::has(Category::CACHE_KEY_NAVIGATION));
+
+        $updatedNavigation = Category::navigation();
+        $this->assertCount(2, $updatedNavigation);
+        $this->assertSame('Buket Mawar', $updatedNavigation[0]['name']);
+        $this->assertSame('Standing Flower', $updatedNavigation[1]['name']);
+
+        // Update category -> cache should be invalidated
+        $category = Category::where('name', 'Buket Mawar')->firstOrFail();
+        $this->put("/admin/categories/{$category->id}", ['name' => 'Buket Lily'])
+            ->assertRedirect('/admin/categories');
+
+        $this->assertFalse(Cache::has(Category::CACHE_KEY_NAVIGATION));
+
+        $afterUpdate = Category::navigation();
+        $this->assertSame('Buket Lily', $afterUpdate[0]['name']);
+
+        // Delete category -> cache should be invalidated
+        $this->delete("/admin/categories/{$category->id}")
+            ->assertRedirect('/admin/categories');
+
+        $this->assertFalse(Cache::has(Category::CACHE_KEY_NAVIGATION));
+
+        $afterDelete = Category::navigation();
+        $this->assertCount(1, $afterDelete);
+        $this->assertSame('Standing Flower', $afterDelete[0]['name']);
     }
 }

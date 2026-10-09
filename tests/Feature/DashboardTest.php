@@ -4,8 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\StoreSetting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -131,5 +133,31 @@ class DashboardTest extends TestCase
 
         $this->get('/admin/settings/nonexistent')
             ->assertNotFound();
+    }
+
+    public function test_store_settings_are_cached_and_invalidated_on_update(): void
+    {
+        $this->assertFalse(Cache::has(StoreSetting::CACHE_KEY_CURRENT));
+
+        $store = StoreSetting::current();
+        $this->assertSame('Otim Florist', $store->name);
+        $this->assertTrue(Cache::has(StoreSetting::CACHE_KEY_CURRENT));
+
+        $this->from('/admin/settings')->put('/admin/settings', [
+            'name' => 'Otim Florist Jakarta Barat',
+            'phone' => '6281299999999',
+            'address' => 'Jakarta Barat',
+            'hours' => '24 Jam',
+            'google_reviews_url' => 'https://share.google/v4xDWRoD4ANg5Ft3K',
+            'google_rating' => 5.0,
+            'google_reviews_count' => 100,
+        ])->assertRedirect('/admin/settings');
+
+        $this->assertFalse(Cache::has(StoreSetting::CACHE_KEY_CURRENT));
+
+        $updatedStore = StoreSetting::current();
+        $this->assertSame('Otim Florist Jakarta Barat', $updatedStore->name);
+        $this->assertSame('6281299999999', $updatedStore->phone);
+        $this->assertTrue(Cache::has(StoreSetting::CACHE_KEY_CURRENT));
     }
 }

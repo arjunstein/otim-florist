@@ -114,14 +114,7 @@ class StorefrontController extends Controller
      */
     private function navigationCategories(): array
     {
-        return Category::query()
-            ->orderBy('name')
-            ->get(['name', 'slug'])
-            ->map(fn (Category $category) => [
-                'name' => $category->name,
-                'slug' => $category->slug,
-            ])
-            ->all();
+        return Category::navigation();
     }
 
     /**

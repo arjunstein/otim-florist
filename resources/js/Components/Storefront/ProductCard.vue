@@ -23,7 +23,7 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
 </script>
 
 <template>
-    <article class="group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-border/80 bg-card shadow-xs transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/35 hover:shadow-xl motion-reduce:transform-none motion-reduce:transition-none">
+    <article class="group relative flex flex-col overflow-hidden rounded-lg border border-border/80 bg-card shadow-xs transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/35 hover:shadow-xl motion-reduce:transform-none motion-reduce:transition-none">
         <Link :href="`/products/${props.product.slug}`" class="flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             <div class="relative grid aspect-[4/3] w-full place-items-center overflow-hidden bg-secondary/60">
                 <img
@@ -43,34 +43,34 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
 
                 <span
                     v-if="props.product.salePrice"
-                    class="absolute left-3.5 top-3.5 inline-flex items-center gap-1 rounded-full bg-accent px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-accent-foreground shadow-sm"
+                    class="absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-foreground shadow-sm sm:left-3.5 sm:top-3.5 sm:px-3 sm:py-1 sm:text-[11px]"
                 >
                     Promo
                 </span>
             </div>
 
-            <div class="flex flex-1 flex-col p-5 sm:p-6">
+            <div class="flex flex-1 flex-col p-3.5 sm:p-5 lg:p-6">
                 <div class="flex items-center justify-between gap-2">
-                    <span class="inline-flex rounded-full bg-secondary/80 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-secondary-foreground">
+                    <span class="inline-flex max-w-full truncate rounded-full bg-secondary/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-secondary-foreground sm:px-2.5 sm:text-[11px]">
                         {{ props.product.category.name }}
                     </span>
                 </div>
 
-                <h2 class="mt-2.5 text-xl leading-snug font-semibold text-foreground transition-colors duration-200 group-hover:text-primary">
+                <h2 class="mt-2 line-clamp-2 text-sm leading-snug font-semibold text-foreground transition-colors duration-200 group-hover:text-primary sm:mt-2.5 sm:text-lg lg:text-xl">
                     {{ props.product.name }}
                 </h2>
 
-                <div class="mt-auto pt-4 flex items-center justify-between gap-2 border-t border-border/50">
+                <div class="mt-auto pt-3 flex items-center justify-between gap-1.5 border-t border-border/50 sm:pt-4 sm:gap-2">
                     <div class="flex flex-col">
-                        <span v-if="props.product.salePrice" class="text-xs text-muted-foreground line-through">
+                        <span v-if="props.product.salePrice" class="text-[11px] text-muted-foreground line-through sm:text-xs">
                             {{ priceFormatter.format(props.product.price) }}
                         </span>
-                        <span class="text-base sm:text-lg font-bold text-primary">
+                        <span class="text-sm font-bold text-primary sm:text-base lg:text-lg">
                             {{ priceFormatter.format(props.product.salePrice ?? props.product.price) }}
                         </span>
                     </div>
 
-                    <div class="grid size-9 place-items-center rounded-full bg-secondary text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-xs">
+                    <div class="grid size-7 shrink-0 place-items-center rounded-full bg-secondary text-primary sm:size-9 transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-xs">
                         <svg class="size-4 transition-transform duration-300 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>

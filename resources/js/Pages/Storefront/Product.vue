@@ -122,7 +122,7 @@ const breadcrumbSchema = computed(() => JSON.stringify({
                 </ol>
             </nav>
 
-            <div class="relative mt-4 grid aspect-[4/3] w-full max-w-xl place-items-center overflow-hidden rounded-[2.25rem] border border-border/80 bg-secondary/50 shadow-sm">
+            <div class="relative mt-4 grid aspect-[4/3] w-full max-w-xl place-items-center overflow-hidden rounded-xl border border-border/80 bg-secondary/50 shadow-sm">
                 <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="size-full object-cover" />
                 <div v-else class="grid size-full place-items-center bg-gradient-to-br from-secondary/40 via-secondary to-primary/5">
                     <svg class="size-48 text-primary/30" viewBox="0 0 40 40" fill="none" aria-hidden="true">

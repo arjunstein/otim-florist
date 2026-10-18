@@ -287,7 +287,7 @@ const floristSchema = computed(() => {
                 </div>
             </div>
 
-            <div v-if="displayedProducts.length" class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+            <div v-if="displayedProducts.length" class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                 <ProductCard v-for="product in displayedProducts" :key="product.slug" :product="product" />
             </div>
 

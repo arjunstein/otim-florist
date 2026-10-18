@@ -139,7 +139,7 @@ function loadMore(): void {
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <div v-if="displayedProducts.length" class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+        <div v-if="displayedProducts.length" class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
             <ProductCard v-for="product in displayedProducts" :key="product.slug" :product="product" />
         </div>
 

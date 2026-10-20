@@ -30,7 +30,8 @@ class StorefrontController extends Controller
             'products' => Product::query()
                 ->select(['id', 'category_id', 'name', 'slug', 'description', 'image_path', 'price', 'sale_price'])
                 ->with('category:id,name,slug')
-                ->orderBy('name')
+                ->orderByDesc('click_count')
+                ->orderByDesc('id')
                 ->get()
                 ->map(fn (Product $product) => $this->productData($product)),
         ]);

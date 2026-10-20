@@ -37,6 +37,28 @@ class StorefrontTest extends TestCase
             );
     }
 
+    public function test_catalog_products_are_ordered_by_click_count_then_newest(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+
+        $popular = Product::create(['name' => 'Popular Rose', 'category_id' => $category->id, 'price' => 200000]);
+        $popular->forceFill(['click_count' => 50])->save();
+
+        $newer = Product::create(['name' => 'New Tulip', 'category_id' => $category->id, 'price' => 150000]);
+        $newer->forceFill(['click_count' => 0])->save();
+
+        $medium = Product::create(['name' => 'Classic Lily', 'category_id' => $category->id, 'price' => 100000]);
+        $medium->forceFill(['click_count' => 20])->save();
+
+        $this->get('/')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->where('products.0.slug', 'popular-rose')   // click_count: 50
+                ->where('products.1.slug', 'classic-lily')   // click_count: 20
+                ->where('products.2.slug', 'new-tulip')      // click_count: 0, newest tiebreaker
+            );
+    }
+
     public function test_public_product_and_category_pages_resolve_by_slug(): void
     {
         $category = Category::create(['name' => 'Bouquet']);

@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\StoreSetting;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class StorefrontController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $latestProductWithImage = Product::query()
             ->whereNotNull('image_path')
@@ -23,17 +26,23 @@ class StorefrontController extends Controller
             ? url(Storage::disk('public')->url($latestProductWithImage->image_path))
             : asset('images/og-image.jpg');
 
+        $category = $request->query('category');
+        $category = is_string($category) ? $category : null;
+        $products = Product::query()
+            ->select(['id', 'category_id', 'name', 'slug', 'description', 'image_path', 'price', 'sale_price'])
+            ->with('category:id,name,slug')
+            ->when($category, fn ($query) => $query->whereHas('category', fn ($query) => $query->where('slug', $category)))
+            ->orderByDesc('click_count')->orderByDesc('id')
+            ->paginate(12)->withQueryString();
+
         return Inertia::render('Storefront/Catalog', [
             'canonicalUrl' => route('storefront.home'),
             'ogImage' => $ogImage,
             'navigationCategories' => $this->navigationCategories(),
-            'products' => Product::query()
-                ->select(['id', 'category_id', 'name', 'slug', 'description', 'image_path', 'price', 'sale_price'])
-                ->with('category:id,name,slug')
-                ->orderByDesc('click_count')
-                ->orderByDesc('id')
-                ->get()
-                ->map(fn (Product $product) => $this->productData($product)),
+            'products' => $products->getCollection()->map(fn (Product $product) => $this->productData($product)),
+            'pagination' => $this->paginationData($products),
+            'selectedCategory' => $category,
+            'availableCategories' => Category::query()->whereHas('products')->orderBy('name')->get(['name', 'slug']),
         ]);
     }
 
@@ -44,7 +53,7 @@ class StorefrontController extends Controller
             ->select(['products.id', 'products.category_id', 'products.name', 'products.slug', 'products.description', 'products.image_path', 'products.price', 'products.sale_price'])
             ->with('category:id,name,slug')
             ->orderBy('name')
-            ->get();
+            ->paginate(12)->withQueryString();
 
         $latestProductWithImage = $category->products()
             ->whereNotNull('image_path')
@@ -65,14 +74,13 @@ class StorefrontController extends Controller
             'ogDescription' => "Beli {$category->name} Jakarta murah berkualitas dari {$storeName}. Gratis ongkir Jakbar & Jakpus. Pesan sekarang via WhatsApp.",
             'navigationCategories' => $this->navigationCategories(),
             'category' => $this->categoryData($category),
-            'products' => $products->map(fn (Product $product) => $this->productData($product)),
+            'products' => $products->getCollection()->map(fn (Product $product) => $this->productData($product)),
+            'pagination' => $this->paginationData($products),
         ]);
     }
 
     public function showProduct(Product $product): Response
     {
-        Product::query()->whereKey($product->getKey())->increment('click_count');
-        $product->refresh();
         $product->load('category:id,name,slug');
 
         $ogImage = $product->image_path
@@ -92,6 +100,30 @@ class StorefrontController extends Controller
             'product' => $this->productData($product),
             'whatsappUrl' => $this->whatsappUrl($product),
         ]);
+    }
+
+    public function recordClick(Request $request, Product $product): HttpResponse
+    {
+        $key = 'product_click_'.$product->id;
+        if ($request->session()->get($key, 0) <= now()->subMinutes(30)->timestamp) {
+            Product::query()->whereKey($product->getKey())->toBase()->increment('click_count');
+            $request->session()->put($key, now()->timestamp);
+        }
+
+        return response()->noContent();
+    }
+
+    private function paginationData(LengthAwarePaginator $products): array
+    {
+        return [
+            'currentPage' => $products->currentPage(),
+            'lastPage' => $products->lastPage(),
+            'total' => $products->total(),
+            'from' => $products->firstItem(),
+            'to' => $products->lastItem(),
+            'previousUrl' => $products->previousPageUrl(),
+            'nextUrl' => $products->nextPageUrl(),
+        ];
     }
 
     public function about(): Response

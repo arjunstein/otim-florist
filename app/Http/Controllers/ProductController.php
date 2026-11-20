@@ -8,9 +8,12 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use RuntimeException;
+use Throwable;
 
 class ProductController extends Controller
 {
@@ -73,7 +76,12 @@ class ProductController extends Controller
         $category = Category::findOrFail($attributes['category_id']);
         $attributes['name'] = $generateProductName($attributes['name'], $category);
 
-        Product::create($attributes);
+        try {
+            Product::create($attributes);
+        } catch (Throwable $exception) {
+            $this->deleteImage($attributes['image_path'] ?? null);
+            throw $exception;
+        }
 
         return to_route('products.index')->with('success', 'Product created.');
     }
@@ -83,22 +91,23 @@ class ProductController extends Controller
         $attributes = $this->productAttributes($request);
         $previousImagePath = isset($attributes['image_path']) ? $product->image_path : null;
 
-        $product->update($attributes);
-
-        if ($previousImagePath) {
-            Storage::disk('public')->delete($previousImagePath);
+        try {
+            $product->update($attributes);
+        } catch (Throwable $exception) {
+            $this->deleteImage($attributes['image_path'] ?? null);
+            throw $exception;
         }
+
+        $this->deleteImage($previousImagePath);
 
         return to_route('products.index')->with('success', 'Product updated.');
     }
 
     public function destroy(Product $product): RedirectResponse
     {
-        if ($product->image_path) {
-            Storage::disk('public')->delete($product->image_path);
-        }
-
+        $imagePath = $product->image_path;
         $product->delete();
+        $this->deleteImage($imagePath);
 
         return to_route('products.index')->with('success', 'Product deleted.');
     }
@@ -109,8 +118,26 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $attributes['image_path'] = $request->file('image')->store('products', 'public');
+            if ($attributes['image_path'] === false) {
+                throw new RuntimeException('Unable to store product image.');
+            }
         }
 
         return $attributes;
+    }
+
+    private function deleteImage(?string $path): void
+    {
+        if (! $path) {
+            return;
+        }
+
+        try {
+            if (! Storage::disk('public')->delete($path)) {
+                Log::warning('Could not delete product image', ['path' => $path]);
+            }
+        } catch (Throwable $exception) {
+            report($exception);
+        }
     }
 }

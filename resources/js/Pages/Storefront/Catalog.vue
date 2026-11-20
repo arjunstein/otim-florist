@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import ProductCard from '@/Components/Storefront/ProductCard.vue';
+import StorefrontPagination from '@/Components/Storefront/StorefrontPagination.vue';
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
 import SeoJsonLd from '@/Components/SeoJsonLd.vue';
 import type { StoreInfo } from '@/types';
 import { Head, usePage } from '@inertiajs/vue3';
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
+import { router } from '@inertiajs/vue3';
 
 defineOptions({ layout: StorefrontLayout });
 
-const INITIAL_BATCH_SIZE = 12;
-const BATCH_INCREMENT = 12;
-
 const props = defineProps<{
     canonicalUrl: string;
+    pagination: { currentPage: number; lastPage: number; total: number; from: number | null; to: number | null; previousUrl: string | null; nextUrl: string | null };
     ogImage?: string;
+    selectedCategory: string | null;
+    availableCategories: Array<{ name: string; slug: string }>;
     products: Array<{
         name: string;
         slug: string;
@@ -54,42 +56,8 @@ const googleReviewsUrl = computed(() => {
     return store.value.google_reviews_url || 'https://share.google/v4xDWRoD4ANg5Ft3K';
 });
 
-const selectedCategory = ref<string | null>(null);
-const visibleCount = ref(INITIAL_BATCH_SIZE);
-
-watch(selectedCategory, () => {
-    visibleCount.value = INITIAL_BATCH_SIZE;
-});
-
-const availableCategories = computed(() => {
-    const map = new Map<string, string>();
-    props.products.forEach((product) => {
-        map.set(product.category.slug, product.category.name);
-    });
-    return Array.from(map.entries()).map(([slug, name]) => ({ slug, name }));
-});
-
-const filteredProducts = computed(() => {
-    if (!selectedCategory.value) {
-        return props.products;
-    }
-    return props.products.filter((product) => product.category.slug === selectedCategory.value);
-});
-
-const displayedProducts = computed(() => {
-    return filteredProducts.value.slice(0, visibleCount.value);
-});
-
-const hasMoreProducts = computed(() => {
-    return visibleCount.value < filteredProducts.value.length;
-});
-
-const remainingCount = computed(() => {
-    return Math.max(0, filteredProducts.value.length - visibleCount.value);
-});
-
-function loadMore(): void {
-    visibleCount.value += BATCH_INCREMENT;
+function selectCategory(category: string | null): void {
+    router.get('/', category ? { category } : {}, { preserveScroll: true });
 }
 
 const floristSchema = computed(() => {
@@ -266,7 +234,7 @@ const floristSchema = computed(() => {
                                 ? 'bg-primary text-primary-foreground shadow-xs'
                                 : 'bg-secondary/70 text-muted-foreground hover:bg-secondary hover:text-foreground',
                         ]"
-                        @click="selectedCategory = null"
+                        @click="selectCategory(null)"
                     >
                         Semua Koleksi
                     </button>
@@ -280,43 +248,20 @@ const floristSchema = computed(() => {
                                 ? 'bg-primary text-primary-foreground shadow-xs'
                                 : 'bg-secondary/70 text-muted-foreground hover:bg-secondary hover:text-foreground',
                         ]"
-                        @click="selectedCategory = cat.slug"
+                        @click="selectCategory(cat.slug)"
                     >
                         {{ cat.name }}
                     </button>
                 </div>
             </div>
 
-            <div v-if="displayedProducts.length" class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
-                <ProductCard v-for="product in displayedProducts" :key="product.slug" :product="product" />
+            <div v-if="products.length" class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+                <ProductCard v-for="product in products" :key="product.slug" :product="product" />
             </div>
 
-            <div v-if="hasMoreProducts" class="mt-12 flex flex-col items-center gap-3 text-center">
-                <p class="text-xs font-medium text-muted-foreground">
-                    Menampilkan {{ displayedProducts.length }} dari {{ filteredProducts.length }} rangkaian bunga
-                </p>
-                <div class="h-1.5 w-48 overflow-hidden rounded-full bg-secondary">
-                    <div
-                        class="h-full rounded-full bg-primary transition-all duration-300"
-                        :style="{ width: `${(displayedProducts.length / filteredProducts.length) * 100}%` }"
-                    />
-                </div>
-                <button
-                    type="button"
-                    class="group inline-flex min-h-11 items-center gap-2 rounded-2xl bg-secondary px-6 py-2.5 text-sm font-semibold text-foreground shadow-2xs transition-all duration-200 hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    @click="loadMore"
-                >
-                    <span>Muat Lebih Banyak</span>
-                    <span class="rounded-full bg-foreground/10 px-2 py-0.5 text-xs group-hover:bg-primary-foreground/20">
-                        +{{ Math.min(BATCH_INCREMENT, remainingCount) }}
-                    </span>
-                    <svg class="size-4 transition-transform duration-200 group-hover:translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </button>
-            </div>
+            <StorefrontPagination :pagination="pagination" />
 
-            <div v-else-if="!filteredProducts.length" class="mt-10 rounded-3xl border border-dashed border-border bg-card p-12 text-center">
+            <div v-if="!products.length" class="mt-10 rounded-3xl border border-dashed border-border bg-card p-12 text-center">
                 <div class="mx-auto grid size-12 place-items-center rounded-2xl bg-secondary text-primary">
                     <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M12 22v-7M9 7l3-4 3 4M6 13l6-3 6 3" />

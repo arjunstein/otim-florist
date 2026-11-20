@@ -22,6 +22,15 @@ class DashboardTest extends TestCase
         $this->actingAs(User::factory()->create());
     }
 
+    public function test_store_settings_reject_invalid_numeric_input(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $this->put('/admin/settings', [
+            'name' => 'Otim Florist', 'phone' => '628123456789', 'address' => 'Jakarta', 'hours' => '08:00',
+            'google_rating' => '4.5abc', 'google_reviews_count' => '1.5',
+        ])->assertSessionHasErrors(['google_rating', 'google_reviews_count']);
+    }
+
     public function test_overview_renders_catalog_summary(): void
     {
         $category = Category::create(['name' => 'Bouquet']);
@@ -142,6 +151,8 @@ class DashboardTest extends TestCase
         $store = StoreSetting::current();
         $this->assertSame('Otim Florist', $store->name);
         $this->assertTrue(Cache::has(StoreSetting::CACHE_KEY_CURRENT));
+        $this->assertIsArray(Cache::get(StoreSetting::CACHE_KEY_CURRENT));
+        $this->assertSame('Otim Florist', StoreSetting::current()->name);
 
         $this->from('/admin/settings')->put('/admin/settings', [
             'name' => 'Otim Florist Jakarta Barat',

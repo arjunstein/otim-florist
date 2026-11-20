@@ -17,6 +17,7 @@ Route::get('/', [StorefrontController::class, 'index'])->name('storefront.home')
 Route::get('/tentang', [StorefrontController::class, 'about'])->name('storefront.about');
 Route::get('/kontak', [StorefrontController::class, 'contact'])->name('storefront.contact');
 Route::get('/categories/{category:slug}', [StorefrontController::class, 'showCategory'])->name('storefront.categories.show');
+Route::post('/products/{product:slug}/click', [StorefrontController::class, 'recordClick'])->middleware('throttle:60,1')->name('storefront.products.click');
 Route::get('/products/{product:slug}', [StorefrontController::class, 'showProduct'])->name('storefront.products.show');
 
 // Legacy URLs (masih terindeks Google) — wajib balas 301.

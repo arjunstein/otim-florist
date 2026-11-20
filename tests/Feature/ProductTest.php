@@ -206,6 +206,33 @@ class ProductTest extends TestCase
         ])->assertSessionHasErrors(['name', 'category_id', 'price']);
     }
 
+    public function test_failed_product_creation_removes_uploaded_image(): void
+    {
+        Storage::fake('public');
+        $category = Category::create(['name' => 'Bouquet']);
+        Product::creating(fn () => throw new \RuntimeException('Database failure'));
+
+        $this->post('/admin/products', [
+            'name' => 'Rose', 'category_id' => $category->id, 'price' => 100,
+            'image' => UploadedFile::fake()->image('rose.jpg'),
+        ])->assertStatus(500);
+
+        $this->assertSame([], Storage::disk('public')->allFiles('products'));
+    }
+
+    public function test_failed_product_deletion_keeps_image(): void
+    {
+        Storage::fake('public');
+        $category = Category::create(['name' => 'Bouquet']);
+        Storage::disk('public')->put('products/rose.jpg', 'image');
+        $product = Product::create(['name' => 'Rose', 'category_id' => $category->id, 'price' => 100, 'image_path' => 'products/rose.jpg']);
+        Product::deleting(fn () => throw new \RuntimeException('Database failure'));
+
+        $this->delete("/admin/products/{$product->id}")->assertStatus(500);
+        Storage::disk('public')->assertExists('products/rose.jpg');
+        $this->assertDatabaseHas('products', ['id' => $product->id]);
+    }
+
     public function test_product_image_must_not_exceed_three_megabytes(): void
     {
         Storage::fake('public');

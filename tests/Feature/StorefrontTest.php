@@ -86,7 +86,7 @@ class StorefrontTest extends TestCase
 
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
-            'click_count' => 1,
+            'click_count' => 0,
         ]);
 
         $this->get("/categories/{$category->slug}")
@@ -97,6 +97,39 @@ class StorefrontTest extends TestCase
                 ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('products.0.slug', $product->slug)
             );
+    }
+
+    public function test_clicks_are_recorded_once_per_session_and_do_not_change_product_timestamp(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+        $product = Product::create(['name' => 'Rose', 'category_id' => $category->id, 'price' => 100]);
+        $updatedAt = $product->updated_at->toDateTimeString();
+
+        $this->post("/products/{$product->slug}/click")->assertNoContent();
+        $this->post("/products/{$product->slug}/click")->assertNoContent();
+        $this->assertSame(1, $product->fresh()->click_count);
+        $this->assertSame($updatedAt, $product->fresh()->updated_at->toDateTimeString());
+        $this->travel(31)->minutes();
+        $this->post("/products/{$product->slug}/click")->assertNoContent();
+        $this->assertSame(2, $product->fresh()->click_count);
+    }
+
+    public function test_catalog_and_category_paginate_and_filter_products(): void
+    {
+        $category = Category::create(['name' => 'Bouquet']);
+        $other = Category::create(['name' => 'Standing']);
+        for ($i = 1; $i <= 13; $i++) {
+            Product::create(['name' => "Rose {$i}", 'category_id' => $category->id, 'price' => 100]);
+        }
+        Product::create(['name' => 'Lily', 'category_id' => $other->id, 'price' => 100]);
+
+        $this->get('/?category=bouquet')->assertOk()->assertInertia(fn ($page) => $page
+            ->has('products', 12)->where('pagination.total', 13)->where('selectedCategory', 'bouquet')
+            ->has('availableCategories', 2));
+        $this->get('/?category=bouquet&page=2')->assertOk()->assertInertia(fn ($page) => $page
+            ->has('products', 1)->where('pagination.currentPage', 2));
+        $this->get('/categories/bouquet?page=2')->assertOk()->assertInertia(fn ($page) => $page
+            ->has('products', 1)->where('pagination.total', 13));
     }
 
     public function test_sitemap_lists_public_catalog_urls_and_robots_references_it(): void

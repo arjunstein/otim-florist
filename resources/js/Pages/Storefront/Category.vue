@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import ProductCard from '@/Components/Storefront/ProductCard.vue';
+import StorefrontPagination from '@/Components/Storefront/StorefrontPagination.vue';
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
 import SeoJsonLd from '@/Components/SeoJsonLd.vue';
 import type { StoreInfo } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 defineOptions({ layout: StorefrontLayout });
 
-const INITIAL_BATCH_SIZE = 12;
-const BATCH_INCREMENT = 12;
-
 const props = defineProps<{
     canonicalUrl: string;
+    pagination: { currentPage: number; lastPage: number; total: number; from: number | null; to: number | null; previousUrl: string | null; nextUrl: string | null };
     category: {
         name: string;
         productCount: number;
@@ -66,23 +65,6 @@ const breadcrumbSchema = computed(() => JSON.stringify({
     ],
 }).replace(/</g, '\\u003c'));
 
-const visibleCount = ref(INITIAL_BATCH_SIZE);
-
-const displayedProducts = computed(() => {
-    return props.products.slice(0, visibleCount.value);
-});
-
-const hasMoreProducts = computed(() => {
-    return visibleCount.value < props.products.length;
-});
-
-const remainingCount = computed(() => {
-    return Math.max(0, props.products.length - visibleCount.value);
-});
-
-function loadMore(): void {
-    visibleCount.value += BATCH_INCREMENT;
-}
 </script>
 
 <template>
@@ -139,36 +121,13 @@ function loadMore(): void {
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <div v-if="displayedProducts.length" class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
-            <ProductCard v-for="product in displayedProducts" :key="product.slug" :product="product" />
+        <div v-if="products.length" class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+            <ProductCard v-for="product in products" :key="product.slug" :product="product" />
         </div>
 
-        <div v-if="hasMoreProducts" class="mt-12 flex flex-col items-center gap-3 text-center">
-            <p class="text-xs font-medium text-muted-foreground">
-                Menampilkan {{ displayedProducts.length }} dari {{ products.length }} rangkaian bunga
-            </p>
-            <div class="h-1.5 w-48 overflow-hidden rounded-full bg-secondary">
-                <div
-                    class="h-full rounded-full bg-primary transition-all duration-300"
-                    :style="{ width: `${(displayedProducts.length / products.length) * 100}%` }"
-                />
-            </div>
-            <button
-                type="button"
-                class="group inline-flex min-h-11 items-center gap-2 rounded-2xl bg-secondary px-6 py-2.5 text-sm font-semibold text-foreground shadow-2xs transition-all duration-200 hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                @click="loadMore"
-            >
-                <span>Muat Lebih Banyak</span>
-                <span class="rounded-full bg-foreground/10 px-2 py-0.5 text-xs group-hover:bg-primary-foreground/20">
-                    +{{ Math.min(BATCH_INCREMENT, remainingCount) }}
-                </span>
-                <svg class="size-4 transition-transform duration-200 group-hover:translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="m6 9 6 6 6-6" />
-                </svg>
-            </button>
-        </div>
+        <StorefrontPagination :pagination="pagination" />
 
-        <div v-else-if="!products.length" class="rounded-3xl border border-dashed border-border bg-card p-12 text-center">
+        <div v-if="!products.length" class="rounded-3xl border border-dashed border-border bg-card p-12 text-center">
             <p class="font-semibold text-foreground">Belum ada produk dalam koleksi ini.</p>
             <p class="mt-1.5 text-sm text-muted-foreground">Florist kami sedang menyiapkan rangkaian bunga baru.</p>
             <Link href="/" class="mt-6 inline-flex min-h-11 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90">

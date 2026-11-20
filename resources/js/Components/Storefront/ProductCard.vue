@@ -15,6 +15,18 @@ const props = defineProps<{
     };
 }>();
 
+function recordClick(event: MouseEvent): void {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const token = document.cookie.split('; ').find((cookie) => cookie.startsWith('XSRF-TOKEN='))?.slice(11);
+    if (!token) return;
+    void fetch(`/products/${encodeURIComponent(props.product.slug)}/click`, {
+        method: 'POST',
+        headers: { 'X-XSRF-TOKEN': decodeURIComponent(token), 'Accept': 'application/json' },
+        credentials: 'same-origin',
+        keepalive: true,
+    }).catch(() => {});
+}
+
 const priceFormatter = new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
@@ -24,7 +36,7 @@ const priceFormatter = new Intl.NumberFormat('id-ID', {
 
 <template>
     <article class="group relative flex flex-col overflow-hidden rounded-lg border border-border/80 bg-card shadow-xs transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/35 hover:shadow-xl motion-reduce:transform-none motion-reduce:transition-none">
-        <Link :href="`/products/${props.product.slug}`" class="flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <Link :href="`/products/${props.product.slug}`" class="flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="recordClick">
             <div class="relative grid aspect-[4/3] w-full place-items-center overflow-hidden bg-secondary/60">
                 <img
                     v-if="props.product.imageUrl"

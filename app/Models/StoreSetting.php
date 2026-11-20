@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 #[Fillable(['name', 'phone', 'address', 'hours', 'google_reviews_url', 'google_rating', 'google_reviews_count'])]
 class StoreSetting extends Model
 {
-    public const CACHE_KEY_CURRENT = 'store_setting:current';
+    public const CACHE_KEY_CURRENT = 'store_setting:current:v2';
 
     protected static function booted(): void
     {
@@ -27,7 +27,7 @@ class StoreSetting extends Model
 
     public static function current(): self
     {
-        return Cache::rememberForever(self::CACHE_KEY_CURRENT, function () {
+        $attributes = Cache::rememberForever(self::CACHE_KEY_CURRENT, function () {
             return static::query()->firstOrCreate([
                 'id' => 1,
             ], [
@@ -38,7 +38,9 @@ class StoreSetting extends Model
                 'google_reviews_url' => 'https://share.google/v4xDWRoD4ANg5Ft3K',
                 'google_rating' => 5.0,
                 'google_reviews_count' => 27,
-            ]);
+            ])->getAttributes();
         });
+
+        return (new static)->newFromBuilder($attributes);
     }
 }

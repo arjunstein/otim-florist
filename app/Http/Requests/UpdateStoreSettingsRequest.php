@@ -38,8 +38,8 @@ class UpdateStoreSettingsRequest extends FormRequest
             'address' => trim((string) $this->input('address')),
             'hours' => trim((string) $this->input('hours')),
             'google_reviews_url' => $this->filled('google_reviews_url') ? trim((string) $this->input('google_reviews_url')) : null,
-            'google_rating' => $this->filled('google_rating') ? (float) $this->input('google_rating') : null,
-            'google_reviews_count' => $this->filled('google_reviews_count') ? (int) $this->input('google_reviews_count') : null,
+            'google_rating' => $this->filled('google_rating') ? $this->input('google_rating') : null,
+            'google_reviews_count' => $this->filled('google_reviews_count') ? $this->input('google_reviews_count') : null,
         ]);
     }
 }

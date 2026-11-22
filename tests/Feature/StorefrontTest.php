@@ -20,6 +20,7 @@ class StorefrontTest extends TestCase
             'name' => 'Rose Bouquet M',
             'description' => 'A soft pink rose arrangement.',
             'image_path' => 'products/rose.jpg',
+            'thumbnail_path' => 'products/thumbnails/rose.webp',
             'category_id' => $category->id,
             'price' => 350000,
             'sale_price' => 300000,
@@ -32,9 +33,14 @@ class StorefrontTest extends TestCase
                 ->where('canonicalUrl', route('storefront.home'))
                 ->where('navigationCategories.0.slug', 'bouquet')
                 ->where('products.0.slug', 'rose-bouquet-m')
-                ->where('products.0.description', 'A soft pink rose arrangement.')
+                ->missing('products.0.description')
+                ->where('products.0.imageUrl', Storage::disk('public')->url('products/thumbnails/rose.webp'))
                 ->where('products.0.salePrice', 300000)
             );
+
+        $this->get('/products/rose-bouquet-m')->assertOk()->assertInertia(fn ($page) => $page
+            ->where('product.description', 'A soft pink rose arrangement.')
+            ->where('product.imageUrl', Storage::disk('public')->url('products/rose.jpg')));
     }
 
     public function test_catalog_products_are_ordered_by_click_count_then_newest(): void

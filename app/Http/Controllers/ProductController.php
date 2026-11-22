@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\GenerateProductName;
+use App\Actions\GenerateProductThumbnail;
 use App\Http\Requests\ProductIndexRequest;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
@@ -45,6 +46,7 @@ class ProductController extends Controller
                     'name' => $product->name,
                     'description' => $product->description,
                     'imageUrl' => $product->image_path ? Storage::disk('public')->url($product->image_path) : null,
+                    'thumbnailUrl' => $product->thumbnailUrl(),
                     'category' => [
                         'id' => $product->category->id,
                         'name' => $product->category->name,
@@ -72,14 +74,16 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request, GenerateProductName $generateProductName): RedirectResponse
     {
+        $category = Category::findOrFail($request->validated('category_id'));
+        $name = $generateProductName($request->validated('name'), $category);
         $attributes = $this->productAttributes($request);
-        $category = Category::findOrFail($attributes['category_id']);
-        $attributes['name'] = $generateProductName($attributes['name'], $category);
+        $attributes['name'] = $name;
 
         try {
             Product::create($attributes);
         } catch (Throwable $exception) {
             $this->deleteImage($attributes['image_path'] ?? null);
+            $this->deleteImage($attributes['thumbnail_path'] ?? null);
             throw $exception;
         }
 
@@ -89,16 +93,21 @@ class ProductController extends Controller
     public function update(ProductRequest $request, Product $product): RedirectResponse
     {
         $attributes = $this->productAttributes($request);
-        $previousImagePath = isset($attributes['image_path']) ? $product->image_path : null;
+        $previousImagePath = $product->image_path;
+        $previousThumbnailPath = $product->thumbnail_path;
 
         try {
             $product->update($attributes);
         } catch (Throwable $exception) {
             $this->deleteImage($attributes['image_path'] ?? null);
+            $this->deleteImage($attributes['thumbnail_path'] ?? null);
             throw $exception;
         }
 
-        $this->deleteImage($previousImagePath);
+        if (isset($attributes['image_path'])) {
+            $this->deleteImage($previousImagePath);
+            $this->deleteImage($previousThumbnailPath);
+        }
 
         return to_route('products.index')->with('success', 'Product updated.');
     }
@@ -106,8 +115,10 @@ class ProductController extends Controller
     public function destroy(Product $product): RedirectResponse
     {
         $imagePath = $product->image_path;
+        $thumbnailPath = $product->thumbnail_path;
         $product->delete();
         $this->deleteImage($imagePath);
+        $this->deleteImage($thumbnailPath);
 
         return to_route('products.index')->with('success', 'Product deleted.');
     }
@@ -120,6 +131,13 @@ class ProductController extends Controller
             $attributes['image_path'] = $request->file('image')->store('products', 'public');
             if ($attributes['image_path'] === false) {
                 throw new RuntimeException('Unable to store product image.');
+            }
+
+            $attributes['thumbnail_path'] = null;
+            try {
+                $attributes['thumbnail_path'] = app(GenerateProductThumbnail::class)($attributes['image_path']);
+            } catch (Throwable $exception) {
+                report($exception);
             }
         }
 

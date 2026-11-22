@@ -29,7 +29,7 @@ class StorefrontController extends Controller
         $category = $request->query('category');
         $category = is_string($category) ? $category : null;
         $products = Product::query()
-            ->select(['id', 'category_id', 'name', 'slug', 'description', 'image_path', 'price', 'sale_price'])
+            ->select(['id', 'category_id', 'name', 'slug', 'thumbnail_path', 'image_path', 'price', 'sale_price'])
             ->with('category:id,name,slug')
             ->when($category, fn ($query) => $query->whereHas('category', fn ($query) => $query->where('slug', $category)))
             ->orderByDesc('click_count')->orderByDesc('id')
@@ -50,7 +50,7 @@ class StorefrontController extends Controller
     {
         $category->loadCount('products');
         $products = $category->products()
-            ->select(['products.id', 'products.category_id', 'products.name', 'products.slug', 'products.description', 'products.image_path', 'products.price', 'products.sale_price'])
+            ->select(['products.id', 'products.category_id', 'products.name', 'products.slug', 'products.thumbnail_path', 'products.image_path', 'products.price', 'products.sale_price'])
             ->with('category:id,name,slug')
             ->orderBy('name')
             ->paginate(12)->withQueryString();
@@ -97,7 +97,11 @@ class StorefrontController extends Controller
             'ogTitle' => "{$product->name} | {$storeName} Jakarta",
             'ogDescription' => $productDescription,
             'navigationCategories' => $this->navigationCategories(),
-            'product' => $this->productData($product),
+            'product' => [
+                ...$this->productData($product),
+                'description' => $product->description,
+                'imageUrl' => $product->image_path ? Storage::disk('public')->url($product->image_path) : null,
+            ],
             'whatsappUrl' => $this->whatsappUrl($product),
         ]);
     }
@@ -164,7 +168,7 @@ class StorefrontController extends Controller
     }
 
     /**
-     * @return array{id: int, name: string, slug: string, description: ?string, imageUrl: ?string, price: int, salePrice: ?int, category: array{id: int, name: string, slug: string}}
+     * @return array{id: int, name: string, slug: string, imageUrl: ?string, price: int, salePrice: ?int, category: array{id: int, name: string, slug: string}}
      */
     private function productData(Product $product): array
     {
@@ -172,8 +176,7 @@ class StorefrontController extends Controller
             'id' => $product->id,
             'name' => $product->name,
             'slug' => $product->slug,
-            'description' => $product->description,
-            'imageUrl' => $product->image_path ? Storage::disk('public')->url($product->image_path) : null,
+            'imageUrl' => $product->thumbnailUrl(),
             'price' => $product->price,
             'salePrice' => $product->sale_price,
             'category' => [

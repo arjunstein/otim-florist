@@ -162,11 +162,15 @@ class ProductTest extends TestCase
             'description' => 'A soft pink rose arrangement.',
             'category_id' => $category->id,
             'price' => 350000,
-            'image' => UploadedFile::fake()->image('rose.jpg'),
+            'image' => UploadedFile::fake()->image('rose.jpg', 1200, 900),
         ])->assertRedirect('/admin/products');
 
         $product = Product::firstOrFail();
         $firstImagePath = $product->image_path;
+        $firstThumbnailPath = $product->thumbnail_path;
+        $this->assertNotNull($firstThumbnailPath);
+        $size = getimagesizefromstring(Storage::disk('public')->get($firstThumbnailPath));
+        $this->assertSame([480, 360, IMAGETYPE_WEBP], array_slice($size, 0, 3));
 
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
@@ -188,13 +192,15 @@ class ProductTest extends TestCase
             'id' => $product->id,
             'description' => 'A larger pink rose arrangement.',
         ]);
-        Storage::disk('public')->assertMissing($firstImagePath);
+        Storage::disk('public')->assertMissing([$firstImagePath, $firstThumbnailPath]);
         Storage::disk('public')->assertExists($product->image_path);
 
         $imagePath = $product->image_path;
+        $thumbnailPath = $product->thumbnail_path;
+        $this->assertNotNull($thumbnailPath);
         $this->delete("/admin/products/{$product->id}")->assertRedirect('/admin/products');
 
-        Storage::disk('public')->assertMissing($imagePath);
+        Storage::disk('public')->assertMissing([$imagePath, $thumbnailPath]);
     }
 
     public function test_product_fields_must_be_valid(): void

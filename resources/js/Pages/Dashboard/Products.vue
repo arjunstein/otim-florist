@@ -743,7 +743,7 @@ function queueFilters(): void {
                     <tr v-for="product in products.data" :key="product.id" class="border-b last:border-0 hover:bg-muted/60">
                         <td class="px-3 py-3.5 sm:px-6">
                             <div class="flex min-w-0 items-center gap-3">
-                                <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="size-11 shrink-0 rounded-lg object-cover" />
+                                <img v-if="product.thumbnailUrl" :src="product.thumbnailUrl" loading="lazy" :alt="product.name" class="size-11 shrink-0 rounded-lg object-cover" />
                                 <div class="min-w-0">
                                     <p class="break-words font-semibold">{{ product.name }}</p>
                                     <p v-if="product.description" class="mt-0.5 line-clamp-1 text-xs font-normal text-muted-foreground">{{ product.description }}</p>

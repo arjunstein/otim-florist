@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import heroBouquet from '../../../images/storefront-hero-bouquet.webp';
+import heroBouquetSmall from '../../../images/storefront-hero-bouquet-384.webp';
 import ProductCard from '@/Components/Storefront/ProductCard.vue';
 import StorefrontPagination from '@/Components/Storefront/StorefrontPagination.vue';
 import StorefrontLayout from '@/Layouts/StorefrontLayout.vue';
@@ -119,14 +121,14 @@ const floristSchema = computed(() => {
     <SeoJsonLd :content="floristSchema" />
 
     <section class="relative isolate overflow-hidden border-b border-primary/20 bg-primary text-primary-foreground">
-        <div class="absolute -right-24 -top-32 size-96 rounded-full bg-accent/25 blur-3xl" aria-hidden="true" />
-        <div class="absolute -bottom-36 -left-20 size-96 rounded-full bg-primary-foreground/10 blur-3xl" aria-hidden="true" />
+        <div class="absolute -right-24 -top-32 size-96 bg-radial from-accent/25 to-transparent to-70%" aria-hidden="true" />
+        <div class="absolute -bottom-36 -left-20 size-96 bg-radial from-primary-foreground/10 to-transparent to-70%" aria-hidden="true" />
         <div class="absolute right-1/4 top-1/2 size-72 rounded-full border border-primary-foreground/10" aria-hidden="true" />
 
         <div class="relative mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:px-8 lg:py-28">
             <div class="max-w-2xl">
-                <div class="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-3.5 py-1 text-xs font-semibold tracking-wide text-primary-foreground/90 backdrop-blur-xs">
-                    <span class="size-2 rounded-full bg-accent animate-pulse" />
+                <div class="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-3.5 py-1 text-xs font-semibold tracking-wide text-primary-foreground/90">
+                    <span class="size-2 rounded-full bg-accent" aria-hidden="true" />
                     <span>Toko Bunga &amp; Karangan Bunga Terpercaya</span>
                 </div>
 
@@ -150,7 +152,7 @@ const floristSchema = computed(() => {
                         :href="`https://wa.me/${store.phone}?text=${encodeURIComponent('Halo ' + store.name + ', saya ingin bertanya mengenai pemesanan bunga.')}`"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-primary-foreground/25 bg-primary-foreground/10 px-5 text-sm font-semibold text-primary-foreground backdrop-blur-xs transition-colors duration-200 hover:bg-primary-foreground/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground"
+                        class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-primary-foreground/25 bg-primary-foreground/10 px-5 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary-foreground/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground"
                     >
                         <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -182,18 +184,23 @@ const floristSchema = computed(() => {
             </div>
 
             <div class="relative mx-auto flex w-full max-w-sm flex-col items-center">
-                <div class="relative grid aspect-square w-full place-items-center rounded-[2.5rem] border border-primary-foreground/20 bg-gradient-to-b from-primary-foreground/15 to-primary-foreground/5 p-8 shadow-2xl backdrop-blur-md">
-                    <svg class="size-48 text-primary-foreground/90 transition-transform duration-700 hover:rotate-6" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-                        <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".2" />
-                        <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
-                        <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".5" />
-                    </svg>
+                <div class="relative grid aspect-square w-full place-items-center rounded-[2.5rem] border border-primary-foreground/20 bg-primary shadow-2xl">
+                    <img
+                        :src="heroBouquet"
+                        :srcset="`${heroBouquetSmall} 384w, ${heroBouquet} 768w`"
+                        sizes="(max-width: 415px) calc(100vw - 2rem), 384px"
+                        alt="Buket mawar krem dan bunga merah muda dengan balutan kertas gading"
+                        width="768"
+                        height="768"
+                        fetchpriority="high"
+                        class="size-full rounded-[inherit] object-cover"
+                    />
 
                     <a
                         :href="googleReviewsUrl"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="group absolute -bottom-5 flex items-center gap-2 rounded-full border border-border/80 bg-background/95 px-4 py-2 text-xs font-semibold text-foreground shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:border-primary/50 hover:shadow-xl"
+                        class="group absolute -bottom-5 flex items-center gap-2 rounded-full border border-border/80 bg-background px-4 py-2 text-xs font-semibold text-foreground shadow-lg transition-all hover:scale-105 hover:border-primary/50 hover:shadow-xl"
                         :title="`Lihat ulasan ${store.name} di Google Maps`"
                     >
                         <svg class="size-3.5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
@@ -202,7 +209,7 @@ const floristSchema = computed(() => {
                             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
                             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
                         </svg>
-                        <span class="font-bold text-amber-500">★ {{ googleRating }}</span>
+                        <span class="font-bold text-amber-800">★ {{ googleRating }}</span>
                         <span class="text-muted-foreground transition-colors group-hover:text-foreground">
                             ({{ googleReviewsCount }} ulasan di Google)
                         </span>

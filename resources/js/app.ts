@@ -1,23 +1,24 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import type { DefineComponent } from 'vue';
-import { createApp, h } from 'vue';
+import { createApp, createSSRApp, h } from 'vue';
 import '../css/app.css';
 
 createInertiaApp({
     title: (title) => (title ? `${title}` : 'Otim Florist'),
     resolve: (name) => {
-        const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue', { eager: true });
+        const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue');
 
-        const page = pages[`./Pages/${name}.vue`];
+        const resolvePage = pages[`./Pages/${name}.vue`];
 
-        if (!page) {
+        if (!resolvePage) {
             throw new Error(`Inertia page not found: ./Pages/${name}.vue`);
         }
 
-        return page;
+        return resolvePage();
     },
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        const createVueApp = el.hasChildNodes() ? createSSRApp : createApp;
+        createVueApp({ render: () => h(App, props) })
             .use(plugin)
             .mount(el);
     },

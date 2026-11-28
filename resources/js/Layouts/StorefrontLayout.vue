@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import otimFloristWordmark from '../../images/otim-florist.svg';
 import type { StoreInfo } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
@@ -79,17 +80,18 @@ onUnmounted(() => {
         >
             Langsung ke konten
         </a>
-        <header class="sticky top-0 z-20 border-b border-border/80 bg-background/80 backdrop-blur-md">
+        <header class="sticky top-0 z-20 border-b border-border/80 bg-background">
             <div class="mx-auto flex min-h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
-                <Link href="/" class="group flex min-h-11 shrink-0 items-center gap-2.5 rounded-xl pr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                    <div class="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
-                        <svg class="size-6" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-                            <path d="M20 7c4.7 0 8 4.3 6.8 8.8C31.3 14.6 35 18 35 22.5c0 4.3-4 7.4-8.2 6.3.5 4.6-3 8.7-7.5 8.7s-8-4.1-7.5-8.7C7.5 30 3.5 26.8 3.5 22.5c0-4.5 3.7-7.9 8.2-6.7C10.5 11.3 13.8 7 18.5 7Z" fill="currentColor" fill-opacity=".2" />
-                            <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
-                            <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".5" />
-                        </svg>
-                    </div>
-                    <span class="text-base font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary sm:text-lg">{{ store.name }}</span>
+                <Link href="/" class="flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-xl pr-2 text-base font-semibold tracking-tight text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-lg">
+                    <img
+                        v-if="store.name === 'Otim Florist'"
+                        :src="otimFloristWordmark"
+                        :alt="store.name"
+                        width="164"
+                        height="28"
+                        class="h-6 w-auto sm:h-7"
+                    />
+                    <span v-else>{{ store.name }}</span>
                 </Link>
 
                 <nav class="ml-auto hidden items-center gap-1.5 lg:flex" aria-label="Navigasi utama">
@@ -252,7 +254,15 @@ onUnmounted(() => {
                                 <path d="M20 12.5c1.9-3.6 6.5-3.8 8.5-.4 1.8 3 .1 6.3-2.7 7.2 3.8-.4 6.3 3.5 4.6 6.8-1.5 2.9-5.2 3-7.2 1.1 1.4 3.5-2 7-5.5 5.8-3.2-1.1-3.7-4.7-1.8-7.1-3.2 2-7.2-.4-6.6-4 .5-3.2 3.8-4.3 6.7-2.6-2.8-1.6-3-5.4-.5-7 1.8-1.2 4.2-.2 4.5 1.3Z" fill="currentColor" />
                                 <circle cx="20" cy="21" r="2.5" fill="currentColor" fill-opacity=".45" />
                             </svg>
-                            <span class="text-lg font-semibold tracking-tight">{{ store.name }}</span>
+                            <img
+                                v-if="store.name === 'Otim Florist'"
+                                :src="otimFloristWordmark"
+                                :alt="store.name"
+                                width="164"
+                                height="28"
+                                class="h-6 w-auto brightness-0 invert"
+                            />
+                            <span v-else class="text-lg font-semibold tracking-tight">{{ store.name }}</span>
                         </div>
                         <p class="text-sm leading-relaxed text-primary-foreground/75">
                             Rangkaian bunga segar penuh makna, dirangkai dengan sepenuh hati untuk menyempurnakan setiap momen berharga Anda.
